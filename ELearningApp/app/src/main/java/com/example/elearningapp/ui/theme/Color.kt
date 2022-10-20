@@ -2,7 +2,7 @@ package com.example.elearningapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+val LightRed = Color(0xffd1432b)
+val Red = Color(0xFF990000)
+val DarkRed = Color(0xFF650000)
+val Eggshell = Color(0xFFF9FBFF)
