@@ -15,10 +15,10 @@ private val DarkColorPalette = darkColors(
 private val LightColorPalette = lightColors(
     primary = Red,
     primaryVariant = DarkRed,
-    secondary = Eggshell
+    secondary = Eggshell,
 
+    background = Eggshell
     /* Other default colors to override
-    background = Color.White,
     surface = Color.White,
     onPrimary = Color.White,
     onSecondary = Color.Black,
