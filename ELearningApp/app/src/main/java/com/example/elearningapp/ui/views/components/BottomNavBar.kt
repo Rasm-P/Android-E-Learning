@@ -1,6 +1,9 @@
 package com.example.elearningapp.ui.views.components
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -13,6 +16,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,13 +25,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.elearningapp.NavDestination
 
 private val NavBarHeight = 80.dp
 private const val colorOpacity = 0.20f
-private const val fadeDuration = 100
+private const val fadeDuration = 150
 
     @Composable
 fun BottomNavBar(screens: List<NavDestination>, onSelected: (NavDestination) -> Unit, currentDestination: NavDestination) {
@@ -55,7 +58,17 @@ fun BottomNavBar(screens: List<NavDestination>, onSelected: (NavDestination) -> 
 private fun NavBarTab(text: String, icon: ImageVector, onSelected: () -> Unit, selected: Boolean) {
     val greyColor = MaterialTheme.colors.onSurface.copy(alpha = colorOpacity)
     val colorSelected = MaterialTheme.colors.primary
-    val tabColor = if (selected) colorSelected else greyColor
+    val animationSpec = remember {
+        tween<Color>(
+            durationMillis = fadeDuration,
+            easing = LinearEasing,
+            delayMillis = fadeDuration
+        )
+    }
+    val tabColor by animateColorAsState(
+        targetValue = if (selected) colorSelected else greyColor,
+        animationSpec = animationSpec
+    )
     Column(modifier = Modifier
         .padding(16.dp)
         .animateContentSize()
@@ -63,15 +76,8 @@ private fun NavBarTab(text: String, icon: ImageVector, onSelected: () -> Unit, s
         .selectable(
             selected = selected,
             onClick = onSelected,
-            role = Role.Tab,
-            interactionSource = remember { MutableInteractionSource() },
-            indication = rememberRipple(
-                bounded = false,
-                radius = Dp.Unspecified,
-                color = Color.Unspecified
-            )
-        )
-        .clearAndSetSemantics { contentDescription = text },
+            role = Role.Tab
+        ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(imageVector = icon, contentDescription = text, tint = tabColor)
