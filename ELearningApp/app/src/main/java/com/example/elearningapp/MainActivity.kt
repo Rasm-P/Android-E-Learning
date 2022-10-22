@@ -37,11 +37,9 @@ fun ELearningApp() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            /*
             Scaffold(bottomBar = { BottomNavBar(screens = bottomNavScreens, onSelected = {screen -> navController.navigateSingleTopTo(screen.route)}) }) {
-               innerPadding -> AppNavHost(navController = navController, modefier = Modifier.padding(innerPadding))
+               innerPadding -> AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding))
             }
-             */
         }
     }
 }
