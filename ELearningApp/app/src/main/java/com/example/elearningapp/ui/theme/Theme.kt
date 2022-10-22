@@ -5,21 +5,22 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
-    primary = LightRed,
+    primary = Red,
     primaryVariant = DarkRed,
-    secondary = Eggshell
+    secondary = Grey,
+    background = DarkGrey
 )
 
 private val LightColorPalette = lightColors(
     primary = Red,
     primaryVariant = DarkRed,
-    secondary = Eggshell,
-
+    secondary = White,
     background = Eggshell
+
     /* Other default colors to override
-    surface = Color.White,
     onPrimary = Color.White,
     onSecondary = Color.Black,
     onBackground = Color.Black,
@@ -33,6 +34,17 @@ fun ELearningAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Comp
         DarkColorPalette
     } else {
         LightColorPalette
+    }
+
+    val systemUiController = rememberSystemUiController()
+    if(darkTheme){
+        systemUiController.setSystemBarsColor(
+            color = Red
+        )
+    }else{
+        systemUiController.setSystemBarsColor(
+            color = White
+        )
     }
 
     MaterialTheme(
