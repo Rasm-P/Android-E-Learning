@@ -28,6 +28,8 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.dp
 import com.example.elearningapp.NavDestination
 
+// Built with inspiration from: https://developer.android.com/codelabs/jetpack-compose-navigation#0
+
 private val NavBarHeight = 80.dp
 private const val colorOpacity = 0.20f
 private const val fadeDuration = 150

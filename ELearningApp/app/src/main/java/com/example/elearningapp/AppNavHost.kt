@@ -11,6 +11,8 @@ import com.example.elearningapp.ui.views.courses.CourseOverviewScreen
 import com.example.elearningapp.ui.views.notes.NotesOverviewScreen
 import com.example.elearningapp.ui.views.overview.OverviewScreen
 
+// Built with inspiration from: https://developer.android.com/codelabs/jetpack-compose-navigation#0
+
 @Composable
 fun AppNavHost(
     navController: NavHostController,
