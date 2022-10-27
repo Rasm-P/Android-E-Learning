@@ -1,4 +1,4 @@
-package com.example.elearningapp
+package com.example.elearningapp.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*

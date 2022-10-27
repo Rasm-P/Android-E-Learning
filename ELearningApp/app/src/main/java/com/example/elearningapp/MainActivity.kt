@@ -15,6 +15,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 import androidx.navigation.compose.rememberNavController
+import com.example.elearningapp.navigation.AppNavHost
+import com.example.elearningapp.navigation.Overview
+import com.example.elearningapp.navigation.bottomNavScreens
+import com.example.elearningapp.navigation.navigateSingleTopTo
 import com.example.elearningapp.ui.views.components.BottomNavBar
 
 class MainActivity : ComponentActivity() {
@@ -37,7 +41,7 @@ fun ELearningApp() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            Scaffold(bottomBar = { BottomNavBar(screens = bottomNavScreens, onSelected = {screen -> navController.navigateSingleTopTo(screen.route)}, currentDestination = currentDestination) }) {
+            Scaffold(bottomBar = { BottomNavBar(screens = bottomNavScreens, onSelected = { screen -> navController.navigateSingleTopTo(screen.route)}, currentDestination = currentDestination) }) {
                innerPadding -> AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding))
             }
         }

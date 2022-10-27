@@ -4,7 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.elearningapp.common.LoginState
+import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.repositories.LoginRepositoryInterface
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 class LoginViewModel @Inject internal constructor(private val _loginRepository: LoginRepositoryInterface): ViewModel() {
 
-    private val _loginState = mutableStateOf<LoginState>(LoginState.Initial)
-    val loginState: State<LoginState> = _loginState
+    private val _loginState = mutableStateOf<ActionState<Boolean>>(ActionState.Initial)
+    val loginState: State<ActionState<Boolean>> = _loginState
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
@@ -45,7 +45,7 @@ class LoginViewModel @Inject internal constructor(private val _loginRepository: 
     }
 
     fun resetLoginState() {
-        _loginState.value = LoginState.Initial
+        _loginState.value = ActionState.Initial
     }
 
 }
