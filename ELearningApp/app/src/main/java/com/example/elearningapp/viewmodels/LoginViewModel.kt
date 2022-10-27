@@ -8,9 +8,11 @@ import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.repositories.LoginRepositoryInterface
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class LoginViewModel @Inject internal constructor(private val _loginRepository: LoginRepositoryInterface): ViewModel() {
 
     private val _loginState = mutableStateOf<ActionState<Boolean>>(ActionState.Initial)
@@ -40,6 +42,14 @@ class LoginViewModel @Inject internal constructor(private val _loginRepository: 
         viewModelScope.launch {
             _loginRepository.resetPassword(email).collect {
                 response -> _loginState.value = response
+            }
+        }
+    }
+
+    fun updateEmail(email: String) {
+        viewModelScope.launch {
+            _loginRepository.updateEmail(email).collect {
+                    response -> _loginState.value = response
             }
         }
     }
