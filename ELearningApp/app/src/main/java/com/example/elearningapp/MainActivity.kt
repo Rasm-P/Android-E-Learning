@@ -3,6 +3,7 @@ package com.example.elearningapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
@@ -20,18 +21,26 @@ import com.example.elearningapp.navigation.Overview
 import com.example.elearningapp.navigation.bottomNavScreens
 import com.example.elearningapp.navigation.navigateSingleTopTo
 import com.example.elearningapp.ui.views.components.BottomNavBar
+import com.example.elearningapp.viewmodels.LoginViewModel
+import com.example.elearningapp.viewmodels.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val loginViewModel: LoginViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ELearningApp()
+            ELearningApp(loginViewModel, userViewModel)
         }
     }
 }
 
 @Composable
-fun ELearningApp() {
+fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel) {
     ELearningAppTheme {
         val navController = rememberNavController()
         val navBackStackEntry  by navController.currentBackStackEntryAsState()
@@ -46,10 +55,4 @@ fun ELearningApp() {
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ELearningApp()
 }
