@@ -36,58 +36,63 @@ fun WelcomeScreen() {
             Box(modifier = Modifier
                 .weight(1.0f)
                 .fillMaxWidth(), contentAlignment = Alignment.BottomCenter) {
-                Surface(modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.secondary,
-                    shape = RoundedCornerShape(20.dp, 20.dp),
-                    elevation = 12.dp) {
-                        Box(modifier = Modifier.padding(30.dp)) {
-                            Column {
-                                Box(modifier = Modifier
-                                    .weight(1f),
-                                    contentAlignment = Alignment.TopCenter) {
-                                    Column {
-                                        Text(
-                                            text = "Welcome!",
-                                            fontSize = 24.sp,
-                                            fontWeight = FontWeight.Medium
-                                        )
-                                        Spacer(modifier = Modifier.height(12.dp))
-                                        Text(
-                                            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed",
-                                            fontSize = 16.sp,
-                                            fontWeight = FontWeight.Light
-                                        )
-                                    }
-                                }
-                                Box(modifier = Modifier
-                                    .weight(1.5f)
-                                    .fillMaxWidth(),
-                                    contentAlignment = Alignment.BottomCenter) {
-                                    Column(modifier = Modifier
-                                        .fillMaxWidth(),
-                                        horizontalAlignment = Alignment.CenterHorizontally) {
-                                        Button(modifier = Modifier
-                                            .fillMaxWidth(),
-                                            onClick = { /*TODO*/ }) {
-                                            Text(text = "LOGIN")
-                                        }
-                                        Spacer(modifier = Modifier.height(12.dp))
-                                        Text(modifier = Modifier.clickable { /*TODO*/ },
-                                            text = "Dont have an account?",
-                                            fontSize = 12.sp,
-                                            fontWeight = FontWeight.Light
-                                        )
-                                        Button(modifier = Modifier
-                                            .fillMaxWidth(),
-                                            onClick = { /*TODO*/ },
-                                            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary),
-                                            border = BorderStroke(1.dp, color = MaterialTheme.colors.primary)) {
-                                            Text(text = "SIGN UP", color = MaterialTheme.colors.primary)
-                                        }
-                                    }
-                                }
-                            }
+                WelcomeCard()
+            }
+        }
+    }
+}
+
+@Composable
+fun WelcomeCard() {
+    Card(modifier = Modifier.fillMaxSize(),
+        shape = RoundedCornerShape(20.dp, 20.dp),
+        elevation = 12.dp) {
+        Box(modifier = Modifier.padding(30.dp)) {
+            Column {
+                Box(modifier = Modifier
+                    .weight(1f),
+                    contentAlignment = Alignment.TopCenter) {
+                    Column {
+                        Text(
+                            text = "Welcome!",
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(
+                            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Light
+                        )
+                    }
+                }
+                Box(modifier = Modifier
+                    .weight(1.5f)
+                    .fillMaxWidth(),
+                    contentAlignment = Alignment.BottomCenter) {
+                    Column(modifier = Modifier
+                        .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        Button(modifier = Modifier
+                            .fillMaxWidth().height(40.dp),
+                            onClick = { /*TODO*/ }) {
+                            Text(text = "LOGIN")
                         }
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(modifier = Modifier.clickable { /*TODO*/ },
+                            text = "Don't have an account?",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Light
+                        )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Button(modifier = Modifier
+                            .fillMaxWidth().height(40.dp),
+                            onClick = { /*TODO*/ },
+                            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary),
+                            border = BorderStroke(1.dp, color = MaterialTheme.colors.primary)) {
+                            Text(text = "SIGN UP", color = MaterialTheme.colors.primary)
+                        }
+                    }
                 }
             }
         }

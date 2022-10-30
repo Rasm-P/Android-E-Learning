@@ -12,7 +12,6 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 import androidx.navigation.compose.rememberNavController
@@ -33,6 +32,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setSoftInputMode(16)
         setContent {
             ELearningApp(loginViewModel, userViewModel)
         }
