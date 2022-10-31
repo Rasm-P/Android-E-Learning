@@ -29,7 +29,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setSoftInputMode(16)
         setContent {
             ELearningApp(loginViewModel, userViewModel)
         }
