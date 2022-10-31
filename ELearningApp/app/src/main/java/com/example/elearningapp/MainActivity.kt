@@ -15,10 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 import androidx.navigation.compose.rememberNavController
-import com.example.elearningapp.navigation.AppNavHost
-import com.example.elearningapp.navigation.Overview
-import com.example.elearningapp.navigation.bottomNavScreens
-import com.example.elearningapp.navigation.navigateSingleTopTo
+import com.example.elearningapp.navigation.*
 import com.example.elearningapp.ui.views.components.BottomNavBar
 import com.example.elearningapp.viewmodels.LoginViewModel
 import com.example.elearningapp.viewmodels.UserViewModel
@@ -44,13 +41,15 @@ fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel) {
     ELearningAppTheme {
         val navController = rememberNavController()
         val navBackStackEntry  by navController.currentBackStackEntryAsState()
-        val currentDestination = bottomNavScreens.find { it.route == navBackStackEntry?.destination?.route } ?: Overview
+        val currentDestination = bottomNavScreens.find { it.route == navBackStackEntry?.destination?.route }
 
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            Scaffold(bottomBar = { BottomNavBar(screens = bottomNavScreens, onSelected = { screen -> navController.navigateSingleTopTo(screen.route)}, currentDestination = currentDestination) }) {
+            Scaffold(
+                bottomBar = { if (currentDestination is MenuNavDestination) BottomNavBar(screens = bottomNavScreens, onSelected = { screen -> navController.navigateSingleTopTo(screen.route)}, currentDestination = currentDestination) } )
+            {
                innerPadding -> AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding))
             }
         }

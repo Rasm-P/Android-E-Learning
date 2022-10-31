@@ -26,7 +26,7 @@ import com.example.elearningapp.R
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navigateRegister: () -> Unit) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -43,14 +43,14 @@ fun LoginScreen() {
             Box(modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth(), contentAlignment = Alignment.BottomCenter) {
-                LoginCard()
+                LoginCard(navigateRegister)
             }
         }
     }
 }
 
 @Composable
-fun LoginCard() {
+fun LoginCard(navigateRegister: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -152,7 +152,7 @@ fun LoginCard() {
                             fontWeight = FontWeight.Light,
                             color = MaterialTheme.colors.primary,
                             style = TextStyle(textDecoration = TextDecoration.Underline),
-                            modifier = Modifier.clickable( onClick = { /*TODO*/ } ))
+                            modifier = Modifier.clickable( onClick = navigateRegister ))
                     }
                 }
                 if (forgotPasswordDialog) {
@@ -225,6 +225,7 @@ fun ForgotPasswordDialog(onDismiss: () -> Unit) {
     )
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
@@ -237,3 +238,4 @@ fun LoginScreenPreview() {
         }
     }
 }
+*/

@@ -4,34 +4,59 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
 
-interface NavDestination {
-    val label: String
-    val icon: ImageVector
+sealed class MenuNavDestination(
+    val label: String,
+    val icon: ImageVector,
     val route: String
+) {
+    object Overview : MenuNavDestination (
+        "Overview",
+        Icons.Filled.Home,
+        "overview"
+    )
+    object CourseOverview : MenuNavDestination (
+        "Courses",
+        Icons.Filled.School,
+        "course-overview"
+    )
+    object NotesOverview : MenuNavDestination (
+        "Notes",
+        Icons.Filled.StickyNote2,
+        "notes-overview"
+    )
+    object Account : MenuNavDestination (
+        "Account",
+        Icons.Filled.Person,
+        "account"
+    )
 }
 
-object Overview : NavDestination {
-    override val label = "Overview"
-    override val icon = Icons.Filled.Home
-    override val route = "overview"
+sealed class LoginDestination(
+    val route: String
+) {
+    object Welcome : LoginDestination("welcome")
+    object Login : LoginDestination("login")
+    object Register : LoginDestination("register")
+    object Programme : LoginDestination("programme")
 }
 
-object CourseOverview : NavDestination {
-    override val label = "Courses"
-    override val icon = Icons.Filled.School
-    override val route = "course-overview"
+sealed class CourseDestination(
+    val route: String
+) {
+    object CourseOverview : CourseDestination("course-overview")
+    object CourseArticle : CourseDestination("course-article")
+    object CourseVideo : CourseDestination("course-video")
+    object CourseQuiz : CourseDestination("course-quiz")
+    object CourseQuizAnswers : CourseDestination("course-quiz-answers")
+    object CourseSummary : CourseDestination("course-summary")
 }
 
-object NotesOverview : NavDestination {
-    override val label = "Notes"
-    override val icon = Icons.Filled.StickyNote2
-    override val route = "notes-overview"
+sealed class AppNavigationFlow(
+    val route: String
+) {
+    object LoginFlow : AppNavigationFlow("login-flow")
+    object OverviewFlow : AppNavigationFlow("overview-flow")
+    object CourseFlow : AppNavigationFlow("course-flow")
 }
 
-object Account : NavDestination {
-    override val label = "Account"
-    override val icon = Icons.Filled.Person
-    override val route = "account"
-}
-
-val bottomNavScreens = listOf(Overview, CourseOverview, NotesOverview, Account)
+val bottomNavScreens = listOf(MenuNavDestination.Overview, MenuNavDestination.CourseOverview, MenuNavDestination.NotesOverview, MenuNavDestination.Account)

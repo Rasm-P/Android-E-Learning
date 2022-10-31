@@ -18,14 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.elearningapp.R
-import com.example.elearningapp.ui.theme.ELearningAppTheme
 
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(navigateLogin: () -> Unit) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -42,14 +40,14 @@ fun RegisterScreen() {
             Box(modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth(), contentAlignment = Alignment.BottomCenter) {
-                RegisterCard()
+                RegisterCard(navigateLogin)
             }
         }
     }
 }
 
 @Composable
-fun RegisterCard() {
+fun RegisterCard(navigateLogin: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var repeatPassword by remember { mutableStateOf("") }
@@ -163,7 +161,7 @@ fun RegisterCard() {
                             fontWeight = FontWeight.Light,
                             color = MaterialTheme.colors.primary,
                             style = TextStyle(textDecoration = TextDecoration.Underline),
-                            modifier = Modifier.clickable( onClick = { /*TODO*/ } )
+                            modifier = Modifier.clickable( onClick = navigateLogin )
                         )
                     }
                 }
@@ -172,6 +170,7 @@ fun RegisterCard() {
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun RegisterScreenPreview() {
@@ -184,3 +183,4 @@ fun RegisterScreenPreview() {
         }
     }
 }
+*/

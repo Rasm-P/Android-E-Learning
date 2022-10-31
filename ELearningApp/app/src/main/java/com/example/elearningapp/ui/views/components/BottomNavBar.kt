@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import com.example.elearningapp.navigation.NavDestination
+import com.example.elearningapp.navigation.MenuNavDestination
 
 // Built with inspiration from: https://developer.android.com/codelabs/jetpack-compose-navigation#0
 
@@ -30,8 +30,8 @@ private val NavBarHeight = 80.dp
 private const val colorOpacity = 0.20f
 private const val fadeDuration = 150
 
-    @Composable
-fun BottomNavBar(screens: List<NavDestination>, onSelected: (NavDestination) -> Unit, currentDestination: NavDestination) {
+@Composable
+fun BottomNavBar(screens: List<MenuNavDestination>, onSelected: (MenuNavDestination) -> Unit, currentDestination: MenuNavDestination) {
     Surface(
         Modifier
             .fillMaxWidth()

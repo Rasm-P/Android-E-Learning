@@ -12,14 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.elearningapp.R
-import com.example.elearningapp.ui.theme.ELearningAppTheme
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(navigateLogin: () -> Unit, navigateRegister: () -> Unit) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -36,14 +34,14 @@ fun WelcomeScreen() {
             Box(modifier = Modifier
                 .weight(1.0f)
                 .fillMaxWidth(), contentAlignment = Alignment.BottomCenter) {
-                WelcomeCard()
+                WelcomeCard(navigateLogin, navigateRegister)
             }
         }
     }
 }
 
 @Composable
-fun WelcomeCard() {
+fun WelcomeCard(navigateLogin: () -> Unit, navigateRegister: () -> Unit) {
     Card(modifier = Modifier.fillMaxSize(),
         shape = RoundedCornerShape(20.dp, 20.dp),
         elevation = 12.dp) {
@@ -75,19 +73,18 @@ fun WelcomeCard() {
                         horizontalAlignment = Alignment.CenterHorizontally) {
                         Button(modifier = Modifier
                             .fillMaxWidth().height(40.dp),
-                            onClick = { /*TODO*/ }) {
+                            onClick = navigateLogin) {
                             Text(text = "LOGIN")
                         }
                         Spacer(modifier = Modifier.height(12.dp))
-                        Text(modifier = Modifier.clickable { /*TODO*/ },
-                            text = "Don't have an account?",
+                        Text(text = "Don't have an account?",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Light
                         )
                         Spacer(modifier = Modifier.height(6.dp))
                         Button(modifier = Modifier
                             .fillMaxWidth().height(40.dp),
-                            onClick = { /*TODO*/ },
+                            onClick = navigateRegister,
                             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary),
                             border = BorderStroke(1.dp, color = MaterialTheme.colors.primary)) {
                             Text(text = "SIGN UP", color = MaterialTheme.colors.primary)
@@ -99,6 +96,7 @@ fun WelcomeCard() {
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun WelcomeScreenPreview() {
@@ -111,3 +109,4 @@ fun WelcomeScreenPreview() {
         }
     }
 }
+*/
