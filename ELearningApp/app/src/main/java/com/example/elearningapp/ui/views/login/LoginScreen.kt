@@ -45,7 +45,7 @@ fun LoginScreen(navigateRegister: () -> Unit, navigateOverview: () -> Unit, logi
         )
         Box(modifier = Modifier
             .weight(2f)) {
-            LoginCard(navigateRegister, {loginFailed = !loginFailed}, loginFailed, loginViewModel)
+            LoginCard(navigateRegister, loginFailed, loginViewModel)
         }
     }
     when(val value = loginViewModel.loginState.value) {
@@ -56,8 +56,8 @@ fun LoginScreen(navigateRegister: () -> Unit, navigateOverview: () -> Unit, logi
         is ActionState.Success -> {
             if (value.data) {
                 navigateOverview.invoke()
-                loginViewModel.resetLoginState()
             }
+            loginViewModel.resetLoginState()
         }
         is ActionState.Error -> {
             loginFailed = true
@@ -70,14 +70,13 @@ fun LoginScreen(navigateRegister: () -> Unit, navigateOverview: () -> Unit, logi
 @Composable
 fun LoginCard(
     navigateRegister: () -> Unit,
-    resetLoginFailed: () -> Unit,
     loginFailed: Boolean,
     loginViewModel: LoginViewModel
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-    var forgotPasswordDialog by remember { mutableStateOf(false) }
+    var showForgotPasswordDialog by remember { mutableStateOf(false) }
 
     Card(shape = RoundedCornerShape(20.dp, 20.dp),
         elevation = 12.dp) {
@@ -128,7 +127,7 @@ fun LoginCard(
                     visualTransformation = if (passwordVisible) VisualTransformation.None
                     else PasswordVisualTransformation()
                 )
-                if (loginFailed && !forgotPasswordDialog) {
+                if (loginFailed) {
                     Text(
                         text = "Wrong email or password!",
                         fontSize = 16.sp,
@@ -151,7 +150,7 @@ fun LoginCard(
                 Text(
                     modifier = Modifier
                         .align(Alignment.End)
-                        .clickable { /*TODO*/ },
+                        .clickable ( onClick = {showForgotPasswordDialog = true} ),
                     text = "Forgot Password?",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light
@@ -171,9 +170,8 @@ fun LoginCard(
                             modifier = Modifier.clickable( onClick = navigateRegister ))
                     }
                 }
-                if (forgotPasswordDialog) {
-                    ForgotPasswordDialog { resetLoginFailed.invoke()
-                        forgotPasswordDialog = !forgotPasswordDialog}
+                if (showForgotPasswordDialog) {
+                    ForgotPasswordDialog({ showForgotPasswordDialog = !showForgotPasswordDialog }, loginViewModel)
                 }
             }
         }
@@ -181,9 +179,10 @@ fun LoginCard(
 }
 
 @Composable
-fun ForgotPasswordDialog(onDismiss: () -> Unit) {
+fun ForgotPasswordDialog(onDismiss: () -> Unit, loginViewModel: LoginViewModel) {
     var email by remember { mutableStateOf("") }
     var resetFailed by remember { mutableStateOf(false) }
+    var resetSuccess by remember { mutableStateOf(false) }
 
     AlertDialog(
         title = { Text(
@@ -212,10 +211,20 @@ fun ForgotPasswordDialog(onDismiss: () -> Unit) {
                 )
                 if (resetFailed) {
                     Text(
-                        text = "Email does not exist",
+                        text = "Email does not exist!",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Light,
                         color = MaterialTheme.colors.error,
+                        style = MaterialTheme.typography.caption,
+                        modifier = Modifier.align(Alignment.Start)
+                    )
+                }
+                if (resetSuccess) {
+                    Text(
+                        text = "Password reset email sent!",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Light,
+                        color = Color.Green,
                         style = MaterialTheme.typography.caption,
                         modifier = Modifier.align(Alignment.Start)
                     )
@@ -224,8 +233,28 @@ fun ForgotPasswordDialog(onDismiss: () -> Unit) {
                 Button(modifier = Modifier
                     .fillMaxWidth()
                     .height(40.dp),
-                    onClick = { /*TODO*/ }) {
+                    onClick = { loginViewModel.resetPassword(email) }) {
                     Text(text = "SEND")
+                }
+            }
+            when(val value = loginViewModel.resetState.value) {
+                is ActionState.Initial -> {}
+                is ActionState.Loading -> {
+                    Loading()
+                }
+                is ActionState.Success -> {
+                    if (value.data) {
+                        email = ""
+                        resetFailed = false
+                        resetSuccess = true
+                    }
+                    loginViewModel.resetLoginState()
+                }
+                is ActionState.Error -> {
+                    resetSuccess = false
+                    resetFailed = true
+                    Toast.makeText(LocalContext.current, value.message, Toast.LENGTH_LONG).show()
+                    loginViewModel.resetLoginState()
                 }
             }
         },

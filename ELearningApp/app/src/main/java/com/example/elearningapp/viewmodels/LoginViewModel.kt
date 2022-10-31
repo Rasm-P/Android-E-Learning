@@ -18,6 +18,9 @@ class LoginViewModel @Inject internal constructor(private val _loginRepository: 
     private val _loginState = mutableStateOf<ActionState<Boolean>>(ActionState.Initial)
     val loginState: State<ActionState<Boolean>> = _loginState
 
+    private val _resetState = mutableStateOf<ActionState<Boolean>>(ActionState.Initial)
+    val resetState: State<ActionState<Boolean>> = _resetState
+
     fun login(email: String, password: String) {
         viewModelScope.launch {
             _loginRepository.login(email, password).collect {
@@ -41,7 +44,7 @@ class LoginViewModel @Inject internal constructor(private val _loginRepository: 
     fun resetPassword(email: String) {
         viewModelScope.launch {
             _loginRepository.resetPassword(email).collect {
-                response -> _loginState.value = response
+                response -> _resetState.value = response
             }
         }
     }
@@ -56,6 +59,7 @@ class LoginViewModel @Inject internal constructor(private val _loginRepository: 
 
     fun resetLoginState() {
         _loginState.value = ActionState.Initial
+        _resetState.value = ActionState.Initial
     }
 
 }

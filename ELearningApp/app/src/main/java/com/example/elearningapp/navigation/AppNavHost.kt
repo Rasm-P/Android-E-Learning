@@ -47,7 +47,9 @@ fun AppNavHost(
             }
             composable(route = LoginDestination.Register.route) {
                 RegisterScreen(
-                    navigateLogin = {navController.navigateSingleTopTo(LoginDestination.Login.route)}
+                    navigateLogin = {navController.navigateSingleTopTo(LoginDestination.Login.route)},
+                    navigateProgramme = {navController.navigateSingleTopTo(LoginDestination.Programme.route)},
+                    loginViewModel
                 )
             }
             composable(route = LoginDestination.Programme.route) {

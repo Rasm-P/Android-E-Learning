@@ -1,5 +1,6 @@
 package com.example.elearningapp.ui.views.login
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -20,10 +22,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.elearningapp.R
+import com.example.elearningapp.common.ActionState
+import com.example.elearningapp.ui.views.components.Loading
+import com.example.elearningapp.viewmodels.LoginViewModel
 
 @Composable
-fun RegisterScreen(navigateLogin: () -> Unit) {
+fun RegisterScreen(navigateLogin: () -> Unit, navigateProgramme: () -> Unit, loginViewModel: LoginViewModel) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
+    var registerFailed by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
         Image(
@@ -35,24 +41,45 @@ fun RegisterScreen(navigateLogin: () -> Unit) {
         )
         Box(modifier = Modifier
             .weight(2f)) {
-            RegisterCard(navigateLogin)
+            RegisterCard(navigateLogin, registerFailed, loginViewModel)
+        }
+    }
+    when(val value = loginViewModel.loginState.value) {
+        is ActionState.Initial -> {}
+        is ActionState.Loading -> {
+            Loading()
+        }
+        is ActionState.Success -> {
+            if (value.data) {
+                navigateProgramme.invoke()
+            }
+            loginViewModel.resetLoginState()
+        }
+        is ActionState.Error -> {
+            registerFailed = true
+            Toast.makeText(LocalContext.current, value.message, Toast.LENGTH_LONG).show()
+            loginViewModel.resetLoginState()
         }
     }
 }
 
 @Composable
-fun RegisterCard(navigateLogin: () -> Unit) {
+fun RegisterCard(navigateLogin: () -> Unit, registerFailed: Boolean, loginViewModel: LoginViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var repeatPassword by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     var registerFailed by remember { mutableStateOf(false) }
 
-    Card(shape = RoundedCornerShape(20.dp, 20.dp),
-        elevation = 12.dp) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(30.dp)) {
+    Card(
+        shape = RoundedCornerShape(20.dp, 20.dp),
+        elevation = 12.dp
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(30.dp)
+        ) {
             Text(
                 text = "Sign Up",
                 fontSize = 24.sp,
@@ -64,7 +91,7 @@ fun RegisterCard(navigateLogin: () -> Unit) {
                     .fillMaxWidth(),
                     value = email,
                     label = { Text(text = "Email") },
-                    onValueChange = {email = it},
+                    onValueChange = { email = it },
                     singleLine = true,
                     trailingIcon = {
                         IconButton(onClick = {
@@ -77,11 +104,12 @@ fun RegisterCard(navigateLogin: () -> Unit) {
                     }
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                OutlinedTextField(modifier = Modifier
-                    .fillMaxWidth(),
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     value = password,
                     label = { Text(text = "Password") },
-                    onValueChange = {password = it},
+                    onValueChange = { password = it },
                     singleLine = true,
                     trailingIcon = {
                         IconButton(onClick = {
@@ -98,11 +126,12 @@ fun RegisterCard(navigateLogin: () -> Unit) {
                     else PasswordVisualTransformation()
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                OutlinedTextField(modifier = Modifier
-                    .fillMaxWidth(),
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     value = repeatPassword,
                     label = { Text(text = "Repeat Password") },
-                    onValueChange = {repeatPassword = it},
+                    onValueChange = { repeatPassword = it },
                     singleLine = true,
                     trailingIcon = {
                         IconButton(onClick = {
@@ -120,7 +149,7 @@ fun RegisterCard(navigateLogin: () -> Unit) {
                 )
                 if (registerFailed) {
                     Text(
-                        text = "Wrong email or password!",
+                        text = if (password != repeatPassword) "Passwords were not the same!" else "Email or password was not valid!",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Light,
                         color = MaterialTheme.colors.error,
@@ -134,7 +163,14 @@ fun RegisterCard(navigateLogin: () -> Unit) {
                 Button(modifier = Modifier
                     .fillMaxWidth()
                     .height(40.dp),
-                    onClick = { /*TODO*/ }) {
+                    onClick = {
+                        if (password == repeatPassword) {
+                            loginViewModel.register(email, password)
+                        } else {
+                            registerFailed = true;
+                        }
+                    }
+                ) {
                     Text(text = "SIGN UP")
                 }
                 Spacer(modifier = Modifier.weight(1f))
