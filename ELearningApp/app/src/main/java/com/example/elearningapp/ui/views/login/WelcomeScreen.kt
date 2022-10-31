@@ -20,75 +20,63 @@ import com.example.elearningapp.R
 fun WelcomeScreen(navigateLogin: () -> Unit, navigateRegister: () -> Unit) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
 
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column {
-            Box(modifier = Modifier
-                .weight(1.5f)
-                .fillMaxWidth(), contentAlignment = Alignment.Center) {
-                Image(
-                    modifier = Modifier.fillMaxHeight(0.6f),
-                    painter = image,
-                    contentDescription = "App Logo"
-                )
-            }
-            Box(modifier = Modifier
-                .weight(1.0f)
-                .fillMaxWidth(), contentAlignment = Alignment.BottomCenter) {
-                WelcomeCard(navigateLogin, navigateRegister)
-            }
+    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
+        Image(
+            modifier = Modifier
+                .weight(1f)
+                .size(192.dp),
+            painter = image,
+            contentDescription = "App Logo"
+        )
+        Box(modifier = Modifier
+            .weight(1f)) {
+            WelcomeCard(navigateLogin, navigateRegister)
         }
     }
 }
 
 @Composable
 fun WelcomeCard(navigateLogin: () -> Unit, navigateRegister: () -> Unit) {
-    Card(modifier = Modifier.fillMaxSize(),
-        shape = RoundedCornerShape(20.dp, 20.dp),
+    Card(shape = RoundedCornerShape(20.dp, 20.dp),
         elevation = 12.dp) {
-        Box(modifier = Modifier.padding(30.dp)) {
-            Column {
-                Box(modifier = Modifier
-                    .weight(1f),
-                    contentAlignment = Alignment.TopCenter) {
-                    Column {
-                        Text(
-                            text = "Welcome!",
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Text(
-                            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Light
-                        )
-                    }
-                }
-                Box(modifier = Modifier
-                    .weight(1.5f)
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(30.dp)) {
+            Text(
+                text = "Welcome!",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Medium
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Light
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Box(modifier = Modifier
+                .fillMaxWidth(),
+                contentAlignment = Alignment.Center) {
+                Column(modifier = Modifier
                     .fillMaxWidth(),
-                    contentAlignment = Alignment.BottomCenter) {
-                    Column(modifier = Modifier
-                        .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally) {
-                        Button(modifier = Modifier
-                            .fillMaxWidth().height(40.dp),
-                            onClick = navigateLogin) {
-                            Text(text = "LOGIN")
-                        }
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Text(text = "Don't have an account?",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Light
-                        )
-                        Spacer(modifier = Modifier.height(6.dp))
-                        Button(modifier = Modifier
-                            .fillMaxWidth().height(40.dp),
-                            onClick = navigateRegister,
-                            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary),
-                            border = BorderStroke(1.dp, color = MaterialTheme.colors.primary)) {
-                            Text(text = "SIGN UP", color = MaterialTheme.colors.primary)
-                        }
+                    horizontalAlignment = Alignment.CenterHorizontally) {
+                    Button(modifier = Modifier
+                        .fillMaxWidth().height(40.dp),
+                        onClick = navigateLogin) {
+                        Text(text = "LOGIN")
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(text = "Don't have an account?",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Light
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Button(modifier = Modifier
+                        .fillMaxWidth().height(40.dp),
+                        onClick = navigateRegister,
+                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary),
+                        border = BorderStroke(1.dp, color = MaterialTheme.colors.primary)) {
+                        Text(text = "SIGN UP", color = MaterialTheme.colors.primary)
                     }
                 }
             }

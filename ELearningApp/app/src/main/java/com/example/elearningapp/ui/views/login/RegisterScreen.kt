@@ -25,19 +25,19 @@ import com.example.elearningapp.R
 fun RegisterScreen(navigateLogin: () -> Unit) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
 
-        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
-            Image(
-                modifier = Modifier
-                    .weight(1f)
-                    .size(128.dp),
-                painter = image,
-                contentDescription = "App Logo"
-            )
-            Box(modifier = Modifier
-                .weight(2f)) {
-                RegisterCard(navigateLogin)
-            }
+    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
+        Image(
+            modifier = Modifier
+                .weight(1f)
+                .size(128.dp),
+            painter = image,
+            contentDescription = "App Logo"
+        )
+        Box(modifier = Modifier
+            .weight(2f)) {
+            RegisterCard(navigateLogin)
         }
+    }
 }
 
 @Composable

@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,39 +35,34 @@ fun LoginScreen(navigateRegister: () -> Unit, navigateOverview: () -> Unit, logi
     val image: Painter = painterResource(id = R.drawable.e_learning)
     var loginFailed by remember { mutableStateOf(false) }
 
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column {
-            Box(modifier = Modifier
-                .weight(0.6f)
-                .fillMaxWidth(), contentAlignment = Alignment.Center) {
-                Image(
-                    modifier = Modifier.fillMaxHeight(0.6f),
-                    painter = image,
-                    contentDescription = "App Logo"
-                )
-            }
-            Box(modifier = Modifier
+    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
+        Image(
+            modifier = Modifier
                 .weight(1f)
-                .fillMaxWidth(), contentAlignment = Alignment.BottomCenter) {
-                LoginCard(navigateRegister, {loginFailed = !loginFailed}, loginFailed, loginViewModel)
-            }
+                .size(128.dp),
+            painter = image,
+            contentDescription = "App Logo"
+        )
+        Box(modifier = Modifier
+            .weight(2f)) {
+            LoginCard(navigateRegister, {loginFailed = !loginFailed}, loginFailed, loginViewModel)
         }
-        when(val value = loginViewModel.loginState.value) {
-            is ActionState.Initial -> {}
-            is ActionState.Loading -> {
-                Loading()
-            }
-            is ActionState.Success -> {
-                if (value.data) {
-                    navigateOverview.invoke()
-                    loginViewModel.resetLoginState()
-                }
-            }
-            is ActionState.Error -> {
-                loginFailed = true;
-                Toast.makeText(LocalContext.current, value.message, Toast.LENGTH_LONG).show()
+    }
+    when(val value = loginViewModel.loginState.value) {
+        is ActionState.Initial -> {}
+        is ActionState.Loading -> {
+            Loading()
+        }
+        is ActionState.Success -> {
+            if (value.data) {
+                navigateOverview.invoke()
                 loginViewModel.resetLoginState()
             }
+        }
+        is ActionState.Error -> {
+            loginFailed = true
+            Toast.makeText(LocalContext.current, value.message, Toast.LENGTH_LONG).show()
+            loginViewModel.resetLoginState()
         }
     }
 }
@@ -82,89 +79,85 @@ fun LoginCard(
     var passwordVisible by remember { mutableStateOf(false) }
     var forgotPasswordDialog by remember { mutableStateOf(false) }
 
-    Card(modifier = Modifier.fillMaxSize(),
-        shape = RoundedCornerShape(20.dp, 20.dp),
+    Card(shape = RoundedCornerShape(20.dp, 20.dp),
         elevation = 12.dp) {
-        Box(modifier = Modifier.padding(30.dp)) {
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(30.dp)) {
+            Text(
+                text = "Login",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Medium
+            )
             Column {
-                Box(modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.TopCenter) {
-                    Column {
-                        Text(
-                            text = "Login",
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Text(
-                            text = "Email",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Light
-                        )
-                        OutlinedTextField(modifier = Modifier
-                            .fillMaxWidth(),
-                            value = email,
-                            onValueChange = {email = it},
-                            singleLine = true,
-                            trailingIcon = {
-                                if (loginFailed && !forgotPasswordDialog)
-                                    Icon(Icons.Filled.Error,"Login error", tint = MaterialTheme.colors.error)
+                Spacer(modifier = Modifier.height(12.dp))
+                OutlinedTextField(modifier = Modifier
+                    .fillMaxWidth(),
+                    value = email,
+                    label = { Text(text = "Email") },
+                    onValueChange = {email = it},
+                    singleLine = true,
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            email = ""
+                        }) {
+                            if (email != "") {
+                                Icon(Icons.Filled.Clear, "Clear email")
                             }
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Text(
-                            text = "Password",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Light
-                        )
-                        OutlinedTextField(modifier = Modifier
-                            .fillMaxWidth(),
-                            value = password,
-                            onValueChange = {password = it},
-                            singleLine = true,
-                            trailingIcon = {
-                                IconButton(onClick = {
-                                    passwordVisible = !passwordVisible
-                                }) {
-                                    Icon(Icons.Filled.Visibility, "Password visibility")
-                                }
-                            },
-                            visualTransformation = if (passwordVisible) VisualTransformation.None
-                            else PasswordVisualTransformation()
-                        )
-                        if (loginFailed && !forgotPasswordDialog) {
-                            Text(
-                                text = "Wrong email or password!",
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Light,
-                                color = MaterialTheme.colors.error,
-                                style = MaterialTheme.typography.caption,
-                                modifier = Modifier.align(Alignment.Start)
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                        } else {
-                            Spacer(modifier = Modifier.height(32.dp))
                         }
-                        Button(modifier = Modifier
-                            .fillMaxWidth()
-                            .height(40.dp),
-                            onClick = { loginViewModel.login(email, password) }) {
-                            Text(text = "LOGIN")
-                        }
-                        Spacer(modifier = Modifier.height(6.dp))
-                        Text(
-                            modifier = Modifier
-                                .align(Alignment.End)
-                                .clickable { /*TODO*/ },
-                            text = "Forgot Password?",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Light
-                        )
                     }
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                OutlinedTextField(modifier = Modifier
+                    .fillMaxWidth(),
+                    value = password,
+                    label = { Text(text = "Password") },
+                    onValueChange = {password = it},
+                    singleLine = true,
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            passwordVisible = !passwordVisible
+                        }) {
+                            if (passwordVisible) {
+                                Icon(Icons.Filled.Visibility, "Password visible")
+                            } else {
+                                Icon(Icons.Filled.VisibilityOff, "Password not visible")
+                            }
+                        }
+                    },
+                    visualTransformation = if (passwordVisible) VisualTransformation.None
+                    else PasswordVisualTransformation()
+                )
+                if (loginFailed && !forgotPasswordDialog) {
+                    Text(
+                        text = "Wrong email or password!",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Light,
+                        color = MaterialTheme.colors.error,
+                        style = MaterialTheme.typography.caption,
+                        modifier = Modifier.align(Alignment.Start)
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                } else {
+                    Spacer(modifier = Modifier.height(32.dp))
                 }
-                Box(modifier = Modifier
-                    .fillMaxWidth().fillMaxHeight(),
-                    contentAlignment = Alignment.BottomCenter) {
+                Button(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp),
+                    onClick = { loginViewModel.login(email, password) }) {
+                    Text(text = "LOGIN")
+                }
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .clickable { /*TODO*/ },
+                    text = "Forgot Password?",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Light
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Row {
                         Text(text = "Don't have an account?",
                             fontSize = 16.sp,
