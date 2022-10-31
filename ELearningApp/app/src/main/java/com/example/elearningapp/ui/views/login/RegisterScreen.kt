@@ -59,8 +59,7 @@ fun RegisterCard(navigateLogin: () -> Unit) {
         elevation = 12.dp) {
         Box(modifier = Modifier.padding(30.dp)) {
             Column {
-                Box(modifier = Modifier
-                    .weight(1f),
+                Box(modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.TopCenter) {
                     Column {
                         Text(
@@ -148,8 +147,7 @@ fun RegisterCard(navigateLogin: () -> Unit) {
                     }
                 }
                 Box(modifier = Modifier
-                    .weight(0.15f)
-                    .fillMaxWidth(),
+                    .fillMaxWidth().fillMaxHeight(),
                     contentAlignment = Alignment.BottomCenter) {
                     Row {
                         Text(text = "Already a user?",

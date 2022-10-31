@@ -28,7 +28,7 @@ class LoginRepository @Inject internal constructor(private val firebaseAuth: Fir
     override suspend fun register(email: String, password: String) = flow {
         try {
             emit(ActionState.Loading)
-            firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+            firebaseAuth.createUserWithEmailAndPassword(email.trim(), password.trim()).await()
             emit(ActionState.Success(true))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))

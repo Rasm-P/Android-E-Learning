@@ -50,7 +50,7 @@ fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel) {
             Scaffold(
                 bottomBar = { if (currentDestination is MenuNavDestination) BottomNavBar(screens = bottomNavScreens, onSelected = { screen -> navController.navigateSingleTopTo(screen.route)}, currentDestination = currentDestination) } )
             {
-               innerPadding -> AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding))
+               innerPadding -> AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding), loginViewModel, userViewModel)
             }
         }
     }

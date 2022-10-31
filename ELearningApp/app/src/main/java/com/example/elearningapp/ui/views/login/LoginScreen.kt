@@ -1,5 +1,6 @@
 package com.example.elearningapp.ui.views.login
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,21 +14,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.elearningapp.R
-import com.example.elearningapp.ui.theme.ELearningAppTheme
+import com.example.elearningapp.common.ActionState
+import com.example.elearningapp.ui.views.components.Loading
+import com.example.elearningapp.viewmodels.LoginViewModel
 
 @Composable
-fun LoginScreen(navigateRegister: () -> Unit) {
+fun LoginScreen(navigateRegister: () -> Unit, navigateOverview: () -> Unit, loginViewModel: LoginViewModel) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
+    var loginFailed by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column {
@@ -43,18 +47,39 @@ fun LoginScreen(navigateRegister: () -> Unit) {
             Box(modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth(), contentAlignment = Alignment.BottomCenter) {
-                LoginCard(navigateRegister)
+                LoginCard(navigateRegister, {loginFailed = !loginFailed}, loginFailed, loginViewModel)
+            }
+        }
+        when(val value = loginViewModel.loginState.value) {
+            is ActionState.Initial -> {}
+            is ActionState.Loading -> {
+                Loading()
+            }
+            is ActionState.Success -> {
+                if (value.data) {
+                    navigateOverview.invoke()
+                    loginViewModel.resetLoginState()
+                }
+            }
+            is ActionState.Error -> {
+                loginFailed = true;
+                Toast.makeText(LocalContext.current, value.message, Toast.LENGTH_LONG).show()
+                loginViewModel.resetLoginState()
             }
         }
     }
 }
 
 @Composable
-fun LoginCard(navigateRegister: () -> Unit) {
+fun LoginCard(
+    navigateRegister: () -> Unit,
+    resetLoginFailed: () -> Unit,
+    loginFailed: Boolean,
+    loginViewModel: LoginViewModel
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-    var loginFailed by remember { mutableStateOf(false) }
     var forgotPasswordDialog by remember { mutableStateOf(false) }
 
     Card(modifier = Modifier.fillMaxSize(),
@@ -62,8 +87,7 @@ fun LoginCard(navigateRegister: () -> Unit) {
         elevation = 12.dp) {
         Box(modifier = Modifier.padding(30.dp)) {
             Column {
-                Box(modifier = Modifier
-                    .weight(1f),
+                Box(modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.TopCenter) {
                     Column {
                         Text(
@@ -124,7 +148,7 @@ fun LoginCard(navigateRegister: () -> Unit) {
                         Button(modifier = Modifier
                             .fillMaxWidth()
                             .height(40.dp),
-                            onClick = { /*TODO*/ }) {
+                            onClick = { loginViewModel.login(email, password) }) {
                             Text(text = "LOGIN")
                         }
                         Spacer(modifier = Modifier.height(6.dp))
@@ -139,8 +163,7 @@ fun LoginCard(navigateRegister: () -> Unit) {
                     }
                 }
                 Box(modifier = Modifier
-                    .weight(0.15f)
-                    .fillMaxWidth(),
+                    .fillMaxWidth().fillMaxHeight(),
                     contentAlignment = Alignment.BottomCenter) {
                     Row {
                         Text(text = "Don't have an account?",
@@ -156,7 +179,7 @@ fun LoginCard(navigateRegister: () -> Unit) {
                     }
                 }
                 if (forgotPasswordDialog) {
-                    ForgotPasswordDialog { loginFailed = !loginFailed
+                    ForgotPasswordDialog { resetLoginFailed.invoke()
                         forgotPasswordDialog = !forgotPasswordDialog}
                 }
             }

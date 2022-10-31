@@ -15,13 +15,17 @@ import com.example.elearningapp.ui.views.login.RegisterScreen
 import com.example.elearningapp.ui.views.login.WelcomeScreen
 import com.example.elearningapp.ui.views.notes.NotesOverviewScreen
 import com.example.elearningapp.ui.views.overview.OverviewScreen
+import com.example.elearningapp.viewmodels.LoginViewModel
+import com.example.elearningapp.viewmodels.UserViewModel
 
 // Built with inspiration from: https://developer.android.com/codelabs/jetpack-compose-navigation#0
 
 @Composable
 fun AppNavHost(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    loginViewModel: LoginViewModel,
+    userViewModel: UserViewModel
 ) {
     NavHost(navController = navController, startDestination = AppNavigationFlow.LoginFlow.route, modifier = modifier) {
         navigation(route = AppNavigationFlow.LoginFlow.route, startDestination = LoginDestination.Welcome.route) {
@@ -33,7 +37,12 @@ fun AppNavHost(
             }
             composable(route = LoginDestination.Login.route) {
                 LoginScreen(
-                    navigateRegister = {navController.navigateSingleTopTo(LoginDestination.Register.route)}
+                    navigateRegister = {navController.navigateSingleTopTo(LoginDestination.Register.route)},
+                    navigateOverview = {navController.navigate(AppNavigationFlow.OverviewFlow.route) {
+                        launchSingleTop = true
+                        popUpTo(0)
+                    } },
+                    loginViewModel
                 )
             }
             composable(route = LoginDestination.Register.route) {
