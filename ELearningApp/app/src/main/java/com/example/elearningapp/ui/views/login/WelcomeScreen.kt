@@ -49,7 +49,7 @@ fun WelcomeCard(navigateLogin: () -> Unit, navigateRegister: () -> Unit) {
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed",
+                text = "E-Learning is the mobile learning platform that covers all your needs, be it entire courses, lecture videos or educational quizzes on relevant topics.",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Light
             )

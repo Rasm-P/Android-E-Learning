@@ -33,6 +33,11 @@ class LoginViewModel @Inject internal constructor(private val _loginRepository: 
         Firebase.auth.signOut()
     }
 
+    fun isLoggedIn() : Boolean {
+        val user = Firebase.auth.currentUser
+        return user != null
+    }
+
     fun register(email: String, password: String) {
         viewModelScope.launch {
             _loginRepository.register(email, password).collect {

@@ -27,7 +27,9 @@ fun AppNavHost(
     loginViewModel: LoginViewModel,
     userViewModel: UserViewModel
 ) {
-    NavHost(navController = navController, startDestination = AppNavigationFlow.LoginFlow.route, modifier = modifier) {
+    val startDestination = if (loginViewModel.isLoggedIn()) AppNavigationFlow.LoginFlow.route else AppNavigationFlow.OverviewFlow.route
+
+    NavHost(navController = navController, startDestination = startDestination, modifier = modifier) {
         navigation(route = AppNavigationFlow.LoginFlow.route, startDestination = LoginDestination.Welcome.route) {
             composable(route = LoginDestination.Welcome.route) {
                 WelcomeScreen(

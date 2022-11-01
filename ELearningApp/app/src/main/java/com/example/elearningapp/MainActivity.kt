@@ -20,6 +20,8 @@ import com.example.elearningapp.ui.views.components.BottomNavBar
 import com.example.elearningapp.viewmodels.LoginViewModel
 import com.example.elearningapp.viewmodels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.compose.material3.ExperimentalMaterial3Api
+import com.example.elearningapp.ui.views.components.TopBar
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -35,19 +37,23 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel) {
     ELearningAppTheme {
         val navController = rememberNavController()
         val navBackStackEntry  by navController.currentBackStackEntryAsState()
-        val currentDestination = bottomNavScreens.find { it.route == navBackStackEntry?.destination?.route }
+        val bottomNavDestination = bottomNavScreens.find { it.route == navBackStackEntry?.destination?.route }
+        val currentRoute = navBackStackEntry?.destination?.route ?: LoginDestination.Welcome.route
 
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
             Scaffold(
-                bottomBar = { if (currentDestination is MenuNavDestination) BottomNavBar(screens = bottomNavScreens, onSelected = { screen -> navController.navigateSingleTopTo(screen.route)}, currentDestination = currentDestination) } )
+                topBar = { if (currentRoute != LoginDestination.Welcome.route) TopBar(route = currentRoute, onBackPressed = {navController.popBackStack()}) { loginViewModel.logout() } },
+                bottomBar = { if (bottomNavDestination is MenuNavDestination) BottomNavBar(screens = bottomNavScreens, onSelected = { screen -> navController.navigateSingleTopTo(screen.route)}, currentDestination = bottomNavDestination) }
+            )
             {
                innerPadding -> AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding), loginViewModel, userViewModel)
             }
