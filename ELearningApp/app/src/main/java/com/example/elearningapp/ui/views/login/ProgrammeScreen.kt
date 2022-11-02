@@ -19,12 +19,12 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.elearningapp.R
-import com.example.elearningapp.navigation.AppNavigationFlow
-import com.example.elearningapp.ui.theme.ELearningAppTheme
+import com.example.elearningapp.common.ActionState
+import com.example.elearningapp.models.Programme
+import com.example.elearningapp.ui.views.components.Loading
 import com.example.elearningapp.viewmodels.ProgrammeViewModel
 import com.example.elearningapp.viewmodels.UserViewModel
 
@@ -35,6 +35,7 @@ fun ProgrammeScreen(
     programmeViewModel: ProgrammeViewModel
 ) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
+    programmeViewModel.fetchProgrammes()
 
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
         Image(
@@ -46,16 +47,19 @@ fun ProgrammeScreen(
         )
         Box(modifier = Modifier
             .weight(2f)) {
-            ProgrammeCard()
+            ProgrammeCard(navigateOverview, userViewModel, programmeViewModel)
         }
     }
 }
 
 @Composable
-fun ProgrammeCard() {
+fun ProgrammeCard(
+    navigateOverview: () -> Unit,
+    userViewModel: UserViewModel,
+    programmeViewModel: ProgrammeViewModel
+) {
     var studentName by remember { mutableStateOf("") }
-    val programmes = listOf("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N")
-    var selectedProgramme by remember { mutableStateOf("") }
+    var selectedProgramme by remember { mutableStateOf(Programme("", emptyList())) }
 
     Card(modifier = Modifier.fillMaxSize(),
         shape = RoundedCornerShape(20.dp, 20.dp),
@@ -99,33 +103,53 @@ fun ProgrammeCard() {
                     fontSize = 12.sp,
                     fontWeight = FontWeight.ExtraLight
                 )
-                LazyColumn(
-                    modifier = Modifier.
-                    graphicsLayer { alpha = 0.99F }
-                        .drawWithContent {
-                            val colors = listOf(Color.Transparent, Color.Black)
-                            drawContent()
-                            drawRect(
-                                brush = Brush.verticalGradient(colors),
-                                blendMode = BlendMode.DstOut
-                            )
-                        },
-                    contentPadding = PaddingValues( vertical = 12.dp)
-                    ) {
-                            items(programmes) { programme -> ItemCard(programme, selectedProgramme) {
+                when(val value = programmeViewModel.programmeState.value) {
+                    is ActionState.Initial -> {}
+                    is ActionState.Loading -> {
+                        Loading()
+                    }
+                    is ActionState.Success -> {
+                        LazyColumn(
+                            modifier = Modifier
+                                .graphicsLayer { alpha = 0.99F }
+                                .drawWithContent {
+                                    val colors = listOf(Color.Transparent, Color.Black)
+                                    drawContent()
+                                    drawRect(
+                                        brush = Brush.verticalGradient(colors),
+                                        blendMode = BlendMode.DstOut
+                                    )
+                                },
+                            contentPadding = PaddingValues( vertical = 12.dp)
+                        ) {
+                            items(value.data) { programme -> ItemCard(programme, selectedProgramme) {
                                 selectedProgramme = programme
+                            }
+                            }
+                        }
+                    }
+                    is ActionState.Error -> {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Column {
+                                Text(text = "Could not load programmes!", color = MaterialTheme.colors.error)
+                                Button(onClick = {programmeViewModel.fetchProgrammes()}) {
+                                    Text(text = "Try again!")
+                                }
                             }
                         }
                     }
                 }
+            }
 
             }
             Box(modifier = Modifier
-                .fillMaxWidth().padding(30.dp),
+                .fillMaxWidth()
+                .padding(30.dp),
                 contentAlignment = Alignment.BottomCenter) {
                 Button(modifier = Modifier
                     .fillMaxWidth()
                     .height(40.dp),
+                    enabled = selectedProgramme.name != "",
                     onClick = { /*TODO*/ }) {
                     Text(text = "FINISH")
                 }
@@ -134,7 +158,7 @@ fun ProgrammeCard() {
     }
 
 @Composable
-fun ItemCard(programme: String, selectedProgramme: String, onSelect: () -> Unit) {
+fun ItemCard(programme: Programme, selectedProgramme: Programme, onSelect: () -> Unit) {
     Row(modifier = Modifier
         .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -145,7 +169,7 @@ fun ItemCard(programme: String, selectedProgramme: String, onSelect: () -> Unit)
             colors = RadioButtonDefaults.colors(MaterialTheme.colors.primary, Color.Gray)
         )
         Text(
-            text = programme,
+            text = programme.name,
             fontSize = 16.sp,
             fontWeight = if (programme == selectedProgramme) FontWeight.Bold else FontWeight.Light ,
             modifier = Modifier.padding(start = 12.dp)
