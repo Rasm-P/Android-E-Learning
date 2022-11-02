@@ -51,7 +51,7 @@ fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel) {
             color = MaterialTheme.colors.background
         ) {
             Scaffold(
-                topBar = { if (currentRoute != LoginDestination.Welcome.route) TopBar(route = currentRoute, onBackPressed = {navController.popBackStack()}) { loginViewModel.logout() } },
+                topBar = { if (currentRoute != LoginDestination.Welcome.route) TopBar(route = currentRoute, onBackPressed = {navController.popBackStack()}, onLogoutPressed = { navController.navigate(AppNavigationFlow.LoginFlow.route); loginViewModel.logout(); } ) {navController.navigateSingleTopTo(AppNavigationFlow.OverviewFlow.route)} },
                 bottomBar = { if (bottomNavDestination is MenuNavDestination) BottomNavBar(screens = bottomNavScreens, onSelected = { screen -> navController.navigateSingleTopTo(screen.route)}, currentDestination = bottomNavDestination) }
             )
             {

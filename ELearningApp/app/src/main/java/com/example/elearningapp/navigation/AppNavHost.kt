@@ -27,7 +27,7 @@ fun AppNavHost(
     loginViewModel: LoginViewModel,
     userViewModel: UserViewModel
 ) {
-    val startDestination = if (loginViewModel.isLoggedIn()) AppNavigationFlow.LoginFlow.route else AppNavigationFlow.OverviewFlow.route
+    val startDestination = if (loginViewModel.isLoggedIn()) AppNavigationFlow.OverviewFlow.route else AppNavigationFlow.LoginFlow.route
 
     NavHost(navController = navController, startDestination = startDestination, modifier = modifier) {
         navigation(route = AppNavigationFlow.LoginFlow.route, startDestination = LoginDestination.Welcome.route) {
@@ -40,10 +40,7 @@ fun AppNavHost(
             composable(route = LoginDestination.Login.route) {
                 LoginScreen(
                     navigateRegister = {navController.navigateSingleTopTo(LoginDestination.Register.route)},
-                    navigateOverview = {navController.navigate(AppNavigationFlow.OverviewFlow.route) {
-                        launchSingleTop = true
-                        popUpTo(0)
-                    } },
+                    navigateOverview = {navController.navigate(AppNavigationFlow.OverviewFlow.route)  },
                     loginViewModel
                 )
             }
