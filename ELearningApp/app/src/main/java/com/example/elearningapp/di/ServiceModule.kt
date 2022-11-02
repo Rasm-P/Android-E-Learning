@@ -1,9 +1,7 @@
 package com.example.elearningapp.di
 
-import com.example.elearningapp.repositories.LoginRepository
-import com.example.elearningapp.repositories.LoginRepositoryInterface
-import com.example.elearningapp.repositories.UserRepository
-import com.example.elearningapp.repositories.UserRepositoryInterface
+import com.example.elearningapp.models.Programme
+import com.example.elearningapp.repositories.*
 import dagger.Module
 import dagger.Binds
 import dagger.hilt.InstallIn
@@ -22,5 +20,10 @@ abstract class AppServiceModule {
     abstract fun bindUserRepository(
         userRepository: UserRepository
     ): UserRepositoryInterface
+
+    @Binds
+    abstract fun bindProgrammeRepository(
+        programmeRepository: ProgrammeRepository
+    ): ProgrammeRepositoryInterface
 
 }

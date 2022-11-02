@@ -7,9 +7,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import javax.inject.Singleton
 
 
-//@Singleton
+@Singleton
 class LoginRepository @Inject internal constructor(private val firebaseAuth: FirebaseAuth) : LoginRepositoryInterface {
 
     private val errorMessage = "Something went wrong!"

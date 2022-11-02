@@ -3,7 +3,7 @@ package com.example.elearningapp.repositories
 import android.util.Log
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.models.CourseStatus
-import com.example.elearningapp.models.StudyProgramme
+import com.example.elearningapp.models.Programme
 import com.example.elearningapp.models.User
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -57,7 +57,7 @@ class UserRepository @Inject internal constructor(private val firebaseDB: Fireba
         }
     }
 
-    override suspend fun updateUserStudyProgramme(studyProgramme: StudyProgramme) = flow {
+    override suspend fun updateUserStudyProgramme(studyProgramme: Programme) = flow {
         try {
             emit(ActionState.Loading)
             val uid = Firebase.auth.uid!!

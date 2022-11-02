@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.models.CourseStatus
-import com.example.elearningapp.models.StudyProgramme
+import com.example.elearningapp.models.Programme
 import com.example.elearningapp.models.User
 import com.example.elearningapp.repositories.UserRepositoryInterface
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,9 +46,9 @@ class UserViewModel @Inject internal constructor(private val _userRepository: Us
         }
     }
 
-    fun updateUserStudyProgramme(studyProgramme: StudyProgramme) {
+    fun updateUserStudyProgramme(programme: Programme) {
         viewModelScope.launch {
-            _userRepository.updateUserStudyProgramme(studyProgramme).collect {
+            _userRepository.updateUserStudyProgramme(programme).collect {
                     response -> _updateState.value = response
             }
         }

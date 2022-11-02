@@ -20,26 +20,26 @@ import com.example.elearningapp.ui.views.components.BottomNavBar
 import com.example.elearningapp.viewmodels.LoginViewModel
 import com.example.elearningapp.viewmodels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import androidx.compose.material3.ExperimentalMaterial3Api
 import com.example.elearningapp.ui.views.components.TopBar
+import com.example.elearningapp.viewmodels.ProgrammeViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val loginViewModel: LoginViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
+    private val programmeViewModel: ProgrammeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ELearningApp(loginViewModel, userViewModel)
+            ELearningApp(loginViewModel, userViewModel, programmeViewModel)
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel) {
+fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel, programmeViewModel: ProgrammeViewModel) {
     ELearningAppTheme {
         val navController = rememberNavController()
         val navBackStackEntry  by navController.currentBackStackEntryAsState()
@@ -51,11 +51,11 @@ fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel) {
             color = MaterialTheme.colors.background
         ) {
             Scaffold(
-                topBar = { if (currentRoute != LoginDestination.Welcome.route) TopBar(route = currentRoute, onBackPressed = {navController.popBackStack()}, onLogoutPressed = { navController.navigate(AppNavigationFlow.LoginFlow.route); loginViewModel.logout(); } ) {navController.navigateSingleTopTo(AppNavigationFlow.OverviewFlow.route)} },
+                topBar = { if (currentRoute != LoginDestination.Welcome.route) TopBar(route = currentRoute, onBackPressed = {navController.popBackStack()}, onLogoutPressed = { loginViewModel.logout(); navController.navigate(navController.graph.startDestinationId); } ) {navController.navigateSingleTopTo(AppNavigationFlow.OverviewFlow.route)} },
                 bottomBar = { if (bottomNavDestination is MenuNavDestination) BottomNavBar(screens = bottomNavScreens, onSelected = { screen -> navController.navigateSingleTopTo(screen.route)}, currentDestination = bottomNavDestination) }
             )
             {
-               innerPadding -> AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding), loginViewModel, userViewModel)
+               innerPadding -> AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding), loginViewModel, userViewModel, programmeViewModel)
             }
         }
     }

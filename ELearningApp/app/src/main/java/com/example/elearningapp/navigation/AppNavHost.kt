@@ -16,6 +16,7 @@ import com.example.elearningapp.ui.views.login.WelcomeScreen
 import com.example.elearningapp.ui.views.notes.NotesOverviewScreen
 import com.example.elearningapp.ui.views.overview.OverviewScreen
 import com.example.elearningapp.viewmodels.LoginViewModel
+import com.example.elearningapp.viewmodels.ProgrammeViewModel
 import com.example.elearningapp.viewmodels.UserViewModel
 
 // Built with inspiration from: https://developer.android.com/codelabs/jetpack-compose-navigation#0
@@ -25,7 +26,8 @@ fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel,
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+    programmeViewModel: ProgrammeViewModel
 ) {
     val startDestination = if (loginViewModel.isLoggedIn()) AppNavigationFlow.OverviewFlow.route else AppNavigationFlow.LoginFlow.route
 
@@ -40,7 +42,7 @@ fun AppNavHost(
             composable(route = LoginDestination.Login.route) {
                 LoginScreen(
                     navigateRegister = {navController.navigateSingleTopTo(LoginDestination.Register.route)},
-                    navigateOverview = {navController.navigate(AppNavigationFlow.OverviewFlow.route)  },
+                    navigateOverview = {navController.navigate(navController.graph.startDestinationId)},
                     loginViewModel
                 )
             }
@@ -52,7 +54,10 @@ fun AppNavHost(
                 )
             }
             composable(route = LoginDestination.Programme.route) {
-                ProgrammeScreen()
+                ProgrammeScreen(navigateOverview = {navController.navigate(navController.graph.startDestinationId)},
+                    userViewModel,
+                    programmeViewModel
+                    )
             }
         }
         navigation(route = AppNavigationFlow.OverviewFlow.route, startDestination = MenuNavDestination.Overview.route) {

@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -24,10 +23,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.elearningapp.R
+import com.example.elearningapp.navigation.AppNavigationFlow
 import com.example.elearningapp.ui.theme.ELearningAppTheme
+import com.example.elearningapp.viewmodels.ProgrammeViewModel
+import com.example.elearningapp.viewmodels.UserViewModel
 
 @Composable
-fun ProgrammeScreen() {
+fun ProgrammeScreen(
+    navigateOverview: () -> Unit,
+    userViewModel: UserViewModel,
+    programmeViewModel: ProgrammeViewModel
+) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
 
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
@@ -147,6 +153,7 @@ fun ItemCard(programme: String, selectedProgramme: String, onSelect: () -> Unit)
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun ProgrammeScreenPreview() {
@@ -159,3 +166,4 @@ fun ProgrammeScreenPreview() {
         }
     }
 }
+*/
