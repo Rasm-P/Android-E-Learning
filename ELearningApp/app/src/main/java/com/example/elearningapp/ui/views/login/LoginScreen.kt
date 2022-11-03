@@ -287,11 +287,6 @@ fun ForgotPasswordDialog(onDismiss: () -> Unit, resetLoginActionState: () -> Uni
 @Composable
 fun LoginScreenPreview() {
     ELearningAppTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background
-        ) {
-            LoginScreen({},{},ActionState.Initial,{},{ _, _ ->},{},ActionState.Initial)
-        }
+        LoginScreen({},{},ActionState.Initial,{},{ _, _ ->},{},ActionState.Initial)
     }
 }

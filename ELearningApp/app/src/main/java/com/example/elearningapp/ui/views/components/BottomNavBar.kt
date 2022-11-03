@@ -21,8 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.elearningapp.navigation.MenuNavDestination
+import com.example.elearningapp.navigation.bottomNavScreens
+import com.example.elearningapp.ui.theme.ELearningAppTheme
 
 // Built with inspiration from: https://developer.android.com/codelabs/jetpack-compose-navigation#0
 
@@ -39,17 +42,17 @@ fun BottomNavBar(screens: List<MenuNavDestination>, onSelected: (MenuNavDestinat
         border = BorderStroke(width = 1.dp, color = MaterialTheme.colors.onSurface.copy(alpha = colorOpacity)),
         shape = RoundedCornerShape(5.dp,5.dp)
     ) {
-            Row(Modifier.selectableGroup(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                screens.forEach { screen ->
-                    NavBarTab(
-                        text = screen.label,
-                        icon = screen.icon,
-                        onSelected = {onSelected(screen)},
-                        selected = currentDestination == screen
-                    )
-                }
+        Row(Modifier.selectableGroup(), horizontalArrangement = Arrangement.SpaceEvenly) {
+            screens.forEach { screen ->
+                NavBarTab(
+                    text = screen.label,
+                    icon = screen.icon,
+                    onSelected = {onSelected(screen)},
+                    selected = currentDestination == screen
+                )
             }
         }
+    }
 }
 
 @Composable
@@ -83,5 +86,14 @@ private fun NavBarTab(text: String, icon: ImageVector, onSelected: () -> Unit, s
             Spacer(Modifier.height(6.dp))
         }
         Text(text, color = tabColor)
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun BottomNavBarPreview() {
+    ELearningAppTheme {
+        BottomNavBar(bottomNavScreens,{},MenuNavDestination.Overview)
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.elearningapp.ui.theme.ELearningAppTheme
 
 @Composable
 fun Loading() {
@@ -18,8 +19,10 @@ fun Loading() {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LoadingPreview() {
-    Loading()
+    ELearningAppTheme {
+        Loading()
+    }
 }

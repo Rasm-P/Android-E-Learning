@@ -29,6 +29,7 @@ fun AppNavHost(
     userViewModel: UserViewModel,
     programmeViewModel: ProgrammeViewModel
 ) {
+    val isFirstTimeUser = true; /*TODO*/
     val startDestination = if (loginViewModel.isLoggedIn()) AppNavigationFlow.OverviewFlow.route else AppNavigationFlow.LoginFlow.route
 
     NavHost(navController = navController, startDestination = startDestination, modifier = modifier) {
@@ -54,14 +55,16 @@ fun AppNavHost(
                 RegisterScreen(
                     navigateLogin = {navController.navigateSingleTopTo(LoginDestination.Login.route)},
                     navigateProgramme = {navController.navigate(LoginDestination.Programme.route)},
-                    loginViewModel
+                    loginState = loginViewModel.loginState.value,
+                    resetLoginActionState = {loginViewModel.resetLoginActionState()},
+                    onRegister = {email, password -> loginViewModel.register(email, password)}
                 )
             }
             composable(route = LoginDestination.Programme.route) {
                 ProgrammeScreen(navigateOverview = {navController.navigate(navController.graph.startDestinationId)},
-                    userViewModel,
-                    programmeViewModel
-                    )
+                    fetchProgrammes = {programmeViewModel.fetchProgrammes()},
+                    programmeState = programmeViewModel.programmeState.value
+                )
             }
         }
         navigation(route = AppNavigationFlow.OverviewFlow.route, startDestination = MenuNavDestination.Overview.route) {

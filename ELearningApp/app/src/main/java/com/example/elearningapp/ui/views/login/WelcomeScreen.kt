@@ -12,9 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.elearningapp.R
+import com.example.elearningapp.ui.theme.ELearningAppTheme
 
 @Composable
 fun WelcomeScreen(navigateLogin: () -> Unit, navigateRegister: () -> Unit) {
@@ -84,17 +86,11 @@ fun WelcomeCard(navigateLogin: () -> Unit, navigateRegister: () -> Unit) {
     }
 }
 
-/*
+
 @Preview(showBackground = true)
 @Composable
 fun WelcomeScreenPreview() {
     ELearningAppTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background
-        ) {
-            WelcomeScreen()
-        }
+        WelcomeScreen({},{})
     }
 }
-*/

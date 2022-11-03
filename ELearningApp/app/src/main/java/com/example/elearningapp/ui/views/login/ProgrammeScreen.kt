@@ -19,23 +19,23 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.elearningapp.R
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.models.Programme
+import com.example.elearningapp.ui.theme.ELearningAppTheme
 import com.example.elearningapp.ui.views.components.Loading
-import com.example.elearningapp.viewmodels.ProgrammeViewModel
-import com.example.elearningapp.viewmodels.UserViewModel
 
 @Composable
 fun ProgrammeScreen(
     navigateOverview: () -> Unit,
-    userViewModel: UserViewModel,
-    programmeViewModel: ProgrammeViewModel
+    fetchProgrammes: () -> Unit,
+    programmeState: ActionState<List<Programme>>
 ) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
-    programmeViewModel.fetchProgrammes()
+    fetchProgrammes.invoke()
 
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
         Image(
@@ -47,7 +47,7 @@ fun ProgrammeScreen(
         )
         Box(modifier = Modifier
             .weight(2f)) {
-            ProgrammeCard(navigateOverview, userViewModel, programmeViewModel)
+            ProgrammeCard(navigateOverview, fetchProgrammes, programmeState)
         }
     }
 }
@@ -55,8 +55,8 @@ fun ProgrammeScreen(
 @Composable
 fun ProgrammeCard(
     navigateOverview: () -> Unit,
-    userViewModel: UserViewModel,
-    programmeViewModel: ProgrammeViewModel
+    fetchProgrammes: () -> Unit,
+    programmeState: ActionState<List<Programme>>
 ) {
     var studentName by remember { mutableStateOf("") }
     var selectedProgramme by remember { mutableStateOf(Programme("", emptyList())) }
@@ -103,7 +103,7 @@ fun ProgrammeCard(
                     fontSize = 12.sp,
                     fontWeight = FontWeight.ExtraLight
                 )
-                when(val value = programmeViewModel.programmeState.value) {
+                when(programmeState) {
                     is ActionState.Initial -> {}
                     is ActionState.Loading -> {
                         Loading()
@@ -122,7 +122,7 @@ fun ProgrammeCard(
                                 },
                             contentPadding = PaddingValues( vertical = 12.dp)
                         ) {
-                            items(value.data) { programme -> ItemCard(programme, selectedProgramme) {
+                            items(programmeState.data) { programme -> ItemCard(programme, selectedProgramme) {
                                 selectedProgramme = programme
                             }
                             }
@@ -132,7 +132,7 @@ fun ProgrammeCard(
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                             Column {
                                 Text(text = "Could not load programmes!", color = MaterialTheme.colors.error)
-                                Button(onClick = {programmeViewModel.fetchProgrammes()}) {
+                                Button(onClick = fetchProgrammes) {
                                     Text(text = "Try again!")
                                 }
                             }
@@ -177,17 +177,11 @@ fun ItemCard(programme: Programme, selectedProgramme: Programme, onSelect: () ->
     }
 }
 
-/*
+
 @Preview(showBackground = true)
 @Composable
 fun ProgrammeScreenPreview() {
     ELearningAppTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background
-        ) {
-            ProgrammeScreen()
-        }
+        ProgrammeScreen({},{},ActionState.Initial)
     }
 }
-*/

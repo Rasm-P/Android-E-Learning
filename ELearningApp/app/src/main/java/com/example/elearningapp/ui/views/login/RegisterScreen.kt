@@ -19,15 +19,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.elearningapp.R
 import com.example.elearningapp.common.ActionState
+import com.example.elearningapp.ui.theme.ELearningAppTheme
 import com.example.elearningapp.ui.views.components.Loading
-import com.example.elearningapp.viewmodels.LoginViewModel
 
 @Composable
-fun RegisterScreen(navigateLogin: () -> Unit, navigateProgramme: () -> Unit, loginViewModel: LoginViewModel) {
+fun RegisterScreen(
+    navigateLogin: () -> Unit,
+    navigateProgramme: () -> Unit,
+    loginState: ActionState<Boolean>,
+    resetLoginActionState: () -> Unit,
+    onRegister: (String, String) -> Unit
+) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
     var registerFailed by remember { mutableStateOf(false) }
 
@@ -41,24 +48,24 @@ fun RegisterScreen(navigateLogin: () -> Unit, navigateProgramme: () -> Unit, log
         )
         Box(modifier = Modifier
             .weight(2f)) {
-            RegisterCard(navigateLogin, registerFailed, {registerFailed = false}, loginViewModel)
+            RegisterCard(navigateLogin, registerFailed, {registerFailed = false}, onRegister)
         }
     }
-    when(val value = loginViewModel.loginState.value) {
+    when(loginState) {
         is ActionState.Initial -> {}
         is ActionState.Loading -> {
             Loading()
         }
         is ActionState.Success -> {
-            if (value.data) {
+            if (loginState.data) {
                 navigateProgramme.invoke()
             }
-            loginViewModel.resetLoginActionState()
+            resetLoginActionState.invoke()
         }
         is ActionState.Error -> {
             registerFailed = true
-            Toast.makeText(LocalContext.current, value.message, Toast.LENGTH_LONG).show()
-            loginViewModel.resetLoginActionState()
+            Toast.makeText(LocalContext.current, loginState.message, Toast.LENGTH_LONG).show()
+            resetLoginActionState.invoke()
         }
     }
 }
@@ -68,7 +75,7 @@ fun RegisterCard(
     navigateLogin: () -> Unit,
     registerFailed: Boolean,
     setRegisterFailed: () -> Unit,
-    loginViewModel: LoginViewModel
+    onRegister: (String, String) -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -169,7 +176,7 @@ fun RegisterCard(
                     .height(40.dp),
                     onClick = {
                         if (password == repeatPassword) {
-                            loginViewModel.register(email, password)
+                            onRegister(email, password)
                         } else {
                             setRegisterFailed.invoke()
                         }
@@ -201,17 +208,11 @@ fun RegisterCard(
     }
 }
 
-/*
+
 @Preview(showBackground = true)
 @Composable
 fun RegisterScreenPreview() {
     ELearningAppTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background
-        ) {
-            RegisterScreen()
-        }
+        RegisterScreen({},{},ActionState.Initial,{},{ _, _ ->})
     }
 }
-*/
