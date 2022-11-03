@@ -62,7 +62,7 @@ class UserViewModel @Inject internal constructor(private val _userRepository: Us
         }
     }
 
-    fun resetUserState() {
+    fun resetUserActionState() {
         _userState.value = ActionState.Initial
         _updateState.value = ActionState.Initial
     }

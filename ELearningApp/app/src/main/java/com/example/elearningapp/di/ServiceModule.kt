@@ -26,4 +26,9 @@ abstract class AppServiceModule {
         programmeRepository: ProgrammeRepository
     ): ProgrammeRepositoryInterface
 
+    @Binds
+    abstract fun bindCourseRepository(
+        courseRepository: CourseRepository
+    ): CourseRepositoryInterface
+
 }

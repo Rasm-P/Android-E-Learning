@@ -21,6 +21,7 @@ import com.example.elearningapp.viewmodels.LoginViewModel
 import com.example.elearningapp.viewmodels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.elearningapp.ui.views.components.TopBar
+import com.example.elearningapp.viewmodels.CourseViewModel
 import com.example.elearningapp.viewmodels.ProgrammeViewModel
 
 @AndroidEntryPoint
@@ -29,17 +30,18 @@ class MainActivity : ComponentActivity() {
     private val loginViewModel: LoginViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val programmeViewModel: ProgrammeViewModel by viewModels()
+    private val courseViewModel: CourseViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ELearningApp(loginViewModel, userViewModel, programmeViewModel)
+            ELearningApp(loginViewModel, userViewModel, programmeViewModel, courseViewModel)
         }
     }
 }
 
 @Composable
-fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel, programmeViewModel: ProgrammeViewModel) {
+fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel, programmeViewModel: ProgrammeViewModel, courseViewModel: CourseViewModel) {
     ELearningAppTheme {
         val navController = rememberNavController()
         val navBackStackEntry  by navController.currentBackStackEntryAsState()
@@ -55,7 +57,7 @@ fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel, p
                 bottomBar = { if (bottomNavDestination is MenuNavDestination) BottomNavBar(screens = bottomNavScreens, onSelected = { screen -> navController.navigateSingleTopTo(screen.route)}, currentDestination = bottomNavDestination) }
             )
             {
-               innerPadding -> AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding), loginViewModel, userViewModel, programmeViewModel)
+               innerPadding -> AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding), loginViewModel, userViewModel, programmeViewModel, courseViewModel)
             }
         }
     }

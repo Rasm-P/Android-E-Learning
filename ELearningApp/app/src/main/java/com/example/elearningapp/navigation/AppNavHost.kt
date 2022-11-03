@@ -16,6 +16,7 @@ import com.example.elearningapp.ui.views.login.RegisterScreen
 import com.example.elearningapp.ui.views.login.WelcomeScreen
 import com.example.elearningapp.ui.views.notes.NotesOverviewScreen
 import com.example.elearningapp.ui.views.overview.OverviewScreen
+import com.example.elearningapp.viewmodels.CourseViewModel
 import com.example.elearningapp.viewmodels.LoginViewModel
 import com.example.elearningapp.viewmodels.ProgrammeViewModel
 import com.example.elearningapp.viewmodels.UserViewModel
@@ -28,7 +29,8 @@ fun AppNavHost(
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel,
     userViewModel: UserViewModel,
-    programmeViewModel: ProgrammeViewModel
+    programmeViewModel: ProgrammeViewModel,
+    courseViewModel: CourseViewModel
 ) {
     var isFirstTimeUser by remember { mutableStateOf(false) }
     val startDestination = if (loginViewModel.isLoggedIn() && !isFirstTimeUser) AppNavigationFlow.OverviewFlow.route else AppNavigationFlow.LoginFlow.route
@@ -69,13 +71,13 @@ fun AppNavHost(
                     setFirstTimeUser = {isFirstTimeUser = false},
                     addUserData = {studentName, programme -> userViewModel.addUser(User(studentName, programme, emptyList()))},
                     userState = userViewModel.userState.value,
-                    resetActionState = {userViewModel.resetUserState()}
+                    resetActionState = {userViewModel.resetUserActionState()}
                 )
             }
         }
         navigation(route = AppNavigationFlow.OverviewFlow.route, startDestination = MenuNavDestination.Overview.route) {
             composable(route = MenuNavDestination.Overview.route) {
-                OverviewScreen()
+                OverviewScreen(courseState = courseViewModel.courseState.value)
             }
             composable(route = MenuNavDestination.CourseOverview.route) {
                 CourseOverviewScreen()

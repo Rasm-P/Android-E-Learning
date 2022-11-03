@@ -2,6 +2,6 @@ package com.example.elearningapp.models
 
 data class CourseStatus (
     val courseName: String,
-    val courseStatus: Int,
+    val courseStatusPercent: Int,
     val completed: Boolean
 )
