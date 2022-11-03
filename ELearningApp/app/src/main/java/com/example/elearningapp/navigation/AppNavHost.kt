@@ -1,6 +1,6 @@
 package com.example.elearningapp.navigation
 
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -29,8 +29,8 @@ fun AppNavHost(
     userViewModel: UserViewModel,
     programmeViewModel: ProgrammeViewModel
 ) {
-    val isFirstTimeUser = true; /*TODO*/
-    val startDestination = if (loginViewModel.isLoggedIn()) AppNavigationFlow.OverviewFlow.route else AppNavigationFlow.LoginFlow.route
+    var isFirstTimeUser by remember { mutableStateOf(false) }
+    val startDestination = if (loginViewModel.isLoggedIn() && !isFirstTimeUser) AppNavigationFlow.OverviewFlow.route else AppNavigationFlow.LoginFlow.route
 
     NavHost(navController = navController, startDestination = startDestination, modifier = modifier) {
         navigation(route = AppNavigationFlow.LoginFlow.route, startDestination = LoginDestination.Welcome.route) {
@@ -54,16 +54,18 @@ fun AppNavHost(
             composable(route = LoginDestination.Register.route) {
                 RegisterScreen(
                     navigateLogin = {navController.navigateSingleTopTo(LoginDestination.Login.route)},
-                    navigateProgramme = {navController.navigate(LoginDestination.Programme.route)},
+                    navigateProgramme = {navController.navigate(LoginDestination.Programme.route) {popUpTo(0); launchSingleTop = true} },
                     loginState = loginViewModel.loginState.value,
                     resetLoginActionState = {loginViewModel.resetLoginActionState()},
-                    onRegister = {email, password -> loginViewModel.register(email, password)}
+                    onRegister = {email, password -> loginViewModel.register(email, password)},
+                    setFirstTimeUser = {isFirstTimeUser = true}
                 )
             }
             composable(route = LoginDestination.Programme.route) {
                 ProgrammeScreen(navigateOverview = {navController.navigate(navController.graph.startDestinationId)},
                     fetchProgrammes = {programmeViewModel.fetchProgrammes()},
-                    programmeState = programmeViewModel.programmeState.value
+                    programmeState = programmeViewModel.programmeState.value,
+                    setFirstTimeUser = {isFirstTimeUser = false}
                 )
             }
         }

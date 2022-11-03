@@ -32,10 +32,14 @@ import com.example.elearningapp.ui.views.components.Loading
 fun ProgrammeScreen(
     navigateOverview: () -> Unit,
     fetchProgrammes: () -> Unit,
-    programmeState: ActionState<List<Programme>>
+    programmeState: ActionState<List<Programme>>,
+    setFirstTimeUser: () -> Unit
 ) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
-    fetchProgrammes.invoke()
+
+    LaunchedEffect(Unit, block = {
+        fetchProgrammes.invoke()
+    })
 
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
         Image(
@@ -47,7 +51,7 @@ fun ProgrammeScreen(
         )
         Box(modifier = Modifier
             .weight(2f)) {
-            ProgrammeCard(navigateOverview, fetchProgrammes, programmeState)
+            ProgrammeCard(navigateOverview, fetchProgrammes, programmeState, setFirstTimeUser)
         }
     }
 }
@@ -56,7 +60,8 @@ fun ProgrammeScreen(
 fun ProgrammeCard(
     navigateOverview: () -> Unit,
     fetchProgrammes: () -> Unit,
-    programmeState: ActionState<List<Programme>>
+    programmeState: ActionState<List<Programme>>,
+    setFirstTimeUser: () -> Unit
 ) {
     var studentName by remember { mutableStateOf("") }
     var selectedProgramme by remember { mutableStateOf(Programme("", emptyList())) }
@@ -149,8 +154,8 @@ fun ProgrammeCard(
                 Button(modifier = Modifier
                     .fillMaxWidth()
                     .height(40.dp),
-                    enabled = selectedProgramme.name != "",
-                    onClick = { /*TODO*/ }) {
+                    enabled = selectedProgramme.name != "" && studentName != "",
+                    onClick = { setFirstTimeUser.invoke() }) {
                     Text(text = "FINISH")
                 }
             }
@@ -182,6 +187,6 @@ fun ItemCard(programme: Programme, selectedProgramme: Programme, onSelect: () ->
 @Composable
 fun ProgrammeScreenPreview() {
     ELearningAppTheme {
-        ProgrammeScreen({},{},ActionState.Initial)
+        ProgrammeScreen({},{},ActionState.Initial,{})
     }
 }
