@@ -1,6 +1,5 @@
 package com.example.elearningapp.ui.views.components
 
-import androidx.compose.foundation.background
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -8,9 +7,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
-import com.example.elearningapp.navigation.LoginDestination
 import com.example.elearningapp.navigation.bottomNavScreens
 import com.example.elearningapp.navigation.loginNavScreens
 
@@ -26,7 +23,7 @@ fun TopBar(
     val isRouteInOverviewFLow = bottomNavScreens.any { screen -> screen.route == route }
 
     CenterAlignedTopAppBar(
-        colors = if (!isRouteInLoginFLow) TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colors.primary, titleContentColor = MaterialTheme.colors.secondary) else TopAppBarDefaults.centerAlignedTopAppBarColors(),
+        colors = if (!isRouteInLoginFLow) TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colors.primary, titleContentColor = MaterialTheme.colors.secondary) else TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colors.background),
         title = {
             if (!isRouteInLoginFLow) {
                 Text(

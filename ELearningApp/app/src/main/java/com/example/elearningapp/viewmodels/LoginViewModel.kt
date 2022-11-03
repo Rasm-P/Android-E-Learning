@@ -62,7 +62,7 @@ class LoginViewModel @Inject internal constructor(private val _loginRepository: 
         }
     }
 
-    fun resetLoginState() {
+    fun resetLoginActionState() {
         _loginState.value = ActionState.Initial
         _resetState.value = ActionState.Initial
     }

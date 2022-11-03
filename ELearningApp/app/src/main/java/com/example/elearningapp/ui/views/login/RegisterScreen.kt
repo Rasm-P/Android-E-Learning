@@ -41,7 +41,7 @@ fun RegisterScreen(navigateLogin: () -> Unit, navigateProgramme: () -> Unit, log
         )
         Box(modifier = Modifier
             .weight(2f)) {
-            RegisterCard(navigateLogin, registerFailed, loginViewModel)
+            RegisterCard(navigateLogin, registerFailed, {registerFailed = false}, loginViewModel)
         }
     }
     when(val value = loginViewModel.loginState.value) {
@@ -53,23 +53,27 @@ fun RegisterScreen(navigateLogin: () -> Unit, navigateProgramme: () -> Unit, log
             if (value.data) {
                 navigateProgramme.invoke()
             }
-            loginViewModel.resetLoginState()
+            loginViewModel.resetLoginActionState()
         }
         is ActionState.Error -> {
             registerFailed = true
             Toast.makeText(LocalContext.current, value.message, Toast.LENGTH_LONG).show()
-            loginViewModel.resetLoginState()
+            loginViewModel.resetLoginActionState()
         }
     }
 }
 
 @Composable
-fun RegisterCard(navigateLogin: () -> Unit, registerFailed: Boolean, loginViewModel: LoginViewModel) {
+fun RegisterCard(
+    navigateLogin: () -> Unit,
+    registerFailed: Boolean,
+    setRegisterFailed: () -> Unit,
+    loginViewModel: LoginViewModel
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var repeatPassword by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-    var registerFailed by remember { mutableStateOf(false) }
 
     Card(
         shape = RoundedCornerShape(20.dp, 20.dp),
@@ -167,7 +171,7 @@ fun RegisterCard(navigateLogin: () -> Unit, registerFailed: Boolean, loginViewMo
                         if (password == repeatPassword) {
                             loginViewModel.register(email, password)
                         } else {
-                            registerFailed = true;
+                            setRegisterFailed.invoke()
                         }
                     }
                 ) {

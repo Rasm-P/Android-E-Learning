@@ -43,7 +43,11 @@ fun AppNavHost(
                 LoginScreen(
                     navigateRegister = {navController.navigateSingleTopTo(LoginDestination.Register.route)},
                     navigateOverview = {navController.navigate(navController.graph.startDestinationId)},
-                    loginViewModel
+                    loginState = loginViewModel.loginState.value,
+                    resetLoginActionState = {loginViewModel.resetLoginActionState()},
+                    onLogin = {email, password -> loginViewModel.login(email, password)},
+                    onPasswordReset = {email -> loginViewModel.resetPassword(email)},
+                    restPasswordState = loginViewModel.resetState.value
                 )
             }
             composable(route = LoginDestination.Register.route) {

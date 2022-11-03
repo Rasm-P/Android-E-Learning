@@ -23,15 +23,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.elearningapp.R
 import com.example.elearningapp.common.ActionState
+import com.example.elearningapp.ui.theme.ELearningAppTheme
 import com.example.elearningapp.ui.views.components.Loading
-import com.example.elearningapp.viewmodels.LoginViewModel
 
 @Composable
-fun LoginScreen(navigateRegister: () -> Unit, navigateOverview: () -> Unit, loginViewModel: LoginViewModel) {
+fun LoginScreen(
+    navigateRegister: () -> Unit,
+    navigateOverview: () -> Unit,
+    loginState: ActionState<Boolean>,
+    resetLoginActionState: () -> Unit,
+    onLogin: (String, String) -> Unit,
+    onPasswordReset: (String) -> Unit,
+    restPasswordState: ActionState<Boolean>
+) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
     var loginFailed by remember { mutableStateOf(false) }
 
@@ -45,24 +54,24 @@ fun LoginScreen(navigateRegister: () -> Unit, navigateOverview: () -> Unit, logi
         )
         Box(modifier = Modifier
             .weight(2f)) {
-            LoginCard(navigateRegister, loginFailed, loginViewModel)
+            LoginCard(navigateRegister, loginFailed, resetLoginActionState, onLogin, onPasswordReset, restPasswordState)
         }
     }
-    when(val value = loginViewModel.loginState.value) {
+    when(loginState) {
         is ActionState.Initial -> {}
         is ActionState.Loading -> {
             Loading()
         }
         is ActionState.Success -> {
-            if (value.data) {
+            if (loginState.data) {
                 navigateOverview.invoke()
             }
-            loginViewModel.resetLoginState()
+            resetLoginActionState.invoke()
         }
         is ActionState.Error -> {
             loginFailed = true
-            Toast.makeText(LocalContext.current, value.message, Toast.LENGTH_LONG).show()
-            loginViewModel.resetLoginState()
+            Toast.makeText(LocalContext.current, loginState.message, Toast.LENGTH_LONG).show()
+            resetLoginActionState.invoke()
         }
     }
 }
@@ -71,7 +80,10 @@ fun LoginScreen(navigateRegister: () -> Unit, navigateOverview: () -> Unit, logi
 fun LoginCard(
     navigateRegister: () -> Unit,
     loginFailed: Boolean,
-    loginViewModel: LoginViewModel
+    resetLoginActionState: () -> Unit,
+    onLogin: (String, String) -> Unit,
+    onPasswordReset: (String) -> Unit,
+    restPasswordState: ActionState<Boolean>
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -143,7 +155,7 @@ fun LoginCard(
                 Button(modifier = Modifier
                     .fillMaxWidth()
                     .height(40.dp),
-                    onClick = { loginViewModel.login(email, password) }) {
+                    onClick = { onLogin(email, password) }) {
                     Text(text = "LOGIN")
                 }
                 Spacer(modifier = Modifier.height(6.dp))
@@ -171,7 +183,7 @@ fun LoginCard(
                     }
                 }
                 if (showForgotPasswordDialog) {
-                    ForgotPasswordDialog({ showForgotPasswordDialog = !showForgotPasswordDialog }, loginViewModel)
+                    ForgotPasswordDialog({ showForgotPasswordDialog = !showForgotPasswordDialog }, resetLoginActionState, onPasswordReset, restPasswordState)
                 }
             }
         }
@@ -179,7 +191,7 @@ fun LoginCard(
 }
 
 @Composable
-fun ForgotPasswordDialog(onDismiss: () -> Unit, loginViewModel: LoginViewModel) {
+fun ForgotPasswordDialog(onDismiss: () -> Unit, resetLoginActionState: () -> Unit, onPasswordReset: (String) -> Unit, restPasswordState: ActionState<Boolean>) {
     var email by remember { mutableStateOf("") }
     var resetFailed by remember { mutableStateOf(false) }
     var resetSuccess by remember { mutableStateOf(false) }
@@ -233,28 +245,28 @@ fun ForgotPasswordDialog(onDismiss: () -> Unit, loginViewModel: LoginViewModel) 
                 Button(modifier = Modifier
                     .fillMaxWidth()
                     .height(40.dp),
-                    onClick = { loginViewModel.resetPassword(email) }) {
+                    onClick = { onPasswordReset(email) }) {
                     Text(text = "SEND")
                 }
             }
-            when(val value = loginViewModel.resetState.value) {
+            when(restPasswordState) {
                 is ActionState.Initial -> {}
                 is ActionState.Loading -> {
                     Loading()
                 }
                 is ActionState.Success -> {
-                    if (value.data) {
+                    if (restPasswordState.data) {
                         email = ""
                         resetFailed = false
                         resetSuccess = true
                     }
-                    loginViewModel.resetLoginState()
+                    resetLoginActionState.invoke()
                 }
                 is ActionState.Error -> {
                     resetSuccess = false
                     resetFailed = true
-                    Toast.makeText(LocalContext.current, value.message, Toast.LENGTH_LONG).show()
-                    loginViewModel.resetLoginState()
+                    Toast.makeText(LocalContext.current, restPasswordState.message, Toast.LENGTH_LONG).show()
+                    resetLoginActionState.invoke()
                 }
             }
         },
@@ -270,7 +282,7 @@ fun ForgotPasswordDialog(onDismiss: () -> Unit, loginViewModel: LoginViewModel) 
     )
 }
 
-/*
+
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
@@ -279,8 +291,7 @@ fun LoginScreenPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            LoginScreen()
+            LoginScreen({},{},ActionState.Initial,{},{ _, _ ->},{},ActionState.Initial)
         }
     }
 }
-*/
