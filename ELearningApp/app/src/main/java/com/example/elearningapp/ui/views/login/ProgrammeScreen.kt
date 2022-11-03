@@ -1,5 +1,6 @@
 package com.example.elearningapp.ui.views.login
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,6 +18,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,7 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.elearningapp.R
 import com.example.elearningapp.common.ActionState
+import com.example.elearningapp.data.ProgrammeData.programmes
 import com.example.elearningapp.models.Programme
+import com.example.elearningapp.models.User
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 import com.example.elearningapp.ui.views.components.Loading
 
@@ -33,9 +37,13 @@ fun ProgrammeScreen(
     navigateOverview: () -> Unit,
     fetchProgrammes: () -> Unit,
     programmeState: ActionState<List<Programme>>,
-    setFirstTimeUser: () -> Unit
+    setFirstTimeUser: () -> Unit,
+    addUserData: (String,Programme) -> Unit,
+    userState: ActionState<User>,
+    resetActionState: () -> Unit
 ) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
+    var addUserDataFailed by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit, block = {
         fetchProgrammes.invoke()
@@ -45,23 +53,39 @@ fun ProgrammeScreen(
         Image(
             modifier = Modifier
                 .weight(1f)
-                .size(128.dp),
+                .size(112.dp),
             painter = image,
             contentDescription = "App Logo"
         )
         Box(modifier = Modifier
-            .weight(2f)) {
-            ProgrammeCard(navigateOverview, fetchProgrammes, programmeState, setFirstTimeUser)
+            .weight(3f)) {
+            ProgrammeCard(fetchProgrammes, programmeState, setFirstTimeUser, addUserData, addUserDataFailed)
+        }
+    }
+    when(userState) {
+        is ActionState.Initial -> {}
+        is ActionState.Loading -> {
+            Loading()
+        }
+        is ActionState.Success -> {
+            navigateOverview.invoke()
+            resetActionState.invoke()
+        }
+        is ActionState.Error -> {
+            addUserDataFailed = true
+            Toast.makeText(LocalContext.current, userState.message, Toast.LENGTH_LONG).show()
+            resetActionState.invoke()
         }
     }
 }
 
 @Composable
 fun ProgrammeCard(
-    navigateOverview: () -> Unit,
     fetchProgrammes: () -> Unit,
     programmeState: ActionState<List<Programme>>,
-    setFirstTimeUser: () -> Unit
+    setFirstTimeUser: () -> Unit,
+    addUserData: (String, Programme) -> Unit,
+    addUserDataFailed: Boolean
 ) {
     var studentName by remember { mutableStateOf("") }
     var selectedProgramme by remember { mutableStateOf(Programme("", emptyList())) }
@@ -116,6 +140,7 @@ fun ProgrammeCard(
                     is ActionState.Success -> {
                         LazyColumn(
                             modifier = Modifier
+                                .padding(top = 12.dp, bottom = 45.dp)
                                 .graphicsLayer { alpha = 0.99F }
                                 .drawWithContent {
                                     val colors = listOf(Color.Transparent, Color.Black)
@@ -124,8 +149,7 @@ fun ProgrammeCard(
                                         brush = Brush.verticalGradient(colors),
                                         blendMode = BlendMode.DstOut
                                     )
-                                },
-                            contentPadding = PaddingValues( vertical = 12.dp)
+                                }
                         ) {
                             items(programmeState.data) { programme -> ItemCard(programme, selectedProgramme) {
                                 selectedProgramme = programme
@@ -134,12 +158,10 @@ fun ProgrammeCard(
                         }
                     }
                     is ActionState.Error -> {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            Column {
-                                Text(text = "Could not load programmes!", color = MaterialTheme.colors.error)
-                                Button(onClick = fetchProgrammes) {
-                                    Text(text = "Try again!")
-                                }
+                        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                            Text(text = "Could not load programmes!", color = MaterialTheme.colors.error)
+                            Button(onClick = fetchProgrammes) {
+                                Text(text = "Try again!")
                             }
                         }
                     }
@@ -151,12 +173,27 @@ fun ProgrammeCard(
                 .fillMaxWidth()
                 .padding(30.dp),
                 contentAlignment = Alignment.BottomCenter) {
-                Button(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(40.dp),
-                    enabled = selectedProgramme.name != "" && studentName != "",
-                    onClick = { setFirstTimeUser.invoke() }) {
-                    Text(text = "FINISH")
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    if (addUserDataFailed) {
+                        Text(
+                            text = "Something went wrong! Please try again.",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Light,
+                            color = MaterialTheme.colors.error,
+                            style = MaterialTheme.typography.caption
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+                    Button(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(40.dp),
+                        enabled = selectedProgramme.name != "" && studentName != "",
+                        onClick = {
+                            setFirstTimeUser.invoke()
+                            addUserData(studentName, selectedProgramme)
+                        }) {
+                        Text(text = "FINISH")
+                    }
                 }
             }
         }
@@ -187,6 +224,6 @@ fun ItemCard(programme: Programme, selectedProgramme: Programme, onSelect: () ->
 @Composable
 fun ProgrammeScreenPreview() {
     ELearningAppTheme {
-        ProgrammeScreen({},{},ActionState.Initial,{})
+        ProgrammeScreen({},{},ActionState.Success(programmes),{},{_,_->},ActionState.Initial,{})
     }
 }

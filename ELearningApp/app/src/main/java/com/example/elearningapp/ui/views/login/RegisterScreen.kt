@@ -32,7 +32,7 @@ fun RegisterScreen(
     navigateLogin: () -> Unit,
     navigateProgramme: () -> Unit,
     loginState: ActionState<Boolean>,
-    resetLoginActionState: () -> Unit,
+    resetActionState: () -> Unit,
     onRegister: (String, String) -> Unit,
     setFirstTimeUser: () -> Unit
 ) {
@@ -61,12 +61,12 @@ fun RegisterScreen(
             if (loginState.data) {
                 navigateProgramme.invoke()
             }
-            resetLoginActionState.invoke()
+            resetActionState.invoke()
         }
         is ActionState.Error -> {
             registerFailed = true
             Toast.makeText(LocalContext.current, loginState.message, Toast.LENGTH_LONG).show()
-            resetLoginActionState.invoke()
+            resetActionState.invoke()
         }
     }
 }

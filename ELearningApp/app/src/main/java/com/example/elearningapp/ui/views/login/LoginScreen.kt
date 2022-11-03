@@ -36,7 +36,7 @@ fun LoginScreen(
     navigateRegister: () -> Unit,
     navigateOverview: () -> Unit,
     loginState: ActionState<Boolean>,
-    resetLoginActionState: () -> Unit,
+    resetActionState: () -> Unit,
     onLogin: (String, String) -> Unit,
     onPasswordReset: (String) -> Unit,
     restPasswordState: ActionState<Boolean>
@@ -54,7 +54,7 @@ fun LoginScreen(
         )
         Box(modifier = Modifier
             .weight(2f)) {
-            LoginCard(navigateRegister, loginFailed, resetLoginActionState, onLogin, onPasswordReset, restPasswordState)
+            LoginCard(navigateRegister, loginFailed, resetActionState, onLogin, onPasswordReset, restPasswordState)
         }
     }
     when(loginState) {
@@ -66,12 +66,12 @@ fun LoginScreen(
             if (loginState.data) {
                 navigateOverview.invoke()
             }
-            resetLoginActionState.invoke()
+            resetActionState.invoke()
         }
         is ActionState.Error -> {
             loginFailed = true
             Toast.makeText(LocalContext.current, loginState.message, Toast.LENGTH_LONG).show()
-            resetLoginActionState.invoke()
+            resetActionState.invoke()
         }
     }
 }
@@ -80,7 +80,7 @@ fun LoginScreen(
 fun LoginCard(
     navigateRegister: () -> Unit,
     loginFailed: Boolean,
-    resetLoginActionState: () -> Unit,
+    resetActionState: () -> Unit,
     onLogin: (String, String) -> Unit,
     onPasswordReset: (String) -> Unit,
     restPasswordState: ActionState<Boolean>
@@ -183,7 +183,7 @@ fun LoginCard(
                     }
                 }
                 if (showForgotPasswordDialog) {
-                    ForgotPasswordDialog({ showForgotPasswordDialog = !showForgotPasswordDialog }, resetLoginActionState, onPasswordReset, restPasswordState)
+                    ForgotPasswordDialog({ showForgotPasswordDialog = !showForgotPasswordDialog }, resetActionState, onPasswordReset, restPasswordState)
                 }
             }
         }
@@ -191,7 +191,7 @@ fun LoginCard(
 }
 
 @Composable
-fun ForgotPasswordDialog(onDismiss: () -> Unit, resetLoginActionState: () -> Unit, onPasswordReset: (String) -> Unit, restPasswordState: ActionState<Boolean>) {
+fun ForgotPasswordDialog(onDismiss: () -> Unit, resetActionState: () -> Unit, onPasswordReset: (String) -> Unit, restPasswordState: ActionState<Boolean>) {
     var email by remember { mutableStateOf("") }
     var resetFailed by remember { mutableStateOf(false) }
     var resetSuccess by remember { mutableStateOf(false) }
@@ -260,13 +260,13 @@ fun ForgotPasswordDialog(onDismiss: () -> Unit, resetLoginActionState: () -> Uni
                         resetFailed = false
                         resetSuccess = true
                     }
-                    resetLoginActionState.invoke()
+                    resetActionState.invoke()
                 }
                 is ActionState.Error -> {
                     resetSuccess = false
                     resetFailed = true
                     Toast.makeText(LocalContext.current, restPasswordState.message, Toast.LENGTH_LONG).show()
-                    resetLoginActionState.invoke()
+                    resetActionState.invoke()
                 }
             }
         },

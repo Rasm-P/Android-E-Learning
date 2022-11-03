@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
+import com.example.elearningapp.models.User
 import com.example.elearningapp.ui.views.account.AccountScreen
 import com.example.elearningapp.ui.views.courses.CourseOverviewScreen
 import com.example.elearningapp.ui.views.login.LoginScreen
@@ -45,7 +46,7 @@ fun AppNavHost(
                     navigateRegister = {navController.navigateSingleTopTo(LoginDestination.Register.route)},
                     navigateOverview = {navController.navigate(navController.graph.startDestinationId)},
                     loginState = loginViewModel.loginState.value,
-                    resetLoginActionState = {loginViewModel.resetLoginActionState()},
+                    resetActionState = {loginViewModel.resetLoginActionState()},
                     onLogin = {email, password -> loginViewModel.login(email, password)},
                     onPasswordReset = {email -> loginViewModel.resetPassword(email)},
                     restPasswordState = loginViewModel.resetState.value
@@ -56,7 +57,7 @@ fun AppNavHost(
                     navigateLogin = {navController.navigateSingleTopTo(LoginDestination.Login.route)},
                     navigateProgramme = {navController.navigate(LoginDestination.Programme.route) {popUpTo(0); launchSingleTop = true} },
                     loginState = loginViewModel.loginState.value,
-                    resetLoginActionState = {loginViewModel.resetLoginActionState()},
+                    resetActionState = {loginViewModel.resetLoginActionState()},
                     onRegister = {email, password -> loginViewModel.register(email, password)},
                     setFirstTimeUser = {isFirstTimeUser = true}
                 )
@@ -65,7 +66,10 @@ fun AppNavHost(
                 ProgrammeScreen(navigateOverview = {navController.navigate(navController.graph.startDestinationId)},
                     fetchProgrammes = {programmeViewModel.fetchProgrammes()},
                     programmeState = programmeViewModel.programmeState.value,
-                    setFirstTimeUser = {isFirstTimeUser = false}
+                    setFirstTimeUser = {isFirstTimeUser = false},
+                    addUserData = {studentName, programme -> userViewModel.addUser(User(studentName, programme, emptyList()))},
+                    userState = userViewModel.userState.value,
+                    resetActionState = {userViewModel.resetUserState()}
                 )
             }
         }
