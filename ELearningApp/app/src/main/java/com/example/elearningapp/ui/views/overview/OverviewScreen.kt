@@ -10,7 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,14 +29,20 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.elearningapp.common.ActionState
+import com.example.elearningapp.data.CourseData.allCourses
 import com.example.elearningapp.data.CourseData.trendingCourses
 import com.example.elearningapp.models.Course
+import com.example.elearningapp.models.CourseStatus
+import com.example.elearningapp.models.Programme
+import com.example.elearningapp.models.User
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 
 @Composable
 fun OverviewScreen(
     courseState: ActionState<List<Course>>,
-    fetchTrendingCourses: () -> Unit
+    fetchTrendingCourses: () -> Unit,
+    userCourseStatus: List<CourseStatus>,
+    navigateCourseOverview: () -> Unit
 ) {
     LaunchedEffect(Unit, block = {
         fetchTrendingCourses.invoke()
@@ -72,7 +79,7 @@ fun OverviewScreen(
         }
         Box(modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp)
+            .padding(start = 20.dp, end = 20.dp)
             .weight(1f)) {
             Column {
                 Text(modifier = Modifier.padding(bottom = 10.dp),
@@ -80,8 +87,30 @@ fun OverviewScreen(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium
                 )
-                LazyColumn() {
-
+                if (userCourseStatus.isNotEmpty()) {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(20.dp)) {
+                        items(userCourseStatus) { course -> CourseStatusCard(course) }
+                    }
+                } else {
+                    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                        Icon(imageVector = Icons.Filled.School, modifier = Modifier.size(128.dp), contentDescription = "Course icon", tint = MaterialTheme.colors.primary)
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(modifier = Modifier.padding(bottom = 10.dp),
+                            text = "You don't have any courses yet",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Light,
+                            color = MaterialTheme.colors.primary
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Row(modifier = Modifier.clickable(onClick = navigateCourseOverview), verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = "Explore courses",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Light)
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = "To courses", tint = MaterialTheme.colors.primary)
+                        }
+                    }
                 }
             }
         }
@@ -153,15 +182,81 @@ fun TrendingCourseCard(course: Course) {
 }
 
 
+@Composable
+fun CourseStatusCard(courseStatus: CourseStatus) {
+    Card(modifier = Modifier.height(100.dp),
+        shape = RoundedCornerShape(5.dp),
+        elevation = 12.dp) {
+        val painter = rememberAsyncImagePainter(
+            ImageRequest.Builder(LocalContext.current).data(data = courseStatus.course.imageUrl).apply(block = fun ImageRequest.Builder.() {
+                crossfade(true)
+            }).build()
+        )
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp), horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+            Box(modifier = Modifier.size(80.dp)) {
+                Image(
+                    painter = painter,
+                    contentDescription = "Course image",
+                    contentScale = ContentScale.Crop
+                )
+                //Temporary animation while loading poster image
+                if (painter.state !is AsyncImagePainter.State.Success) {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colors.primary,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                }
+            }
+            Column(verticalArrangement = Arrangement.SpaceBetween) {
+                Text(
+                    text = courseStatus.course.courseName,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                Text(
+                    text = courseStatus.course.timeToComplete.toString() + " - " + courseStatus.course.steps + " steps",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Light
+                )
+                Column {
+                    Text(
+                        text = "Completed: " + courseStatus.stepsCompleted/courseStatus.course.steps*100 + "%",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Light
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            IconButton(
+                modifier = Modifier.weight(1f, fill = false),
+                onClick = {/*TODO*/}
+            ) {
+                Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = "To courses", tint = MaterialTheme.colors.primary)
+            }
+        }
+    }
+}
+
+
 @Preview(showBackground = true)
 @Composable
 fun OverviewScreenPreview() {
+    //val courses = emptyList<CourseStatus>()
+    val courses = listOf(CourseStatus(allCourses[0], 3), CourseStatus(allCourses[1], 1), CourseStatus(allCourses[2], 5))
+
     ELearningAppTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            OverviewScreen(ActionState.Success(trendingCourses),{})
+            //OverviewScreen(ActionState.Success(trendingCourses),{},courses,{})
+            CourseStatusCard(courses[0])
         }
     }
 }

@@ -25,6 +25,14 @@ class CourseViewModel @Inject internal constructor(private val _courseRepository
         }
     }
 
+    fun fetchCourseByName() {
+        viewModelScope.launch {
+            _courseRepository.fetchTrendingCourses().collect {
+                    response -> _courseState.value = response
+            }
+        }
+    }
+
     fun resetCourseActionState() {
         _courseState.value = ActionState.Initial
     }

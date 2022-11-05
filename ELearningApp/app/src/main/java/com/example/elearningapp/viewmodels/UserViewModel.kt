@@ -16,6 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject internal constructor(private val _userRepository: UserRepositoryInterface): ViewModel() {
 
+    lateinit var userData: User
+
     private val _userState = mutableStateOf<ActionState<User>>(ActionState.Initial)
     val userState: State<ActionState<User>> = _userState
 
@@ -26,6 +28,7 @@ class UserViewModel @Inject internal constructor(private val _userRepository: Us
         viewModelScope.launch {
             _userRepository.fetchUser().collect {
                     response -> _userState.value = response
+                if (response is ActionState.Success) userData = response.data
             }
         }
     }
@@ -34,6 +37,7 @@ class UserViewModel @Inject internal constructor(private val _userRepository: Us
         viewModelScope.launch {
             _userRepository.addUser(user).collect {
                     response -> _userState.value = response
+                if (response is ActionState.Success) userData = response.data
             }
         }
     }

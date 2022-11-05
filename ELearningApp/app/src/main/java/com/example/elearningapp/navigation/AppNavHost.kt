@@ -78,7 +78,10 @@ fun AppNavHost(
         navigation(route = AppNavigationFlow.OverviewFlow.route, startDestination = MenuNavDestination.Overview.route) {
             composable(route = MenuNavDestination.Overview.route) {
                 OverviewScreen(courseState = courseViewModel.courseState.value,
-                fetchTrendingCourses = {courseViewModel.fetchTrendingCourses()})
+                fetchTrendingCourses = {courseViewModel.fetchTrendingCourses()},
+                userCourseStatus = userViewModel.userData.activeCourses,
+                navigateCourseOverview = {navController.navigateSingleTopTo(MenuNavDestination.CourseOverview.route)}
+                )
             }
             composable(route = MenuNavDestination.CourseOverview.route) {
                 CourseOverviewScreen()
