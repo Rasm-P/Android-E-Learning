@@ -10,7 +10,7 @@ import kotlin.time.Duration.Companion.minutes
 object CourseData {
     val trendingCourses: List<Course> = listOf(
         Course(
-            "Jetpack Compose basics",
+            "Android Jetpack Compose",
             "https://miro.medium.com/max/715/1*XHnWaOao9drSl25Cfhz6WA.png",
             "Easy",
             30.minutes,
@@ -21,14 +21,14 @@ object CourseData {
             "Programming"
         ),
         Course(
-            "Jetpack Compose basics",
-            "https://miro.medium.com/max/715/1*XHnWaOao9drSl25Cfhz6WA.png",
-            "Easy",
-            30.minutes,
+            "Android Dagger-Hilt",
+            "https://miro.medium.com/max/960/1*uEOPfTwyX1EuL-0K8EBBuQ.jpeg",
+            "Medium",
+            45.minutes,
             5,
-            "Jetpack Compose is a modern toolkit designed to simplify UI development. " +
-                    "It combines a reactive programming model with the conciseness and ease of " +
-                    "use of the Kotlin programming language.",
+            "Dagger-Hilt is part of the Jetpack library that assist in Dependency Injection " +
+                    "(DI) framework. Recently I found it is very useful and want to share this useful " +
+                    "knowledge to the community.",
             "Programming"
         ),
         Course(

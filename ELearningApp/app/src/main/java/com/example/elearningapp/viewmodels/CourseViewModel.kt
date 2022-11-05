@@ -17,7 +17,7 @@ class CourseViewModel @Inject internal constructor(private val _courseRepository
     private val _courseState = mutableStateOf<ActionState<List<Course>>>(ActionState.Initial)
     val courseState: State<ActionState<List<Course>>> = _courseState
 
-    fun fetchProgrammes() {
+    fun fetchTrendingCourses() {
         viewModelScope.launch {
             _courseRepository.fetchTrendingCourses().collect {
                     response -> _courseState.value = response

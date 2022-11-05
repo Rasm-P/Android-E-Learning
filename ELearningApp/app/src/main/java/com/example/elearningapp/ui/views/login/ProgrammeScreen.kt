@@ -2,6 +2,7 @@ package com.example.elearningapp.ui.views.login
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +23,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -158,11 +161,13 @@ fun ProgrammeCard(
                         }
                     }
                     is ActionState.Error -> {
+                        Toast.makeText(LocalContext.current, programmeState.message, Toast.LENGTH_LONG).show()
                         Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                            Text(text = "Could not load programmes!", color = MaterialTheme.colors.error)
-                            Button(onClick = fetchProgrammes) {
-                                Text(text = "Try again!")
-                            }
+                            Icon(imageVector = Icons.Filled.Error, contentDescription = "Error icon", tint = Color.LightGray)
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(text = "Couldn't Load Data!", color = Color.LightGray)
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(text = "Retry", modifier = Modifier.clickable(onClick = fetchProgrammes), color = MaterialTheme.colors.error, textDecoration = TextDecoration.Underline)
                         }
                     }
                 }
@@ -224,6 +229,6 @@ fun ItemCard(programme: Programme, selectedProgramme: Programme, onSelect: () ->
 @Composable
 fun ProgrammeScreenPreview() {
     ELearningAppTheme {
-        ProgrammeScreen({},{},ActionState.Success(programmes),{},{_,_->},ActionState.Initial,{})
+        ProgrammeScreen({},{},ActionState.Success(programmes),{},{ _, _->},ActionState.Initial,{})
     }
 }
