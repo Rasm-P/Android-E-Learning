@@ -37,7 +37,8 @@ class UserRepository @Inject internal constructor(private val firebaseDB: Fireba
     override suspend fun addUser(user: User) = flow {
         try {
             emit(ActionState.Loading)
-            firebaseDB.collection("user").add(user).await()
+            val uid = Firebase.auth.uid!!
+            firebaseDB.collection("user").document(uid).set(user).await()
             emit(ActionState.Success(user))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))

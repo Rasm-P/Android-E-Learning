@@ -45,10 +45,11 @@ import com.example.elearningapp.models.Course
 fun CourseOverviewScreen(
     programmeTopics: List<String>,
     coursesState: ActionState<List<Course>>,
-    fetchAllCourses: () -> Unit
+    fetchAllCourses: () -> Unit,
+    filterCourses: (String, String) -> List<Course>
 ) {
     var search by remember { mutableStateOf("") }
-    var sortTopic by remember { mutableStateOf("Programming") }
+    var sortTopic by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit, block = {
         fetchAllCourses.invoke()
@@ -93,7 +94,7 @@ fun CourseOverviewScreen(
         }
         LazyRow(contentPadding = PaddingValues(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            items(programmeTopics) { topic ->  TopicButton(topic, sortTopic) { sortTopic = topic } }
+            items(programmeTopics) { topic ->  TopicButton(topic, sortTopic, { sortTopic = topic }) { sortTopic = "" } }
         }
         if (coursesState is ActionState.Success) {
             LazyColumn(
@@ -101,7 +102,7 @@ fun CourseOverviewScreen(
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 contentPadding = PaddingValues(bottom = 100.dp)
             ) {
-                items(coursesState.data) { course -> CourseCard(course) }
+                items(filterCourses(search,sortTopic)) { course -> CourseCard(course) }
             }
         } else if (coursesState is ActionState.Error) {
             Toast.makeText(LocalContext.current, coursesState.message, Toast.LENGTH_LONG).show()
@@ -118,11 +119,11 @@ fun CourseOverviewScreen(
 
 
 @Composable
-fun TopicButton(topic: String, currentTopic: String, onButtonPressed: () -> Unit) {
+fun TopicButton(topic: String, currentTopic: String, toggleTopic: () -> Unit, unToggleTopic: () -> Unit) {
     val enabled = currentTopic == topic
 
     Button(
-        onClick = onButtonPressed,
+        onClick = if (!enabled) toggleTopic else unToggleTopic,
         elevation = ButtonDefaults.elevation(disabledElevation = 12.dp, defaultElevation = 12.dp),
         colors = ButtonDefaults.buttonColors(
             backgroundColor = if (enabled) MaterialTheme.colors.primary else MaterialTheme.colors.secondary,
@@ -220,7 +221,7 @@ fun CourseOverviewScreenPreview() {
                     BottomNavBar(bottomNavScreens, {}, MenuNavDestination.CourseOverview
                     )
                 },
-                content = { CourseOverviewScreen(programmeTopics, ActionState.Success(allCourses), {}) }
+                content = { CourseOverviewScreen(programmeTopics, ActionState.Success(allCourses), {}, {_ ,_ -> allCourses}) }
             )
         }
     }

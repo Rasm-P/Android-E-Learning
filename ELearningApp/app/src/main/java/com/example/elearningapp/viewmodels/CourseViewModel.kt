@@ -33,6 +33,21 @@ class CourseViewModel @Inject internal constructor(private val _courseRepository
         }
     }
 
+    fun filterCourses(searchFilter: String, topicFilter: String): List<Course> {
+        if (_courseState.value is ActionState.Success) {
+            var filteredCourses = (_courseState.value as ActionState.Success<List<Course>>).data
+            if (topicFilter != "") {
+                filteredCourses = filteredCourses.filter { it.topic.lowercase() == topicFilter.lowercase() }
+            }
+            if (searchFilter != "") {
+                filteredCourses = filteredCourses.filter { it.courseName.lowercase().contains(searchFilter.lowercase()) }
+            }
+            return filteredCourses
+        } else {
+            return emptyList()
+        }
+    }
+
     fun fetchCourseByName() {
         viewModelScope.launch {
             _courseRepository.fetchTrendingCourses().collect {

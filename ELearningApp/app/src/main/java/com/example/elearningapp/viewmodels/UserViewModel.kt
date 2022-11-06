@@ -9,6 +9,8 @@ import com.example.elearningapp.models.CourseStatus
 import com.example.elearningapp.models.Programme
 import com.example.elearningapp.models.User
 import com.example.elearningapp.repositories.UserRepositoryInterface
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject internal constructor(private val _userRepository: UserRepositoryInterface): ViewModel() {
 
-    lateinit var userData: User
+    private val _userData = mutableStateOf(User())
+    val userData: State<User> = _userData
 
     private val _userState = mutableStateOf<ActionState<User>>(ActionState.Initial)
     val userState: State<ActionState<User>> = _userState
@@ -24,20 +27,26 @@ class UserViewModel @Inject internal constructor(private val _userRepository: Us
     private val _updateState = mutableStateOf<ActionState<Boolean>>(ActionState.Initial)
     val updateState: State<ActionState<Boolean>> = _updateState
 
+    init {
+        if (Firebase.auth.currentUser != null) {
+            fetchUser()
+        }
+    }
+
     fun fetchUser() {
         viewModelScope.launch {
             _userRepository.fetchUser().collect {
                     response -> _userState.value = response
-                if (response is ActionState.Success) userData = response.data
+                    if (response is ActionState.Success) _userData.value = response.data
             }
         }
     }
 
     fun addUser(user: User) {
+        _userData.value = user
         viewModelScope.launch {
             _userRepository.addUser(user).collect {
                     response -> _userState.value = response
-                if (response is ActionState.Success) userData = response.data
             }
         }
     }

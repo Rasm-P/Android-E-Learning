@@ -79,14 +79,16 @@ fun AppNavHost(
             composable(route = MenuNavDestination.Overview.route) {
                 OverviewScreen(courseState = courseViewModel.courseState.value,
                 fetchTrendingCourses = {courseViewModel.fetchTrendingCourses()},
-                userCoursesStatus = userViewModel.userData.activeCourses,
+                userCoursesStatus = userViewModel.userData.value.activeCourses,
                 navigateCourseOverview = {navController.navigateSingleTopTo(MenuNavDestination.CourseOverview.route)}
                 )
             }
             composable(route = MenuNavDestination.CourseOverview.route) {
-                CourseOverviewScreen(programmeTopics = userViewModel.userData.studyProgramme.topics,
+                CourseOverviewScreen(programmeTopics = userViewModel.userData.value.studyProgramme.topics,
                 coursesState = courseViewModel.courseState.value,
-                fetchAllCourses = {courseViewModel.fetchAllCourses()})
+                fetchAllCourses = {courseViewModel.fetchAllCourses()},
+                filterCourses = {searchFilter, topicFilter -> courseViewModel.filterCourses(searchFilter, topicFilter)}
+                )
             }
             composable(route = MenuNavDestination.NotesOverview.route) {
                 NotesOverviewScreen()

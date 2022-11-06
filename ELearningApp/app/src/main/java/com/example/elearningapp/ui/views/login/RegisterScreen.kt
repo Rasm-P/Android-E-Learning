@@ -49,7 +49,7 @@ fun RegisterScreen(
         )
         Box(modifier = Modifier
             .weight(2f)) {
-            RegisterCard(navigateLogin, registerFailed, {registerFailed = false}, onRegister, setFirstTimeUser)
+            RegisterCard(navigateLogin, registerFailed, {registerFailed = true}, onRegister, setFirstTimeUser)
         }
     }
     when(loginState) {
