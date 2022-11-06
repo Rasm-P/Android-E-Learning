@@ -8,6 +8,8 @@ interface CourseRepositoryInterface {
 
     suspend fun fetchTrendingCourses(): Flow<ActionState<List<Course>>>
 
+    suspend fun fetchAllCourses(): Flow<ActionState<List<Course>>>
+
     suspend fun fetchCourseByName(name: String): Flow<ActionState<Course?>>
 
 }

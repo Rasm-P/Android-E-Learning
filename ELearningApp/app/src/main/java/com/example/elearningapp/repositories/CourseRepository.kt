@@ -23,6 +23,15 @@ class CourseRepository @Inject internal constructor() : CourseRepositoryInterfac
     }
 
     // Using a fake API call to simulate interaction with a real serverside API
+    override suspend fun fetchAllCourses() = flow {
+        emit(ActionState.Loading)
+        //API call
+        delay(500)
+        val result = CourseData.allCourses
+        emit(ActionState.Success(result))
+    }
+
+    // Using a fake API call to simulate interaction with a real serverside API
     override suspend fun fetchCourseByName(name: String) = flow {
         emit(ActionState.Loading)
         //API call

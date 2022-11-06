@@ -47,7 +47,7 @@ import kotlin.math.roundToInt
 fun OverviewScreen(
     courseState: ActionState<List<Course>>,
     fetchTrendingCourses: () -> Unit,
-    userCourseStatus: List<CourseStatus>,
+    userCoursesStatus: List<CourseStatus>,
     navigateCourseOverview: () -> Unit
 ) {
     LaunchedEffect(Unit, block = {
@@ -72,14 +72,14 @@ fun OverviewScreen(
                         items(courseState.data) { course -> TrendingCourseCard(course) }
                     }
                 } else if (courseState is ActionState.Error) {
-                Toast.makeText(LocalContext.current, courseState.message, Toast.LENGTH_LONG).show()
-                Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                    Icon(imageVector = Icons.Filled.Error, contentDescription = "Error icon", tint = Color.LightGray)
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(text = "Couldn't Load Data!", color = Color.LightGray)
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(text = "Retry", modifier = Modifier.clickable(onClick = fetchTrendingCourses), color = MaterialTheme.colors.error, textDecoration = TextDecoration.Underline)
-                }
+                    Toast.makeText(LocalContext.current, courseState.message, Toast.LENGTH_LONG).show()
+                    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                        Icon(imageVector = Icons.Filled.Error, contentDescription = "Error icon", tint = Color.LightGray)
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(text = "Couldn't Load Data!", color = Color.LightGray)
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(text = "Retry", modifier = Modifier.clickable(onClick = fetchTrendingCourses), color = MaterialTheme.colors.error, textDecoration = TextDecoration.Underline)
+                    }
                 }
             }
         }
@@ -93,11 +93,11 @@ fun OverviewScreen(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium
                 )
-                if (userCourseStatus.isNotEmpty()) {
+                if (userCoursesStatus.isNotEmpty()) {
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(20.dp),
                         contentPadding = PaddingValues(bottom = 100.dp)){
-                        items(userCourseStatus) { course -> CourseStatusCard(course) }
+                        items(userCoursesStatus) { course -> CourseStatusCard(course) }
                     }
                 } else {
                     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
@@ -144,7 +144,6 @@ fun TrendingCourseCard(course: Course) {
                     modifier = Modifier
                         .fillMaxSize()
                 )
-                //Temporary animation while loading poster image
                 if (painter.state !is AsyncImagePainter.State.Success) {
                     Box(modifier = Modifier.fillMaxSize()) {
                         CircularProgressIndicator(
@@ -214,7 +213,6 @@ fun CourseStatusCard(courseStatus: CourseStatus) {
                         .clip(RoundedCornerShape(5.dp))
                         .border(1.dp, Color.LightGray, RoundedCornerShape(5.dp))
                 )
-                //Temporary animation while loading poster image
                 if (painter.state !is AsyncImagePainter.State.Success) {
                     Box(modifier = Modifier.fillMaxSize()) {
                         CircularProgressIndicator(
@@ -224,7 +222,7 @@ fun CourseStatusCard(courseStatus: CourseStatus) {
                     }
                 }
             }
-            Column(modifier = Modifier.weight(1f) ,verticalArrangement = Arrangement.SpaceBetween) {
+            Column(modifier = Modifier.fillMaxHeight().weight(1f) ,verticalArrangement = Arrangement.SpaceBetween) {
                 Text(
                     text = courseStatus.course.courseName,
                     maxLines = 1,

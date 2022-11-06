@@ -25,6 +25,14 @@ class CourseViewModel @Inject internal constructor(private val _courseRepository
         }
     }
 
+    fun fetchAllCourses() {
+        viewModelScope.launch {
+            _courseRepository.fetchAllCourses().collect {
+                    response -> _courseState.value = response
+            }
+        }
+    }
+
     fun fetchCourseByName() {
         viewModelScope.launch {
             _courseRepository.fetchTrendingCourses().collect {
