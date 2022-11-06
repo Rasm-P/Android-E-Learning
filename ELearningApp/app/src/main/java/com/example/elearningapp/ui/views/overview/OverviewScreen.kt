@@ -2,6 +2,7 @@ package com.example.elearningapp.ui.views.overview
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -33,9 +35,8 @@ import com.example.elearningapp.data.CourseData.allCourses
 import com.example.elearningapp.data.CourseData.trendingCourses
 import com.example.elearningapp.models.Course
 import com.example.elearningapp.models.CourseStatus
-import com.example.elearningapp.models.Programme
-import com.example.elearningapp.models.User
 import com.example.elearningapp.ui.theme.ELearningAppTheme
+import kotlin.math.roundToInt
 
 @Composable
 fun OverviewScreen(
@@ -184,6 +185,8 @@ fun TrendingCourseCard(course: Course) {
 
 @Composable
 fun CourseStatusCard(courseStatus: CourseStatus) {
+    val courseProgress = courseStatus.stepsCompleted.toFloat()/courseStatus.course.steps.toFloat()
+
     Card(modifier = Modifier.height(100.dp),
         shape = RoundedCornerShape(5.dp),
         elevation = 12.dp) {
@@ -194,12 +197,14 @@ fun CourseStatusCard(courseStatus: CourseStatus) {
         )
         Row(modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp), horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-            Box(modifier = Modifier.size(80.dp)) {
+            .padding(20.dp), horizontalArrangement = Arrangement.spacedBy(20.dp), verticalAlignment = Alignment.CenterVertically) {
+            Box(modifier = Modifier.width(60.dp)) {
                 Image(
                     painter = painter,
                     contentDescription = "Course image",
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize().clip(RoundedCornerShape(5.dp)).border(1.dp, Color.LightGray, RoundedCornerShape(5.dp))
                 )
                 //Temporary animation while loading poster image
                 if (painter.state !is AsyncImagePainter.State.Success) {
@@ -211,7 +216,7 @@ fun CourseStatusCard(courseStatus: CourseStatus) {
                     }
                 }
             }
-            Column(verticalArrangement = Arrangement.SpaceBetween) {
+            Column(modifier = Modifier.weight(1f) ,verticalArrangement = Arrangement.SpaceBetween) {
                 Text(
                     text = courseStatus.course.courseName,
                     maxLines = 1,
@@ -226,15 +231,14 @@ fun CourseStatusCard(courseStatus: CourseStatus) {
                 )
                 Column {
                     Text(
-                        text = "Completed: " + courseStatus.stepsCompleted/courseStatus.course.steps*100 + "%",
+                        text = "Completed: ${(courseProgress*100).roundToInt()}%",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Light
                     )
+                    LinearProgressIndicator(progress = courseProgress)
                 }
             }
-            Spacer(modifier = Modifier.weight(1f))
             IconButton(
-                modifier = Modifier.weight(1f, fill = false),
                 onClick = {/*TODO*/}
             ) {
                 Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = "To courses", tint = MaterialTheme.colors.primary)
@@ -255,8 +259,8 @@ fun OverviewScreenPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            //OverviewScreen(ActionState.Success(trendingCourses),{},courses,{})
-            CourseStatusCard(courses[0])
+            OverviewScreen(ActionState.Success(trendingCourses),{},courses,{})
+            //CourseStatusCard(courses[0])
         }
     }
 }
