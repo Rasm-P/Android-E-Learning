@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextOverflow
@@ -58,7 +59,7 @@ fun TopBar(
             if (!isRouteInLoginFLow) {
                 IconButton(onClick = onAccountPressed) {
                     Icon(
-                        imageVector = Icons.Filled.AccountCircle,
+                        imageVector = Icons.Outlined.AccountCircle,
                         contentDescription = "Account",
                         tint = MaterialTheme.colors.secondary
                     )

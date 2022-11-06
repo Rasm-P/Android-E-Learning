@@ -135,6 +135,7 @@ fun ProgrammeCard(
                     fontSize = 12.sp,
                     fontWeight = FontWeight.ExtraLight
                 )
+                Spacer(modifier = Modifier.height(12.dp))
                 when(programmeState) {
                     is ActionState.Initial -> {}
                     is ActionState.Loading -> {
@@ -142,17 +143,7 @@ fun ProgrammeCard(
                     }
                     is ActionState.Success -> {
                         LazyColumn(
-                            modifier = Modifier
-                                .padding(top = 12.dp, bottom = 45.dp)
-                                .graphicsLayer { alpha = 0.99F }
-                                .drawWithContent {
-                                    val colors = listOf(Color.Transparent, Color.Black)
-                                    drawContent()
-                                    drawRect(
-                                        brush = Brush.verticalGradient(colors),
-                                        blendMode = BlendMode.DstOut
-                                    )
-                                }
+                            modifier = Modifier.padding(bottom = 60.dp)
                         ) {
                             items(programmeState.data) { programme -> ItemCard(programme, selectedProgramme) {
                                 selectedProgramme = programme

@@ -30,7 +30,6 @@ import com.example.elearningapp.ui.theme.ELearningAppTheme
 // Built with inspiration from: https://developer.android.com/codelabs/jetpack-compose-navigation#0
 
 private val NavBarHeight = 80.dp
-private const val colorOpacity = 0.20f
 private const val fadeDuration = 150
 
 @Composable
@@ -39,7 +38,7 @@ fun BottomNavBar(screens: List<MenuNavDestination>, onSelected: (MenuNavDestinat
         Modifier
             .fillMaxWidth()
             .height(NavBarHeight), color = MaterialTheme.colors.secondary,
-        border = BorderStroke(width = 1.dp, color = MaterialTheme.colors.onSurface.copy(alpha = colorOpacity)),
+        border = BorderStroke(width = 1.dp, color = Color.LightGray),
         shape = RoundedCornerShape(5.dp,5.dp)
     ) {
         Row(Modifier.selectableGroup(), horizontalArrangement = Arrangement.SpaceEvenly) {
@@ -57,7 +56,7 @@ fun BottomNavBar(screens: List<MenuNavDestination>, onSelected: (MenuNavDestinat
 
 @Composable
 private fun NavBarTab(text: String, icon: ImageVector, onSelected: () -> Unit, selected: Boolean) {
-    val greyColor = MaterialTheme.colors.onSurface.copy(alpha = colorOpacity)
+    val greyColor = Color.LightGray
     val colorSelected = MaterialTheme.colors.primary
     val animationSpec = remember {
         tween<Color>(

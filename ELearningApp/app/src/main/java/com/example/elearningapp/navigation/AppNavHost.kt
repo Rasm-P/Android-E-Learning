@@ -84,7 +84,7 @@ fun AppNavHost(
                 )
             }
             composable(route = MenuNavDestination.CourseOverview.route) {
-                CourseOverviewScreen()
+                CourseOverviewScreen(programmeTopics = userViewModel.userData.studyProgramme.topics)
             }
             composable(route = MenuNavDestination.NotesOverview.route) {
                 NotesOverviewScreen()

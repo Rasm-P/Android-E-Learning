@@ -1,5 +1,6 @@
 package com.example.elearningapp.ui.views.overview
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -35,7 +36,11 @@ import com.example.elearningapp.data.CourseData.allCourses
 import com.example.elearningapp.data.CourseData.trendingCourses
 import com.example.elearningapp.models.Course
 import com.example.elearningapp.models.CourseStatus
+import com.example.elearningapp.navigation.MenuNavDestination
+import com.example.elearningapp.navigation.bottomNavScreens
 import com.example.elearningapp.ui.theme.ELearningAppTheme
+import com.example.elearningapp.ui.views.components.BottomNavBar
+import com.example.elearningapp.ui.views.components.TopBar
 import kotlin.math.roundToInt
 
 @Composable
@@ -75,13 +80,13 @@ fun OverviewScreen(
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(text = "Retry", modifier = Modifier.clickable(onClick = fetchTrendingCourses), color = MaterialTheme.colors.error, textDecoration = TextDecoration.Underline)
                 }
-            }
+                }
             }
         }
         Box(modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp)
-            .weight(1f)) {
+            .padding(start = 20.dp, top = 20.dp, end = 20.dp)
+            .weight(1.2f)) {
             Column {
                 Text(modifier = Modifier.padding(bottom = 10.dp),
                     text = "Your Course Progress",
@@ -90,7 +95,8 @@ fun OverviewScreen(
                 )
                 if (userCourseStatus.isNotEmpty()) {
                     LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(20.dp)) {
+                        verticalArrangement = Arrangement.spacedBy(20.dp),
+                        contentPadding = PaddingValues(bottom = 100.dp)){
                         items(userCourseStatus) { course -> CourseStatusCard(course) }
                     }
                 } else {
@@ -204,7 +210,9 @@ fun CourseStatusCard(courseStatus: CourseStatus) {
                     contentDescription = "Course image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .fillMaxSize().clip(RoundedCornerShape(5.dp)).border(1.dp, Color.LightGray, RoundedCornerShape(5.dp))
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(5.dp))
+                        .border(1.dp, Color.LightGray, RoundedCornerShape(5.dp))
                 )
                 //Temporary animation while loading poster image
                 if (painter.state !is AsyncImagePainter.State.Success) {
@@ -248,6 +256,7 @@ fun CourseStatusCard(courseStatus: CourseStatus) {
 }
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true)
 @Composable
 fun OverviewScreenPreview() {
@@ -259,8 +268,18 @@ fun OverviewScreenPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            OverviewScreen(ActionState.Success(trendingCourses),{},courses,{})
-            //CourseStatusCard(courses[0])
+            Scaffold(
+                topBar = { TopBar("Overview", {}, {}, {}) },
+                bottomBar = {
+                    BottomNavBar(
+                        bottomNavScreens,
+                        {},
+                        MenuNavDestination.CourseOverview
+                    )
+                },
+                content = { OverviewScreen(ActionState.Success(trendingCourses), {}, courses, {}) }
+            )
         }
+        //CourseStatusCard(courses[0])
     }
 }
