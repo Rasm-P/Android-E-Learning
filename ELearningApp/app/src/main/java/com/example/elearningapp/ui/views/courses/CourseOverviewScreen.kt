@@ -211,7 +211,7 @@ fun CourseCard(course: Course) {
                         color = MaterialTheme.colors.primary
                     )
                     Spacer(modifier = Modifier.width(6.dp))
-                    Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = "To courses", tint = MaterialTheme.colors.primary)
+                    Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = "View course", tint = MaterialTheme.colors.primary)
                 }
             }
         }

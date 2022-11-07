@@ -7,8 +7,8 @@ import java.time.OffsetDateTime
 @Entity(tableName = "note")
 data class NoteEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
-    val title: String,
-    val text: String,
-    val lastEdited: OffsetDateTime
+    val id: Long = 0,
+    val title: String = "",
+    val text: String = "",
+    val lastEdited: OffsetDateTime = OffsetDateTime.now()
 )

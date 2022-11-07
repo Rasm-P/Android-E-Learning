@@ -32,6 +32,7 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.elearningapp.common.ActionState
+import com.example.elearningapp.datasource.CourseData.allCourses
 import com.example.elearningapp.datasource.CourseData.trendingCourses
 import com.example.elearningapp.models.Course
 import com.example.elearningapp.models.CourseStatus
@@ -245,7 +246,7 @@ fun CourseStatusCard(courseStatus: CourseStatus) {
             IconButton(
                 onClick = {/*TODO*/}
             ) {
-                Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = "To courses", tint = MaterialTheme.colors.primary)
+                Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = "View course", tint = MaterialTheme.colors.primary)
             }
         }
     }
@@ -256,8 +257,8 @@ fun CourseStatusCard(courseStatus: CourseStatus) {
 @Preview(showBackground = true)
 @Composable
 fun OverviewScreenPreview() {
-    val courses = emptyList<CourseStatus>()
-    //val courses = listOf(CourseStatus(allCourses[0], 3), CourseStatus(allCourses[1], 1), CourseStatus(allCourses[2], 5))
+    val courses = listOf(CourseStatus(allCourses[0], 3), CourseStatus(allCourses[1], 1), CourseStatus(allCourses[2], 5))
+    //val courses = emptyList<CourseStatus>()
 
     ELearningAppTheme {
         Surface(

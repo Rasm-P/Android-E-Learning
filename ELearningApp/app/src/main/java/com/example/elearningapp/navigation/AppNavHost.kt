@@ -90,7 +90,7 @@ fun AppNavHost(
                 )
             }
             composable(route = MenuNavDestination.NotesOverview.route) {
-                NotesOverviewScreen()
+                NotesOverviewScreen(allNotesState = noteViewModel.allNotesState)
             }
             composable(route = MenuNavDestination.Account.route) {
                 AccountScreen()
