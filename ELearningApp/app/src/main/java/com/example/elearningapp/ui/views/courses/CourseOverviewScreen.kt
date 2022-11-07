@@ -11,8 +11,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,8 +21,7 @@ import com.example.elearningapp.ui.theme.ELearningAppTheme
 import com.example.elearningapp.ui.views.components.BottomNavBar
 import com.example.elearningapp.ui.views.components.TopBar
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -97,12 +94,30 @@ fun CourseOverviewScreen(
             items(programmeTopics) { topic ->  TopicButton(topic, sortTopic, { sortTopic = topic }) { sortTopic = "" } }
         }
         if (coursesState is ActionState.Success) {
-            LazyColumn(
-                modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp),
-                contentPadding = PaddingValues(bottom = 100.dp)
-            ) {
-                items(filterCourses(search,sortTopic)) { course -> CourseCard(course) }
+            val courses = filterCourses(search,sortTopic)
+            if (courses.isNotEmpty()) {
+                LazyColumn(
+                    modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp),
+                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                    contentPadding = PaddingValues(bottom = 20.dp)
+                ) {
+                    items(courses) { course -> CourseCard(course) }
+                }
+            } else {
+                Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                    Icon(
+                        imageVector = Icons.Filled.SearchOff,
+                        modifier = Modifier.size(128.dp),
+                        contentDescription = "No results icon",
+                        tint = MaterialTheme.colors.primary.copy(alpha = 0.5f)
+                    )
+                    Text(
+                        text = "No courses found",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Light,
+                        color = MaterialTheme.colors.primary.copy(alpha = 0.5f)
+                    )
+                }
             }
         } else if (coursesState is ActionState.Error) {
             Toast.makeText(LocalContext.current, coursesState.message, Toast.LENGTH_LONG).show()

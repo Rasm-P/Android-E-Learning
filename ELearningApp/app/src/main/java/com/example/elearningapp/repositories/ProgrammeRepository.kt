@@ -14,7 +14,7 @@ class ProgrammeRepository @Inject internal constructor() : ProgrammeRepositoryIn
     override suspend fun fetchProgrammes() = flow {
         emit(ActionState.Loading)
         //API call
-        delay(500)
+        delay(300)
         val result = ProgrammeData.programmes
         emit(ActionState.Success(result))
     }

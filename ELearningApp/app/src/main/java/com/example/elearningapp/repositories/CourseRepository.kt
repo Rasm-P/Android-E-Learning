@@ -17,7 +17,7 @@ class CourseRepository @Inject internal constructor() : CourseRepositoryInterfac
     override suspend fun fetchTrendingCourses() = flow {
         emit(ActionState.Loading)
         //API call
-        delay(500)
+        delay(300)
         val result = CourseData.trendingCourses
         emit(ActionState.Success(result))
     }
@@ -26,7 +26,7 @@ class CourseRepository @Inject internal constructor() : CourseRepositoryInterfac
     override suspend fun fetchAllCourses() = flow {
         emit(ActionState.Loading)
         //API call
-        delay(500)
+        delay(300)
         val result = CourseData.allCourses
         emit(ActionState.Success(result))
     }
@@ -35,7 +35,7 @@ class CourseRepository @Inject internal constructor() : CourseRepositoryInterfac
     override suspend fun fetchCourseByName(name: String) = flow {
         emit(ActionState.Loading)
         //API call
-        delay(500)
+        delay(300)
         val result = CourseData.getCourseByName(name)
         emit(ActionState.Success(result))
     }

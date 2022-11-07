@@ -39,7 +39,8 @@ fun LoginScreen(
     resetActionState: () -> Unit,
     onLogin: (String, String) -> Unit,
     onPasswordReset: (String) -> Unit,
-    restPasswordState: ActionState<Boolean>
+    restPasswordState: ActionState<Boolean>,
+    fetchUser: () -> Unit
 ) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
     var loginFailed by remember { mutableStateOf(false) }
@@ -65,6 +66,7 @@ fun LoginScreen(
         is ActionState.Success -> {
             if (loginState.data) {
                 navigateOverview.invoke()
+                fetchUser.invoke()
             }
             resetActionState.invoke()
         }
@@ -287,6 +289,6 @@ fun ForgotPasswordDialog(onDismiss: () -> Unit, resetActionState: () -> Unit, on
 @Composable
 fun LoginScreenPreview() {
     ELearningAppTheme {
-        LoginScreen({},{},ActionState.Initial,{},{ _, _ ->},{},ActionState.Initial)
+        LoginScreen({},{},ActionState.Initial,{},{ _, _ ->},{},ActionState.Initial,{})
     }
 }

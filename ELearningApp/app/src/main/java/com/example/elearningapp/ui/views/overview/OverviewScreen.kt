@@ -101,15 +101,14 @@ fun OverviewScreen(
                     }
                 } else {
                     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                        Icon(imageVector = Icons.Filled.School, modifier = Modifier.size(128.dp), contentDescription = "Course icon", tint = MaterialTheme.colors.primary)
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Text(modifier = Modifier.padding(bottom = 10.dp),
+                        Icon(imageVector = Icons.Filled.School, modifier = Modifier.size(128.dp), contentDescription = "Course icon", tint = MaterialTheme.colors.primary.copy(alpha = 0.5f))
+                        Text(
                             text = "You don't have any courses yet",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Light,
-                            color = MaterialTheme.colors.primary
+                            color = MaterialTheme.colors.primary.copy(alpha = 0.5f)
                         )
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(6.dp))
                         Row(modifier = Modifier.clickable(onClick = navigateCourseOverview), verticalAlignment = Alignment.CenterVertically) {
                             Text(text = "Explore courses",
                                 fontSize = 16.sp,
@@ -258,8 +257,8 @@ fun CourseStatusCard(courseStatus: CourseStatus) {
 @Preview(showBackground = true)
 @Composable
 fun OverviewScreenPreview() {
-    //val courses = emptyList<CourseStatus>()
-    val courses = listOf(CourseStatus(allCourses[0], 3), CourseStatus(allCourses[1], 1), CourseStatus(allCourses[2], 5))
+    val courses = emptyList<CourseStatus>()
+    //val courses = listOf(CourseStatus(allCourses[0], 3), CourseStatus(allCourses[1], 1), CourseStatus(allCourses[2], 5))
 
     ELearningAppTheme {
         Surface(

@@ -51,7 +51,8 @@ fun AppNavHost(
                     resetActionState = {loginViewModel.resetLoginActionState()},
                     onLogin = {email, password -> loginViewModel.login(email, password)},
                     onPasswordReset = {email -> loginViewModel.resetPassword(email)},
-                    restPasswordState = loginViewModel.resetState.value
+                    restPasswordState = loginViewModel.resetState.value,
+                    fetchUser = {userViewModel.fetchUser()}
                 )
             }
             composable(route = LoginDestination.Register.route) {
