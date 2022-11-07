@@ -1,11 +1,9 @@
 package com.example.elearningapp.repositories
 
 import com.example.elearningapp.common.ActionState
-import com.example.elearningapp.data.CourseData
-import com.example.elearningapp.models.Course
-import com.example.elearningapp.models.User
+import com.example.elearningapp.datasource.CourseData
+import com.example.elearningapp.repositories.interfaces.CourseRepositoryInterface
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton

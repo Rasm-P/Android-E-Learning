@@ -1,4 +1,4 @@
-package com.example.elearningapp.data
+package com.example.elearningapp.datasource
 
 import com.example.elearningapp.models.Programme
 

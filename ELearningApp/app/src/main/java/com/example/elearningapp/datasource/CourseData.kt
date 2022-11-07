@@ -1,7 +1,6 @@
-package com.example.elearningapp.data
+package com.example.elearningapp.datasource
 
 import com.example.elearningapp.models.Course
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
 /**

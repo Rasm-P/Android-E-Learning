@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.elearningapp.common.ActionState
-import com.example.elearningapp.repositories.LoginRepositoryInterface
+import com.example.elearningapp.repositories.interfaces.LoginRepositoryInterface
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel

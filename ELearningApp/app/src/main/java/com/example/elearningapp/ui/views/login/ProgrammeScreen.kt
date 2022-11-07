@@ -14,11 +14,7 @@ import androidx.compose.material.icons.filled.Error
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -29,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.elearningapp.R
 import com.example.elearningapp.common.ActionState
-import com.example.elearningapp.data.ProgrammeData.programmes
+import com.example.elearningapp.datasource.ProgrammeData.programmes
 import com.example.elearningapp.models.Programme
 import com.example.elearningapp.models.User
 import com.example.elearningapp.ui.theme.ELearningAppTheme

@@ -1,7 +1,8 @@
 package com.example.elearningapp.repositories
 
 import com.example.elearningapp.common.ActionState
-import com.example.elearningapp.data.ProgrammeData
+import com.example.elearningapp.datasource.ProgrammeData
+import com.example.elearningapp.repositories.interfaces.ProgrammeRepositoryInterface
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

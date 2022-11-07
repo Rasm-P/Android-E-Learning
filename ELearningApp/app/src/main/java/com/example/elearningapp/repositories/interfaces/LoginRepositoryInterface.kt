@@ -1,4 +1,4 @@
-package com.example.elearningapp.repositories
+package com.example.elearningapp.repositories.interfaces
 
 import com.example.elearningapp.common.ActionState
 import kotlinx.coroutines.flow.Flow

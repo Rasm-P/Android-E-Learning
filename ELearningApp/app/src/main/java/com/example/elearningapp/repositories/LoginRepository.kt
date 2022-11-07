@@ -2,8 +2,8 @@ package com.example.elearningapp.repositories
 
 import android.util.Log
 import com.example.elearningapp.common.ActionState
+import com.example.elearningapp.repositories.interfaces.LoginRepositoryInterface
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -11,7 +11,8 @@ import javax.inject.Singleton
 
 
 @Singleton
-class LoginRepository @Inject internal constructor(private val firebaseAuth: FirebaseAuth) : LoginRepositoryInterface {
+class LoginRepository @Inject internal constructor(private val firebaseAuth: FirebaseAuth) :
+    LoginRepositoryInterface {
 
     private val errorMessage = "Something went wrong!"
 

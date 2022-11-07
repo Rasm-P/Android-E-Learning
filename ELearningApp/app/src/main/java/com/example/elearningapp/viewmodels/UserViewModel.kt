@@ -8,7 +8,7 @@ import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.models.CourseStatus
 import com.example.elearningapp.models.Programme
 import com.example.elearningapp.models.User
-import com.example.elearningapp.repositories.UserRepositoryInterface
+import com.example.elearningapp.repositories.interfaces.UserRepositoryInterface
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel

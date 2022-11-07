@@ -16,10 +16,7 @@ import com.example.elearningapp.ui.views.login.RegisterScreen
 import com.example.elearningapp.ui.views.login.WelcomeScreen
 import com.example.elearningapp.ui.views.notes.NotesOverviewScreen
 import com.example.elearningapp.ui.views.overview.OverviewScreen
-import com.example.elearningapp.viewmodels.CourseViewModel
-import com.example.elearningapp.viewmodels.LoginViewModel
-import com.example.elearningapp.viewmodels.ProgrammeViewModel
-import com.example.elearningapp.viewmodels.UserViewModel
+import com.example.elearningapp.viewmodels.*
 
 // Built with inspiration from: https://developer.android.com/codelabs/jetpack-compose-navigation#0
 
@@ -30,7 +27,8 @@ fun AppNavHost(
     loginViewModel: LoginViewModel,
     userViewModel: UserViewModel,
     programmeViewModel: ProgrammeViewModel,
-    courseViewModel: CourseViewModel
+    courseViewModel: CourseViewModel,
+    noteViewModel: NoteViewModel
 ) {
     var isFirstTimeUser by remember { mutableStateOf(false) }
     val startDestination = if (loginViewModel.isLoggedIn() && !isFirstTimeUser) AppNavigationFlow.OverviewFlow.route else AppNavigationFlow.LoginFlow.route

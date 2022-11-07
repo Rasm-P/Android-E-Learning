@@ -35,7 +35,7 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.elearningapp.common.ActionState
-import com.example.elearningapp.data.CourseData.allCourses
+import com.example.elearningapp.datasource.CourseData.allCourses
 import com.example.elearningapp.models.Course
 
 @Composable

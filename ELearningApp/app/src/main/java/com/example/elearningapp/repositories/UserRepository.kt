@@ -5,6 +5,7 @@ import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.models.CourseStatus
 import com.example.elearningapp.models.Programme
 import com.example.elearningapp.models.User
+import com.example.elearningapp.repositories.interfaces.UserRepositoryInterface
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
@@ -14,7 +15,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UserRepository @Inject internal constructor(private val firebaseDB: FirebaseFirestore): UserRepositoryInterface {
+class UserRepository @Inject internal constructor(private val firebaseDB: FirebaseFirestore):
+    UserRepositoryInterface {
 
     private val errorMessage = "Something went wrong!"
 
@@ -30,7 +32,7 @@ class UserRepository @Inject internal constructor(private val firebaseDB: Fireba
             emit(ActionState.Success(user))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
-            Log.e("Error: Login", e.message ?: errorMessage)
+            Log.e("Error: User", e.message ?: errorMessage)
         }
     }
 
@@ -42,7 +44,7 @@ class UserRepository @Inject internal constructor(private val firebaseDB: Fireba
             emit(ActionState.Success(user))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
-            Log.e("Error: Login", e.message ?: errorMessage)
+            Log.e("Error: User", e.message ?: errorMessage)
         }
     }
 
@@ -54,7 +56,7 @@ class UserRepository @Inject internal constructor(private val firebaseDB: Fireba
             emit(ActionState.Success(true))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
-            Log.e("Error: Login", e.message ?: errorMessage)
+            Log.e("Error: User", e.message ?: errorMessage)
         }
     }
 
@@ -66,7 +68,7 @@ class UserRepository @Inject internal constructor(private val firebaseDB: Fireba
             emit(ActionState.Success(true))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
-            Log.e("Error: Login", e.message ?: errorMessage)
+            Log.e("Error: User", e.message ?: errorMessage)
         }
     }
 
@@ -78,7 +80,7 @@ class UserRepository @Inject internal constructor(private val firebaseDB: Fireba
             emit(ActionState.Success(true))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
-            Log.e("Error: Login", e.message ?: errorMessage)
+            Log.e("Error: User", e.message ?: errorMessage)
         }
     }
 

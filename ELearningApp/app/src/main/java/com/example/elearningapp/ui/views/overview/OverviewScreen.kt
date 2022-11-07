@@ -32,8 +32,7 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.elearningapp.common.ActionState
-import com.example.elearningapp.data.CourseData.allCourses
-import com.example.elearningapp.data.CourseData.trendingCourses
+import com.example.elearningapp.datasource.CourseData.trendingCourses
 import com.example.elearningapp.models.Course
 import com.example.elearningapp.models.CourseStatus
 import com.example.elearningapp.navigation.MenuNavDestination

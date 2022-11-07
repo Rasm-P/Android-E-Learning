@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.models.Course
-import com.example.elearningapp.repositories.CourseRepositoryInterface
+import com.example.elearningapp.repositories.interfaces.CourseRepositoryInterface
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
