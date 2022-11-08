@@ -185,7 +185,7 @@ fun LoginCard(
                     }
                 }
                 if (showForgotPasswordDialog) {
-                    ForgotPasswordDialog({ showForgotPasswordDialog = !showForgotPasswordDialog }, resetActionState, onPasswordReset, restPasswordState)
+                    ForgotPasswordDialog({ showForgotPasswordDialog = false }, resetActionState, onPasswordReset, restPasswordState)
                 }
             }
         }
@@ -200,7 +200,7 @@ fun ForgotPasswordDialog(onDismiss: () -> Unit, resetActionState: () -> Unit, on
 
     AlertDialog(
         title = { Text(
-            text = "Reset Password",
+            text = "Forgot Password",
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
         ) },
@@ -278,7 +278,7 @@ fun ForgotPasswordDialog(onDismiss: () -> Unit, resetActionState: () -> Unit, on
                 text = "Close",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Light,
-                modifier = Modifier.padding(12.dp).clickable( onClick = onDismiss )
+                modifier = Modifier.padding(20.dp).clickable( onClick = onDismiss )
             )
         }
     )

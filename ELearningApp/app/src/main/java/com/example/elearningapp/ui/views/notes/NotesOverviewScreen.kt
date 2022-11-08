@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import com.example.elearningapp.models.entities.NoteEntity
 import com.example.elearningapp.navigation.MenuNavDestination
 import com.example.elearningapp.navigation.bottomNavScreens
 import com.example.elearningapp.ui.theme.ELearningAppTheme
+import com.example.elearningapp.ui.views.components.AddNoteButton
 import com.example.elearningapp.ui.views.components.BottomNavBar
 import com.example.elearningapp.ui.views.components.TopBar
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -101,6 +103,7 @@ fun NotesOverviewScreen(
             }
         }
     }
+    AddNoteButton()
 }
 
 
@@ -126,7 +129,7 @@ fun NoteCard(note: NoteEntity) {
                         fontWeight = FontWeight.Medium
                     )
                     Icon(modifier = Modifier.clickable( onClick = {/*TODO*/} ),
-                        imageVector = Icons.Filled.Edit,
+                        imageVector = Icons.Outlined.Edit,
                         contentDescription = "Edit note",
                         tint = MaterialTheme.colors.primary
                     )
@@ -158,7 +161,7 @@ fun NoteCard(note: NoteEntity) {
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true)
 @Composable
-fun CourseOverviewScreenPreview() {
+fun NotesOverviewScreenPreview() {
     val longText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut " +
             "labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi " +
             "ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum " +

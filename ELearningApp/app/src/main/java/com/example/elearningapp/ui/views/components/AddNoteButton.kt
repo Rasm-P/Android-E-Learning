@@ -1,11 +1,11 @@
-package com.example.elearningapp.ui.views.notes
+package com.example.elearningapp.ui.views.components
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.NoteAdd
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,48 +17,65 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.elearningapp.models.entities.NoteEntity
 import com.example.elearningapp.ui.theme.ELearningAppTheme
+import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun EditNote(onDismiss: () -> Unit, noteEntity: NoteEntity) {
-    var title by remember { mutableStateOf(noteEntity.title) }
-    var noteText by remember { mutableStateOf(noteEntity.text) }
-    val dateTime = noteEntity.lastEdited
+fun AddNoteButton() {
+    var showEditNoteDialog by remember { mutableStateOf(false) }
+
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
+        Button(
+            modifier = Modifier.padding(end = 40.dp, bottom = 30.dp),
+            onClick = {showEditNoteDialog = true}) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Outlined.Edit,
+                    contentDescription = "Add note",
+                    tint = MaterialTheme.colors.secondary
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(text = "Add a Note")
+            }
+        }
+    }
+    if (showEditNoteDialog) {
+        AddNoteDialog { showEditNoteDialog = false }
+    }
+}
+
+
+@Composable
+fun AddNoteDialog(onDismiss: () -> Unit) {
+    var title by remember { mutableStateOf("") }
+    var noteText by remember { mutableStateOf("") }
+    val dateTime = OffsetDateTime.now()
     val maxNoteChars = 500
 
     AlertDialog(
         text = {
             Column(modifier = Modifier.fillMaxWidth()) {
-                Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-                    BasicTextField(
-                        modifier = Modifier.fillMaxWidth().weight(1f),
-                        value = title,
-                        singleLine = true,
-                        textStyle = TextStyle(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Medium
-                        ),
-                        onValueChange = { title = it},
-                        decorationBox = { innerTextField ->
-                            if (title.isEmpty()) {
-                                Text(
-                                    text = "Title",
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Medium
-                                )
-                            }
-                            innerTextField()
+                BasicTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = title,
+                    singleLine = true,
+                    textStyle = TextStyle(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Medium
+                    ),
+                    onValueChange = { title = it},
+                    decorationBox = { innerTextField ->
+                        if (title.isEmpty()) {
+                            Text(
+                                text = "Title",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Medium
+                            )
                         }
-                    )
-                    Icon(modifier = Modifier.clickable( onClick = {/*TODO*/} ),
-                        imageVector = Icons.Outlined.Delete,
-                        contentDescription = "Edit note",
-                        tint = MaterialTheme.colors.primary
-                    )
-                }
-
+                        innerTextField()
+                    }
+                )
                 Spacer(modifier = Modifier.height(20.dp))
                 Divider(color = Color.LightGray, thickness = 1.dp)
                 Spacer(modifier = Modifier.height(4.dp))
@@ -126,23 +143,14 @@ fun EditNote(onDismiss: () -> Unit, noteEntity: NoteEntity) {
 
 @Preview(showBackground = true)
 @Composable
-fun EditNotePreview() {
-    val note = NoteEntity(
-        title = "Machine Learning Notes",
-        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt " +
-                "ut labore et dolore magna aliqua. \n" +
-                "\n" +
-                "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea " +
-                "commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum " +
-                "dolore eu fugiat nulla pariatur."
-    )
-
+fun AddNoteDialogPreview() {
     ELearningAppTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            EditNote({}, note)
+            AddNoteDialog({})
+            //AddNoteButton()
         }
     }
 }
