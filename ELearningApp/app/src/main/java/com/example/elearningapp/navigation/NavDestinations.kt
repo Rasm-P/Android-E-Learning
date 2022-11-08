@@ -17,12 +17,12 @@ sealed class MenuNavDestination(
     object CourseOverview : MenuNavDestination (
         "Courses",
         Icons.Filled.School,
-        "course-overview"
+        "courses"
     )
     object NotesOverview : MenuNavDestination (
         "Notes",
         Icons.Filled.StickyNote2,
-        "notes-overview"
+        "notes"
     )
     object Account : MenuNavDestination (
         "Account",

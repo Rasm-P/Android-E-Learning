@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.elearningapp.navigation.MenuNavDestination
 import com.example.elearningapp.navigation.bottomNavScreens
 import com.example.elearningapp.navigation.loginNavScreens
 import com.example.elearningapp.ui.theme.ELearningAppTheme
@@ -56,7 +57,7 @@ fun TopBar(
             }
         },
         actions = {
-            if (!isRouteInLoginFLow) {
+            if (!isRouteInLoginFLow && route != MenuNavDestination.Account.route) {
                 IconButton(onClick = onAccountPressed) {
                     Icon(
                         imageVector = Icons.Outlined.AccountCircle,

@@ -179,7 +179,7 @@ fun NotesOverviewScreenPreview() {
                 topBar = { TopBar("Notes", {}, {}, {}) },
                 bottomBar = {
                     BottomNavBar(
-                        bottomNavScreens, {}, MenuNavDestination.CourseOverview
+                        bottomNavScreens, {}, MenuNavDestination.NotesOverview
                     )
                 },
                 content = { NotesOverviewScreen(MutableStateFlow(notes)) }

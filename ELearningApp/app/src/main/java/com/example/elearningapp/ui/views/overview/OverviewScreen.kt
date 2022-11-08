@@ -100,22 +100,17 @@ fun OverviewScreen(
                         items(userCoursesStatus) { course -> CourseStatusCard(course) }
                     }
                 } else {
-                    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                    Column(modifier = Modifier
+                        .fillMaxSize()
+                        .clickable(onClick = navigateCourseOverview), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                         Icon(imageVector = Icons.Filled.School, modifier = Modifier.size(128.dp), contentDescription = "Course icon", tint = MaterialTheme.colors.primary.copy(alpha = 0.5f))
                         Text(
-                            text = "You don't have any courses yet",
+                            text = "No course activity yet",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Light,
                             color = MaterialTheme.colors.primary.copy(alpha = 0.5f)
                         )
                         Spacer(modifier = Modifier.height(6.dp))
-                        Row(modifier = Modifier.clickable(onClick = navigateCourseOverview), verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = "Explore courses",
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Light)
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = "To courses", tint = MaterialTheme.colors.primary)
-                        }
                     }
                 }
             }
@@ -221,7 +216,9 @@ fun CourseStatusCard(courseStatus: CourseStatus) {
                     }
                 }
             }
-            Column(modifier = Modifier.fillMaxHeight().weight(1f) ,verticalArrangement = Arrangement.SpaceBetween) {
+            Column(modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f) ,verticalArrangement = Arrangement.SpaceBetween) {
                 Text(
                     text = courseStatus.course.courseName,
                     maxLines = 1,
@@ -271,7 +268,7 @@ fun OverviewScreenPreview() {
                     BottomNavBar(
                         bottomNavScreens,
                         {},
-                        MenuNavDestination.CourseOverview
+                        MenuNavDestination.Overview
                     )
                 },
                 content = { OverviewScreen(ActionState.Success(trendingCourses), {}, courses, {}) }
