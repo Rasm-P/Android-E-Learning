@@ -11,7 +11,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 private val DarkColorPalette = darkColors(
     primary = Red,
     primaryVariant = DarkRed,
-    secondary = Grey,
+    secondary = LightGrey,
     background = DarkGrey
 )
 
