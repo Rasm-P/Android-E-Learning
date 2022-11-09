@@ -37,6 +37,7 @@ import coil.request.ImageRequest
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.datasource.CourseData.allCourses
 import com.example.elearningapp.models.Course
+import com.example.elearningapp.ui.views.components.NoResultsMessage
 
 @Composable
 fun CourseOverviewScreen(
@@ -104,20 +105,7 @@ fun CourseOverviewScreen(
                     items(courses) { course -> CourseCard(course) }
                 }
             } else {
-                Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                    Icon(
-                        imageVector = Icons.Filled.SearchOff,
-                        modifier = Modifier.size(128.dp),
-                        contentDescription = "No results icon",
-                        tint = MaterialTheme.colors.primary.copy(alpha = 0.5f)
-                    )
-                    Text(
-                        text = "No courses found",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Light,
-                        color = MaterialTheme.colors.primary.copy(alpha = 0.5f)
-                    )
-                }
+                NoResultsMessage("No courses found",Icons.Filled.SearchOff)
             }
         } else if (coursesState is ActionState.Error) {
             Toast.makeText(LocalContext.current, coursesState.message, Toast.LENGTH_LONG).show()

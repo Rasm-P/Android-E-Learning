@@ -2,10 +2,13 @@ package com.example.elearningapp.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.elearningapp.common.ActionState
+import com.example.elearningapp.models.Course
 import com.example.elearningapp.models.entities.NoteEntity
 import com.example.elearningapp.repositories.interfaces.NoteRepositoryInterface
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
@@ -30,5 +33,9 @@ class NoteViewModel @Inject internal constructor(private val _noteRepository: No
 
     fun deleteNote(id: Long) = viewModelScope.launch {
         _noteRepository.deleteNote(id)
+    }
+
+    fun filterNotes(notes: List<NoteEntity>, searchFilter: String): List<NoteEntity> {
+         return notes.filter { it.title.lowercase().contains(searchFilter.lowercase()) }
     }
 }

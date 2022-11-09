@@ -23,10 +23,7 @@ import com.example.elearningapp.models.entities.NoteEntity
 import com.example.elearningapp.navigation.MenuNavDestination
 import com.example.elearningapp.navigation.bottomNavScreens
 import com.example.elearningapp.ui.theme.ELearningAppTheme
-import com.example.elearningapp.ui.views.components.AddNoteButton
-import com.example.elearningapp.ui.views.components.AddNoteDialog
-import com.example.elearningapp.ui.views.components.BottomNavBar
-import com.example.elearningapp.ui.views.components.TopBar
+import com.example.elearningapp.ui.views.components.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.time.OffsetDateTime
@@ -37,7 +34,8 @@ fun NotesOverviewScreen(
     allNotesState: StateFlow<List<NoteEntity>>,
     saveNote: (String, String) -> Unit,
     editNote: (Long, String, String) -> Unit,
-    deleteNote: (Long) -> Unit
+    deleteNote: (Long) -> Unit,
+    filterNotes: (List<NoteEntity>, String) -> List<NoteEntity>
 ) {
     var search by remember { mutableStateOf("") }
 
@@ -82,14 +80,19 @@ fun NotesOverviewScreen(
         }
         val notes by allNotesState.collectAsState()
         if (notes.isNotEmpty()) {
-            LazyColumn(
-                modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp),
-                contentPadding = PaddingValues(bottom = 20.dp)
-            ) {
-                items(notes) { note ->
-                    NoteCard(note, editNote, deleteNote)
+            val filteredNotes = filterNotes(notes,search)
+            if (filteredNotes.isNotEmpty()) {
+                LazyColumn(
+                    modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp),
+                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                    contentPadding = PaddingValues(bottom = 20.dp)
+                ) {
+                    items(filteredNotes) { note ->
+                        NoteCard(note, editNote, deleteNote)
+                    }
                 }
+            } else {
+                NoResultsMessage("No notes found",Icons.Filled.SearchOff)
             }
         } else {
             Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
@@ -196,7 +199,7 @@ fun NotesOverviewScreenPreview() {
                         bottomNavScreens, {}, MenuNavDestination.NotesOverview
                     )
                 },
-                content = { NotesOverviewScreen(MutableStateFlow(notes), {_,_->}, {_,_,_->}, {}) }
+                content = { NotesOverviewScreen(MutableStateFlow(notes), {_,_->}, {_,_,_->}, {}, {_,_-> notes}) }
             )
         }
     }

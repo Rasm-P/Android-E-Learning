@@ -40,6 +40,7 @@ import com.example.elearningapp.navigation.MenuNavDestination
 import com.example.elearningapp.navigation.bottomNavScreens
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 import com.example.elearningapp.ui.views.components.BottomNavBar
+import com.example.elearningapp.ui.views.components.NoResultsMessage
 import com.example.elearningapp.ui.views.components.TopBar
 import kotlin.math.roundToInt
 
@@ -47,8 +48,7 @@ import kotlin.math.roundToInt
 fun OverviewScreen(
     courseState: ActionState<List<Course>>,
     fetchTrendingCourses: () -> Unit,
-    userCoursesStatus: List<CourseStatus>,
-    navigateCourseOverview: () -> Unit
+    userCoursesStatus: List<CourseStatus>
 ) {
     LaunchedEffect(Unit, block = {
         fetchTrendingCourses.invoke()
@@ -100,18 +100,7 @@ fun OverviewScreen(
                         items(userCoursesStatus) { course -> CourseStatusCard(course) }
                     }
                 } else {
-                    Column(modifier = Modifier
-                        .fillMaxSize()
-                        .clickable(onClick = navigateCourseOverview), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                        Icon(imageVector = Icons.Filled.School, modifier = Modifier.size(128.dp), contentDescription = "Course icon", tint = MaterialTheme.colors.primary.copy(alpha = 0.5f))
-                        Text(
-                            text = "No course activity yet",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Light,
-                            color = MaterialTheme.colors.primary.copy(alpha = 0.5f)
-                        )
-                        Spacer(modifier = Modifier.height(6.dp))
-                    }
+                    NoResultsMessage("No course activity yet",Icons.Filled.School)
                 }
             }
         }
@@ -271,7 +260,7 @@ fun OverviewScreenPreview() {
                         MenuNavDestination.Overview
                     )
                 },
-                content = { OverviewScreen(ActionState.Success(trendingCourses), {}, courses, {}) }
+                content = { OverviewScreen(ActionState.Success(trendingCourses), {}, courses) }
             )
         }
         //CourseStatusCard(courses[0])

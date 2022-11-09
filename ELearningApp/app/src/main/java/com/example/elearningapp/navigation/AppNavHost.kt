@@ -80,8 +80,7 @@ fun AppNavHost(
             composable(route = MenuNavDestination.Overview.route) {
                 OverviewScreen(courseState = courseViewModel.courseState.value,
                 fetchTrendingCourses = {courseViewModel.fetchTrendingCourses()},
-                userCoursesStatus = userViewModel.userData.value.activeCourses,
-                navigateCourseOverview = {navController.navigateSingleTopTo(MenuNavDestination.CourseOverview.route)}
+                userCoursesStatus = userViewModel.userData.value.activeCourses
                 )
             }
             composable(route = MenuNavDestination.CourseOverview.route) {
@@ -95,7 +94,8 @@ fun AppNavHost(
                 NotesOverviewScreen(allNotesState = noteViewModel.allNotesState,
                 saveNote = {title, noteText -> noteViewModel.insertNote(title, noteText)},
                 editNote = {id, title, noteText -> noteViewModel.updateNote(id, title, noteText)},
-                deleteNote = {id -> noteViewModel.deleteNote(id)}
+                deleteNote = {id -> noteViewModel.deleteNote(id)},
+                filterNotes = {notes, searchFilter -> noteViewModel.filterNotes(notes, searchFilter)}
                 )
             }
             composable(route = MenuNavDestination.Account.route) {
