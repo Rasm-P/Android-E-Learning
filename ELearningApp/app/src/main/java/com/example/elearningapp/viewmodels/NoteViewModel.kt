@@ -1,16 +1,14 @@
 package com.example.elearningapp.viewmodels
 
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.elearningapp.models.entities.NoteEntity
 import com.example.elearningapp.repositories.interfaces.NoteRepositoryInterface
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.OffsetDateTime
 import javax.inject.Inject
 
 
@@ -22,15 +20,15 @@ class NoteViewModel @Inject internal constructor(private val _noteRepository: No
         .stateIn(viewModelScope , started = SharingStarted.WhileSubscribed(), emptyList())
     }
 
-    suspend fun insertNote(note: NoteEntity) {
-        _noteRepository.insertNote(note)
+    fun insertNote(title: String, noteText: String) = viewModelScope.launch {
+        _noteRepository.insertNote(NoteEntity(title = title, text = noteText))
     }
 
-    suspend fun updateNote(note: NoteEntity) {
-        _noteRepository.updateNote(note)
+    fun updateNote(id: Long, title: String, noteText: String) = viewModelScope.launch {
+        _noteRepository.updateNote(NoteEntity(id = id, title = title, text = noteText, lastEdited = OffsetDateTime.now()))
     }
 
-    suspend fun deleteNote(note: NoteEntity) {
-        _noteRepository.deleteNote(note)
+    fun deleteNote(id: Long) = viewModelScope.launch {
+        _noteRepository.deleteNote(id)
     }
 }

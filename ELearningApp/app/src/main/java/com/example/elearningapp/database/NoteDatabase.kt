@@ -9,10 +9,9 @@ import com.example.elearningapp.models.entities.NoteEntity
 
 @Database(
     entities = [NoteEntity::class],
-    exportSchema = true,
-    autoMigrations = [],
+    exportSchema = false,
     version = 1)
 @TypeConverters(DatabaseTypeConverters::class)
-abstract class RoomDatabase : RoomDatabase() {
+abstract class NoteDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
 }

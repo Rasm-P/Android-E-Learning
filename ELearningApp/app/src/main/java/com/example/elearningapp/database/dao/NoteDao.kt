@@ -6,15 +6,15 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NoteDao {
-    @Insert
+    @Query("SELECT * FROM note")
+    fun getAllNotes(): Flow<List<NoteEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertNote(note: NoteEntity)
 
     @Update
     suspend fun updateNote(note: NoteEntity)
 
-    @Delete
-    suspend fun deleteNote(note: NoteEntity)
-
-    @Query("SELECT * FROM note")
-    fun getAllNotes(): Flow<List<NoteEntity>>
+    @Query("DELETE FROM note where id = :id")
+    suspend fun deleteNote(id: Long)
 }

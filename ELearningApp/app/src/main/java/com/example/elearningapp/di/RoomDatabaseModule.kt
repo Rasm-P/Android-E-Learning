@@ -3,7 +3,7 @@ package com.example.elearningapp.di
 import android.content.Context
 import androidx.room.Room
 import com.example.elearningapp.common.DatabaseTypeConverters
-import com.example.elearningapp.database.RoomDatabase
+import com.example.elearningapp.database.NoteDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,11 +19,11 @@ object RoomDatabaseModule {
     @Provides
     fun provideDatabase(
         @ApplicationContext context: Context,
-    ): RoomDatabase {
+    ): NoteDatabase {
         DatabaseTypeConverters
         return Room.databaseBuilder(
             context,
-            RoomDatabase::class.java,
+            NoteDatabase::class.java,
             "note.db"
         )
             .fallbackToDestructiveMigration()
@@ -32,6 +32,6 @@ object RoomDatabaseModule {
 
     @Singleton
     @Provides
-    fun provideNoteDao(roomDatabase: RoomDatabase) = roomDatabase.noteDao()
+    fun provideNoteDao(noteDatabase: NoteDatabase) = noteDatabase.noteDao()
 
 }

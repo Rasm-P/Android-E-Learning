@@ -22,13 +22,13 @@ import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun AddNoteButton() {
-    var showEditNoteDialog by remember { mutableStateOf(false) }
+fun AddNoteButton(saveNote: (String, String) -> Unit) {
+    var showAddNoteDialog by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
         Button(
             modifier = Modifier.padding(end = 40.dp, bottom = 30.dp),
-            onClick = {showEditNoteDialog = true}) {
+            onClick = {showAddNoteDialog = true}) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Outlined.Edit,
@@ -40,14 +40,14 @@ fun AddNoteButton() {
             }
         }
     }
-    if (showEditNoteDialog) {
-        AddNoteDialog { showEditNoteDialog = false }
+    if (showAddNoteDialog) {
+        AddNoteDialog({ showAddNoteDialog = false }, saveNote)
     }
 }
 
 
 @Composable
-fun AddNoteDialog(onDismiss: () -> Unit) {
+fun AddNoteDialog(onDismiss: () -> Unit, saveNote: (String, String) -> Unit) {
     var title by remember { mutableStateOf("") }
     var noteText by remember { mutableStateOf("") }
     val dateTime = OffsetDateTime.now()
@@ -124,7 +124,8 @@ fun AddNoteDialog(onDismiss: () -> Unit) {
                     modifier = Modifier.clickable(onClick = onDismiss)
                 )
                 Button(
-                    onClick = {/*TODO*/}) {
+                    onClick = {saveNote(title,noteText)
+                                onDismiss.invoke()}) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Outlined.NoteAdd,
@@ -149,7 +150,7 @@ fun AddNoteDialogPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            AddNoteDialog({})
+            AddNoteDialog({},{_,_->})
             //AddNoteButton()
         }
     }

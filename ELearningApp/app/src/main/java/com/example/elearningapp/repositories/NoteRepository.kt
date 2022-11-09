@@ -12,6 +12,8 @@ import javax.inject.Singleton
 @Singleton
 class NoteRepository @Inject internal constructor(private var noteDao: NoteDao) : NoteRepositoryInterface{
 
+    override fun getAllNotes(): Flow<List<NoteEntity>> = noteDao.getAllNotes()
+
     override suspend fun insertNote(note: NoteEntity) {
         noteDao.insertNote(note)
     }
@@ -20,11 +22,8 @@ class NoteRepository @Inject internal constructor(private var noteDao: NoteDao) 
         noteDao.updateNote(note)
     }
 
-    override suspend fun deleteNote(note: NoteEntity) {
-        noteDao.deleteNote(note)
+    override suspend fun deleteNote(id: Long) {
+        noteDao.deleteNote(id)
     }
 
-    override fun getAllNotes(): Flow<List<NoteEntity>> = flow {
-        noteDao.getAllNotes()
-    }
 }

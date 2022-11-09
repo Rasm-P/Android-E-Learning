@@ -24,15 +24,20 @@ import com.example.elearningapp.navigation.MenuNavDestination
 import com.example.elearningapp.navigation.bottomNavScreens
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 import com.example.elearningapp.ui.views.components.AddNoteButton
+import com.example.elearningapp.ui.views.components.AddNoteDialog
 import com.example.elearningapp.ui.views.components.BottomNavBar
 import com.example.elearningapp.ui.views.components.TopBar
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun NotesOverviewScreen(
-    allNotesState: StateFlow<List<NoteEntity>>
+    allNotesState: StateFlow<List<NoteEntity>>,
+    saveNote: (String, String) -> Unit,
+    editNote: (Long, String, String) -> Unit,
+    deleteNote: (Long) -> Unit
 ) {
     var search by remember { mutableStateOf("") }
 
@@ -83,7 +88,7 @@ fun NotesOverviewScreen(
                 contentPadding = PaddingValues(bottom = 20.dp)
             ) {
                 items(notes) { note ->
-                    NoteCard(note)
+                    NoteCard(note, editNote, deleteNote)
                 }
             }
         } else {
@@ -103,12 +108,18 @@ fun NotesOverviewScreen(
             }
         }
     }
-    AddNoteButton()
+    AddNoteButton(saveNote)
 }
 
 
 @Composable
-fun NoteCard(note: NoteEntity) {
+fun NoteCard(
+    note: NoteEntity,
+    editNote: (Long, String, String) -> Unit,
+    deleteNote: (Long) -> Unit
+) {
+    var showEditNoteDialog by remember { mutableStateOf(false) }
+
     Card(modifier = Modifier.height(120.dp),
         shape = RoundedCornerShape(5.dp),
         elevation = 12.dp) {
@@ -128,7 +139,7 @@ fun NoteCard(note: NoteEntity) {
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Medium
                     )
-                    Icon(modifier = Modifier.clickable( onClick = {/*TODO*/} ),
+                    Icon(modifier = Modifier.clickable( onClick = { showEditNoteDialog = true } ),
                         imageVector = Icons.Outlined.Edit,
                         contentDescription = "Edit note",
                         tint = MaterialTheme.colors.primary
@@ -154,6 +165,9 @@ fun NoteCard(note: NoteEntity) {
                 color = Color.LightGray
             )
         }
+    }
+    if (showEditNoteDialog) {
+        EditNoteDialog({ showEditNoteDialog = false }, note, editNote, deleteNote)
     }
 }
 
@@ -182,7 +196,7 @@ fun NotesOverviewScreenPreview() {
                         bottomNavScreens, {}, MenuNavDestination.NotesOverview
                     )
                 },
-                content = { NotesOverviewScreen(MutableStateFlow(notes)) }
+                content = { NotesOverviewScreen(MutableStateFlow(notes), {_,_->}, {_,_,_->}, {}) }
             )
         }
     }

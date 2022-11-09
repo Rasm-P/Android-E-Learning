@@ -22,7 +22,12 @@ import com.example.elearningapp.ui.theme.ELearningAppTheme
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun EditNote(onDismiss: () -> Unit, noteEntity: NoteEntity) {
+fun EditNoteDialog(
+    onDismiss: () -> Unit,
+    noteEntity: NoteEntity,
+    editNote: (Long, String, String) -> Unit,
+    deleteNote: (Long) -> Unit
+) {
     var title by remember { mutableStateOf(noteEntity.title) }
     var noteText by remember { mutableStateOf(noteEntity.text) }
     val dateTime = noteEntity.lastEdited
@@ -52,9 +57,9 @@ fun EditNote(onDismiss: () -> Unit, noteEntity: NoteEntity) {
                             innerTextField()
                         }
                     )
-                    Icon(modifier = Modifier.clickable( onClick = {/*TODO*/} ),
+                    Icon(modifier = Modifier.clickable( onClick = {deleteNote(noteEntity.id); onDismiss.invoke()} ),
                         imageVector = Icons.Outlined.Delete,
-                        contentDescription = "Edit note",
+                        contentDescription = "Delete note",
                         tint = MaterialTheme.colors.primary
                     )
                 }
@@ -107,7 +112,9 @@ fun EditNote(onDismiss: () -> Unit, noteEntity: NoteEntity) {
                     modifier = Modifier.clickable(onClick = onDismiss)
                 )
                 Button(
-                    onClick = {/*TODO*/}) {
+                    onClick = {editNote(noteEntity.id,title,noteText)
+                                onDismiss.invoke()
+                    }) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Outlined.NoteAdd,
@@ -142,7 +149,7 @@ fun EditNotePreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            EditNote({}, note)
+            EditNoteDialog({}, note, {_,_,_->}, {})
         }
     }
 }
