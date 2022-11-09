@@ -8,7 +8,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
 import com.example.elearningapp.models.User
-import com.example.elearningapp.models.entities.NoteEntity
 import com.example.elearningapp.ui.views.account.AccountScreen
 import com.example.elearningapp.ui.views.courses.CourseOverviewScreen
 import com.example.elearningapp.ui.views.login.LoginScreen
@@ -18,7 +17,6 @@ import com.example.elearningapp.ui.views.login.WelcomeScreen
 import com.example.elearningapp.ui.views.notes.NotesOverviewScreen
 import com.example.elearningapp.ui.views.overview.OverviewScreen
 import com.example.elearningapp.viewmodels.*
-import java.time.OffsetDateTime
 
 // Built with inspiration from: https://developer.android.com/codelabs/jetpack-compose-navigation#0
 
@@ -99,7 +97,8 @@ fun AppNavHost(
                 )
             }
             composable(route = MenuNavDestination.Account.route) {
-                AccountScreen()
+                AccountScreen(userData = userViewModel.userData.value,
+                userEmail = loginViewModel.getEmail()!!)
             }
         }
         navigation(route = AppNavigationFlow.CourseFlow.route, startDestination = CourseDestination.CourseOverview.route) {

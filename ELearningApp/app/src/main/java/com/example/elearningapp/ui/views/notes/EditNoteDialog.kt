@@ -63,7 +63,6 @@ fun EditNoteDialog(
                         tint = MaterialTheme.colors.primary
                     )
                 }
-
                 Spacer(modifier = Modifier.height(20.dp))
                 Divider(color = Color.LightGray, thickness = 1.dp)
                 Spacer(modifier = Modifier.height(4.dp))

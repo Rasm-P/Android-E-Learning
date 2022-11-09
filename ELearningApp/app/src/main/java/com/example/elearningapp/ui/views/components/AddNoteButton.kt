@@ -27,7 +27,7 @@ fun AddNoteButton(saveNote: (String, String) -> Unit) {
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
         Button(
-            modifier = Modifier.padding(end = 40.dp, bottom = 30.dp),
+            modifier = Modifier.padding(end = 40.dp, bottom = 15.dp),
             onClick = {showAddNoteDialog = true}) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(

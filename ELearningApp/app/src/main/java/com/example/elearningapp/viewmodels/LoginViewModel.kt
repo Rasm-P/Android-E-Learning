@@ -54,6 +54,10 @@ class LoginViewModel @Inject internal constructor(private val _loginRepository: 
         }
     }
 
+    fun getEmail(): String? {
+        return Firebase.auth.currentUser!!.email
+    }
+
     fun updateEmail(email: String) {
         viewModelScope.launch {
             _loginRepository.updateEmail(email).collect {
