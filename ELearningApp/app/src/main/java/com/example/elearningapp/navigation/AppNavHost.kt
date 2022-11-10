@@ -101,8 +101,8 @@ fun AppNavHost(
                 userEmail = loginViewModel.getEmail())
             }
         }
-        navigation(route = AppNavigationFlow.CourseFlow.route, startDestination = CourseDestination.CourseOverview.route) {
-            composable(route = CourseDestination.CourseOverview.route) {
+        navigation(route = AppNavigationFlow.CourseFlow.route, startDestination = CourseDestination.CourseDetails.route) {
+            composable(route = CourseDestination.CourseDetails.route) {
                 { /*TODO*/ }
             }
             composable(route = CourseDestination.CourseArticle.route) {

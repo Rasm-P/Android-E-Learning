@@ -43,7 +43,7 @@ sealed class LoginDestination(
 sealed class CourseDestination(
     val route: String
 ) {
-    object CourseOverview : CourseDestination("course-overview")
+    object CourseDetails : CourseDestination("course-details")
     object CourseArticle : CourseDestination("course-article")
     object CourseVideo : CourseDestination("course-video")
     object CourseQuiz : CourseDestination("course-quiz")

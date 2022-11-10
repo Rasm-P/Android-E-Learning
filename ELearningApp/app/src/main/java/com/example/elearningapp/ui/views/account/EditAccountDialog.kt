@@ -44,6 +44,7 @@ fun EditAccountDialog(
                         fontWeight = FontWeight.Medium
                     )
                     Text(
+                        modifier = Modifier.clickable(onClick = {/*TODO*/}),
                         text = "Delete Account",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Light,
