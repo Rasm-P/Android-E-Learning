@@ -9,11 +9,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -53,6 +53,8 @@ fun CourseDetailsScreen(
     updateUserActiveCourses: (CourseInformation) -> Unit,
     navigateToScreenStep: (Int) -> Unit
 ) {
+    var showReadMoreDialog by remember { mutableStateOf(false) }
+
     LaunchedEffect(Unit, block = {
         fetchCourseContent.invoke()
     })
@@ -156,7 +158,7 @@ fun CourseDetailsScreen(
                             Text(
                                 modifier = Modifier
                                     .align(alignment = Alignment.End)
-                                    .clickable(onClick = {/*TODO*/ }),
+                                    .clickable(onClick = { showReadMoreDialog = true }),
                                 text = "Read More",
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Light,
@@ -187,9 +189,11 @@ fun CourseDetailsScreen(
                         val courseContent = courseContentState.data
                         if (courseContent != null) {
                             Column(
-                                modifier = Modifier.padding(bottom = 60.dp).verticalScroll(
-                                    ScrollState(0)
-                                )
+                                modifier = Modifier
+                                    .padding(bottom = 60.dp)
+                                    .verticalScroll(
+                                        ScrollState(0)
+                                    )
                             ) {
                                 CourseStepCard(1, stepStatus, courseContent.articleContent.title, navigateToScreenStep)
                                 CourseStepCard(2, stepStatus, courseContent.videoArticleContent.title, navigateToScreenStep)
@@ -240,6 +244,9 @@ fun CourseDetailsScreen(
             }
         }
     }
+    if (showReadMoreDialog) {
+        ReadMoreDialog({ showReadMoreDialog = false }, courseInformation)
+    }
 }
 
 
@@ -272,6 +279,46 @@ fun CourseStepCard(step: Int, stepStatus: Int, title: String, navigateToScreenSt
         }
     }
     Spacer(modifier = Modifier.height(6.dp))
+}
+
+
+@Composable
+fun ReadMoreDialog(onDismiss: () -> Unit, courseInformation: CourseInformation) {
+    AlertDialog(
+        title = {
+            Text(
+                text = courseInformation.courseName,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Medium
+            )
+        },
+        text = {
+            Text(
+                text = courseInformation.description,
+                fontSize = 12.sp,
+                lineHeight = 16.sp,
+                fontWeight = FontWeight.Light
+            )
+        },
+        onDismissRequest = onDismiss,
+        buttons = {
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                Button(
+                    modifier = Modifier.padding(bottom = 15.dp),
+                    onClick = onDismiss) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colors.secondary
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(text = "Back")
+                    }
+                }
+            }
+        }
+    )
 }
 
 
