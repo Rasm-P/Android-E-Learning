@@ -54,8 +54,8 @@ class LoginViewModel @Inject internal constructor(private val _loginRepository: 
         }
     }
 
-    fun getEmail(): String? {
-        return Firebase.auth.currentUser!!.email
+    fun getEmail(): String {
+        return Firebase.auth.currentUser?.email ?: "No email available"
     }
 
     fun updateEmail(email: String) {

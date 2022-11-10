@@ -98,7 +98,7 @@ fun AppNavHost(
             }
             composable(route = MenuNavDestination.Account.route) {
                 AccountScreen(userData = userViewModel.userData.value,
-                userEmail = loginViewModel.getEmail()!!)
+                userEmail = loginViewModel.getEmail())
             }
         }
         navigation(route = AppNavigationFlow.CourseFlow.route, startDestination = CourseDestination.CourseOverview.route) {
