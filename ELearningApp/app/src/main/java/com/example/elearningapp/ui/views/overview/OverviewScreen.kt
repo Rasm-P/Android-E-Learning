@@ -48,7 +48,8 @@ import kotlin.math.roundToInt
 fun OverviewScreen(
     courseInformationState: ActionState<List<CourseInformation>>,
     fetchTrendingCourses: () -> Unit,
-    userCoursesStatus: List<CourseStatus>
+    userCoursesStatus: List<CourseStatus>,
+    onViewCourse: (CourseInformation) -> Unit
 ) {
     LaunchedEffect(Unit, block = {
         fetchTrendingCourses.invoke()
@@ -69,7 +70,7 @@ fun OverviewScreen(
                     LazyRow(
                         contentPadding = PaddingValues(horizontal = 20.dp),
                         horizontalArrangement = Arrangement.spacedBy(20.dp)) {
-                        items(courseInformationState.data) { course -> TrendingCourseCard(course) }
+                        items(courseInformationState.data) { course -> TrendingCourseCard(course, onViewCourse) }
                     }
                 } else if (courseInformationState is ActionState.Error) {
                     Toast.makeText(LocalContext.current, courseInformationState.message, Toast.LENGTH_LONG).show()
@@ -97,7 +98,7 @@ fun OverviewScreen(
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(20.dp),
                         contentPadding = PaddingValues(bottom = 100.dp)){
-                        items(userCoursesStatus) { course -> CourseStatusCard(course) }
+                        items(userCoursesStatus) { course -> CourseStatusCard(course, onViewCourse) }
                     }
                 } else {
                     NoResultsMessage("No course activity yet",Icons.Filled.School)
@@ -109,7 +110,7 @@ fun OverviewScreen(
 
 
 @Composable
-fun TrendingCourseCard(courseInformation: CourseInformation) {
+fun TrendingCourseCard(courseInformation: CourseInformation, onViewCourse: (CourseInformation) -> Unit) {
     Card(modifier = Modifier.width(240.dp),
         shape = RoundedCornerShape(5.dp),
         elevation = 12.dp) {
@@ -158,7 +159,7 @@ fun TrendingCourseCard(courseInformation: CourseInformation) {
                         )
                     }
                     Text(
-                        modifier = Modifier.clickable( onClick = {/*TODO*/} ),
+                        modifier = Modifier.clickable( onClick = {onViewCourse(courseInformation)} ),
                         text = "VIEW COURSE",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
@@ -172,7 +173,7 @@ fun TrendingCourseCard(courseInformation: CourseInformation) {
 
 
 @Composable
-fun CourseStatusCard(courseStatus: CourseStatus) {
+fun CourseStatusCard(courseStatus: CourseStatus, onViewCourse: (CourseInformation) -> Unit) {
     val courseProgress = courseStatus.stepsCompleted.toFloat()/courseStatus.courseInformation.steps.toFloat()
 
     Card(modifier = Modifier.height(100.dp),
@@ -230,7 +231,7 @@ fun CourseStatusCard(courseStatus: CourseStatus) {
                 }
             }
             IconButton(
-                onClick = {/*TODO*/}
+                onClick = {onViewCourse(courseStatus.courseInformation)}
             ) {
                 Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = "View course", tint = MaterialTheme.colors.primary)
             }
@@ -260,7 +261,7 @@ fun OverviewScreenPreview() {
                         MenuNavDestination.Overview
                     )
                 },
-                content = { OverviewScreen(ActionState.Success(trendingCourses), {}, courses) }
+                content = { OverviewScreen(ActionState.Success(trendingCourses), {}, courses,{}) }
             )
         }
         //CourseStatusCard(courses[0])

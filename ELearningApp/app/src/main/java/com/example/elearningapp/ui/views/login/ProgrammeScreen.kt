@@ -152,7 +152,7 @@ fun ProgrammeCard(
                         Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                             Icon(imageVector = Icons.Filled.Error, contentDescription = "Error icon", tint = Color.LightGray)
                             Spacer(modifier = Modifier.height(12.dp))
-                            Text(text = "Couldn't Load Data!", color = Color.LightGray)
+                            Text(text = "Couldn't Load Data", color = Color.LightGray)
                             Spacer(modifier = Modifier.height(12.dp))
                             Text(text = "Retry", modifier = Modifier.clickable(onClick = fetchProgrammes), color = MaterialTheme.colors.error, textDecoration = TextDecoration.Underline)
                         }

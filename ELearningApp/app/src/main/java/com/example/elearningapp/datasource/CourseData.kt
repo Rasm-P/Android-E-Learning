@@ -132,10 +132,6 @@ object CourseData {
         dummyCourse("Working with Big Data"),
     )
 
-    fun getCourseByName(name: String): CourseInformation? {
-        return allCourseInformation.find { course -> course.courseName == name }
-    }
-
     fun getCourseContentByName(name: String): CourseContent? {
         return allCourseContent.find { course -> course.courseName == name }
     }

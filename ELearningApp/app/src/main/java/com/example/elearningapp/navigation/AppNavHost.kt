@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.navigation
 import com.example.elearningapp.models.User
 import com.example.elearningapp.ui.views.account.AccountScreen
+import com.example.elearningapp.ui.views.courses.CourseDetailsScreen
 import com.example.elearningapp.ui.views.courses.CourseOverviewScreen
 import com.example.elearningapp.ui.views.login.LoginScreen
 import com.example.elearningapp.ui.views.login.ProgrammeScreen
@@ -78,7 +79,9 @@ fun AppNavHost(
             composable(route = MenuNavDestination.Overview.route) {
                 OverviewScreen(courseInformationState = courseViewModel.courseInformationState.value,
                 fetchTrendingCourses = {courseViewModel.fetchTrendingCourses()},
-                userCoursesStatus = userViewModel.userData.value.activeCourses
+                userCoursesStatus = userViewModel.userData.value.activeCourses,
+                    onViewCourse = { courseInformation -> courseViewModel.setCourseInformation(courseInformation)
+                    navController.navigateSingleTopTo(AppNavigationFlow.CourseFlow.route)}
                 )
             }
             composable(route = MenuNavDestination.CourseOverview.route) {
@@ -103,7 +106,11 @@ fun AppNavHost(
         }
         navigation(route = AppNavigationFlow.CourseFlow.route, startDestination = CourseDestination.CourseDetails.route) {
             composable(route = CourseDestination.CourseDetails.route) {
-                { /*TODO*/ }
+                CourseDetailsScreen(courseInformation = courseViewModel.courseInformation.value,
+                fetchCourseContent = {courseViewModel.fetchCourseContentByName()},
+                courseContentState = courseViewModel.courseContentState.value,
+                stepStatus = courseViewModel.getStepStatus(userViewModel.userData.value.activeCourses),
+                )
             }
             composable(route = CourseDestination.CourseArticle.route) {
                 { /*TODO*/ }

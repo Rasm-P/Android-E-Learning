@@ -30,11 +30,11 @@ class CourseRepository @Inject internal constructor() : CourseRepositoryInterfac
     }
 
     // Using a fake API call to simulate interaction with a real serverside API
-    override suspend fun fetchCourseByName(name: String) = flow {
+    override suspend fun fetchCourseContentByName(name: String) = flow {
         emit(ActionState.Loading)
         //API call
         delay(300)
-        val result = CourseData.getCourseByName(name)
+        val result = CourseData.getCourseContentByName(name)
         emit(ActionState.Success(result))
     }
 

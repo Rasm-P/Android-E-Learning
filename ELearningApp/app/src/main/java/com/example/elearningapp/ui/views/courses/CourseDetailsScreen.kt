@@ -1,13 +1,16 @@
 package com.example.elearningapp.ui.views.courses
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -26,13 +29,26 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.example.elearningapp.common.ActionState
+import com.example.elearningapp.datasource.CourseData.allCourseContent
 import com.example.elearningapp.datasource.CourseData.allCourseInformation
+import com.example.elearningapp.models.CourseContent
 import com.example.elearningapp.models.CourseInformation
 import com.example.elearningapp.ui.theme.ELearningAppTheme
+import com.example.elearningapp.ui.views.components.Loading
 import com.example.elearningapp.ui.views.components.TopBar
 
 @Composable
-fun CourseDetailsScreen(courseInformation: CourseInformation) {
+fun CourseDetailsScreen(
+    courseInformation: CourseInformation,
+    fetchCourseContent: () -> Unit,
+    courseContentState: ActionState<CourseContent?>,
+    stepStatus: Int
+) {
+    LaunchedEffect(Unit, block = {
+        fetchCourseContent.invoke()
+    })
+
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(20.dp)) {
@@ -153,8 +169,41 @@ fun CourseDetailsScreen(courseInformation: CourseInformation) {
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium
                 )
-                LazyColumn {
-
+                when(courseContentState) {
+                    is ActionState.Initial -> {}
+                    is ActionState.Loading -> {
+                        Loading()
+                    }
+                    is ActionState.Success -> {
+                        val courseContent = courseContentState.data
+                        if (courseContent != null) {
+                            Column(
+                                modifier = Modifier.padding(bottom = 60.dp)
+                            ) {
+                                CourseStepCard(0 <= stepStatus, courseContent.articleContent.title)
+                                CourseStepCard(1 <= stepStatus, courseContent.videoArticleContent.title)
+                                CourseStepCard(2 <= stepStatus, "Quiz Test")
+                                CourseStepCard(3 <= stepStatus, courseContent.quizResults.title)
+                                CourseStepCard(4 == stepStatus, courseContent.courseSummary.title)
+                            }
+                        } else {
+                            Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                                Icon(imageVector = Icons.Filled.Error, contentDescription = "Error icon", tint = Color.LightGray)
+                                Spacer(modifier = Modifier.height(12.dp))
+                                Text(text = "No steps found for this course", color = Color.LightGray)
+                            }
+                        }
+                    }
+                    is ActionState.Error -> {
+                        Toast.makeText(LocalContext.current, courseContentState.message, Toast.LENGTH_LONG).show()
+                        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                            Icon(imageVector = Icons.Filled.Error, contentDescription = "Error icon", tint = Color.LightGray)
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(text = "Couldn't Load Data", color = Color.LightGray)
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(text = "Retry", modifier = Modifier.clickable(onClick = fetchCourseContent), color = MaterialTheme.colors.error, textDecoration = TextDecoration.Underline)
+                        }
+                    }
                 }
             }
         }
@@ -173,8 +222,8 @@ fun CourseDetailsScreen(courseInformation: CourseInformation) {
 
 
 @Composable
-fun CourseStepCard() {
-
+fun CourseStepCard(completedStep: Boolean, title: String) {
+    Text(text = completedStep.toString() + title)
 }
 
 
@@ -190,7 +239,7 @@ fun CourseDetailsScreenPreview() {
                 topBar = { TopBar("course-details", {}, {}, {}) }
             ) { innerPadding ->
                 Box(modifier = Modifier.padding(innerPadding)) {
-                    CourseDetailsScreen(allCourseInformation[1])
+                    CourseDetailsScreen(allCourseInformation[0],{},ActionState.Success(allCourseContent[0]),3)
                 }
             }
         }
