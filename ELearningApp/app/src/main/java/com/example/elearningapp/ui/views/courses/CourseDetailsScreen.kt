@@ -26,13 +26,13 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.example.elearningapp.datasource.CourseData.allCourses
-import com.example.elearningapp.models.Course
+import com.example.elearningapp.datasource.CourseData.allCourseInformation
+import com.example.elearningapp.models.CourseInformation
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 import com.example.elearningapp.ui.views.components.TopBar
 
 @Composable
-fun CourseDetailsScreen(course: Course) {
+fun CourseDetailsScreen(courseInformation: CourseInformation) {
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(20.dp)) {
@@ -45,7 +45,7 @@ fun CourseDetailsScreen(course: Course) {
                 elevation = 12.dp
             ) {
                 val painter = rememberAsyncImagePainter(
-                    ImageRequest.Builder(LocalContext.current).data(data = course.imageUrl)
+                    ImageRequest.Builder(LocalContext.current).data(data = courseInformation.imageUrl)
                         .apply(block = fun ImageRequest.Builder.() {
                             crossfade(true)
                         }).build()
@@ -86,7 +86,7 @@ fun CourseDetailsScreen(course: Course) {
                         Text(modifier = Modifier
                             .align(alignment = Alignment.BottomStart)
                             .padding(10.dp),
-                            text = course.courseName,
+                            text = courseInformation.courseName,
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colors.secondary
@@ -102,17 +102,17 @@ fun CourseDetailsScreen(course: Course) {
                             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.SpaceBetween) {
                                 Column {
                                     Text(
-                                        text = "Difficulty: " + course.difficulty,
+                                        text = "Difficulty: " + courseInformation.difficulty,
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.Light
                                     )
                                     Text(
-                                        text = course.timeToComplete.toString() + " - " + course.steps + " steps",
+                                        text = courseInformation.timeToComplete.toString() + " - " + courseInformation.steps + " steps",
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.Light
                                     )
                                 }
-                                Text(text = course.topic, color = MaterialTheme.colors.primary)
+                                Text(text = courseInformation.topic, color = MaterialTheme.colors.primary)
                             }
                             Spacer(modifier = Modifier.height(10.dp))
                             Text(
@@ -122,7 +122,7 @@ fun CourseDetailsScreen(course: Course) {
                             )
                             Text(
                                 modifier = Modifier.weight(1f),
-                                text = course.description,
+                                text = courseInformation.description,
                                 overflow = TextOverflow.Ellipsis,
                                 fontSize = 12.sp,
                                 lineHeight = 16.sp,
@@ -190,7 +190,7 @@ fun CourseDetailsScreenPreview() {
                 topBar = { TopBar("course-details", {}, {}, {}) }
             ) { innerPadding ->
                 Box(modifier = Modifier.padding(innerPadding)) {
-                    CourseDetailsScreen(allCourses[1])
+                    CourseDetailsScreen(allCourseInformation[1])
                 }
             }
         }

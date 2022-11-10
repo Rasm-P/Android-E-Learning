@@ -3,7 +3,7 @@ package com.example.elearningapp.models
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
-data class Course (
+data class CourseInformation (
     val courseName: String = "",
     val imageUrl: String = "",
     val difficulty: String = "",

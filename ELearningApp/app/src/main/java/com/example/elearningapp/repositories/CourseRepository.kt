@@ -25,7 +25,7 @@ class CourseRepository @Inject internal constructor() : CourseRepositoryInterfac
         emit(ActionState.Loading)
         //API call
         delay(300)
-        val result = CourseData.allCourses
+        val result = CourseData.allCourseInformation
         emit(ActionState.Success(result))
     }
 

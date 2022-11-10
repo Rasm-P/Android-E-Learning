@@ -32,9 +32,9 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.elearningapp.common.ActionState
-import com.example.elearningapp.datasource.CourseData.allCourses
+import com.example.elearningapp.datasource.CourseData.allCourseInformation
 import com.example.elearningapp.datasource.CourseData.trendingCourses
-import com.example.elearningapp.models.Course
+import com.example.elearningapp.models.CourseInformation
 import com.example.elearningapp.models.CourseStatus
 import com.example.elearningapp.navigation.MenuNavDestination
 import com.example.elearningapp.navigation.bottomNavScreens
@@ -46,7 +46,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun OverviewScreen(
-    courseState: ActionState<List<Course>>,
+    courseInformationState: ActionState<List<CourseInformation>>,
     fetchTrendingCourses: () -> Unit,
     userCoursesStatus: List<CourseStatus>
 ) {
@@ -65,14 +65,14 @@ fun OverviewScreen(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium
                 )
-                if (courseState is ActionState.Success) {
+                if (courseInformationState is ActionState.Success) {
                     LazyRow(
                         contentPadding = PaddingValues(horizontal = 20.dp),
                         horizontalArrangement = Arrangement.spacedBy(20.dp)) {
-                        items(courseState.data) { course -> TrendingCourseCard(course) }
+                        items(courseInformationState.data) { course -> TrendingCourseCard(course) }
                     }
-                } else if (courseState is ActionState.Error) {
-                    Toast.makeText(LocalContext.current, courseState.message, Toast.LENGTH_LONG).show()
+                } else if (courseInformationState is ActionState.Error) {
+                    Toast.makeText(LocalContext.current, courseInformationState.message, Toast.LENGTH_LONG).show()
                     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                         Icon(imageVector = Icons.Filled.Error, contentDescription = "Error icon", tint = Color.LightGray)
                         Spacer(modifier = Modifier.height(12.dp))
@@ -109,12 +109,12 @@ fun OverviewScreen(
 
 
 @Composable
-fun TrendingCourseCard(course: Course) {
+fun TrendingCourseCard(courseInformation: CourseInformation) {
     Card(modifier = Modifier.width(240.dp),
         shape = RoundedCornerShape(5.dp),
         elevation = 12.dp) {
         val painter = rememberAsyncImagePainter(
-            ImageRequest.Builder(LocalContext.current).data(data = course.imageUrl).apply(block = fun ImageRequest.Builder.() {
+            ImageRequest.Builder(LocalContext.current).data(data = courseInformation.imageUrl).apply(block = fun ImageRequest.Builder.() {
                 crossfade(true)
             }).build()
         )
@@ -141,18 +141,18 @@ fun TrendingCourseCard(course: Course) {
                     .fillMaxHeight()
                     .padding(10.dp), verticalArrangement = Arrangement.SpaceBetween) {
                     Text(
-                        text = course.courseName,
+                        text = courseInformation.courseName,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium
                     )
                     Column {
                         Text(
-                            text = "Difficulty: " + course.difficulty,
+                            text = "Difficulty: " + courseInformation.difficulty,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Light
                         )
                         Text(
-                            text = course.timeToComplete.toString() + " - " + course.steps + " steps",
+                            text = courseInformation.timeToComplete.toString() + " - " + courseInformation.steps + " steps",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Light
                         )
@@ -173,13 +173,13 @@ fun TrendingCourseCard(course: Course) {
 
 @Composable
 fun CourseStatusCard(courseStatus: CourseStatus) {
-    val courseProgress = courseStatus.stepsCompleted.toFloat()/courseStatus.course.steps.toFloat()
+    val courseProgress = courseStatus.stepsCompleted.toFloat()/courseStatus.courseInformation.steps.toFloat()
 
     Card(modifier = Modifier.height(100.dp),
         shape = RoundedCornerShape(5.dp),
         elevation = 12.dp) {
         val painter = rememberAsyncImagePainter(
-            ImageRequest.Builder(LocalContext.current).data(data = courseStatus.course.imageUrl).apply(block = fun ImageRequest.Builder.() {
+            ImageRequest.Builder(LocalContext.current).data(data = courseStatus.courseInformation.imageUrl).apply(block = fun ImageRequest.Builder.() {
                 crossfade(true)
             }).build()
         )
@@ -209,14 +209,14 @@ fun CourseStatusCard(courseStatus: CourseStatus) {
                 .fillMaxHeight()
                 .weight(1f) ,verticalArrangement = Arrangement.SpaceBetween) {
                 Text(
-                    text = courseStatus.course.courseName,
+                    text = courseStatus.courseInformation.courseName,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = courseStatus.course.timeToComplete.toString() + " - " + courseStatus.course.steps + " steps",
+                    text = courseStatus.courseInformation.timeToComplete.toString() + " - " + courseStatus.courseInformation.steps + " steps",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Light
                 )
@@ -243,7 +243,7 @@ fun CourseStatusCard(courseStatus: CourseStatus) {
 @Preview(showBackground = true)
 @Composable
 fun OverviewScreenPreview() {
-    val courses = listOf(CourseStatus(allCourses[0], 3), CourseStatus(allCourses[1], 1), CourseStatus(allCourses[2], 5))
+    val courses = listOf(CourseStatus(allCourseInformation[0], 3), CourseStatus(allCourseInformation[1], 1), CourseStatus(allCourseInformation[2], 5))
     //val courses = emptyList<CourseStatus>()
 
     ELearningAppTheme {

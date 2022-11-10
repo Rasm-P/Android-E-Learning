@@ -44,11 +44,11 @@ sealed class CourseDestination(
     val route: String
 ) {
     object CourseDetails : CourseDestination("course-details")
-    object CourseArticle : CourseDestination("course-article")
-    object CourseVideo : CourseDestination("course-video")
-    object CourseQuiz : CourseDestination("course-quiz")
-    object CourseQuizAnswers : CourseDestination("course-quiz-answers")
-    object CourseSummary : CourseDestination("course-summary")
+    object CourseArticle : CourseDestination("article")
+    object CourseVideo : CourseDestination("video-article")
+    object CourseQuiz : CourseDestination("quiz-test")
+    object CourseQuizAnswers : CourseDestination("quiz-results")
+    object CourseSummary : CourseDestination("summary")
 }
 
 sealed class AppNavigationFlow(

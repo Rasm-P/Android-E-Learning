@@ -35,16 +35,16 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.elearningapp.common.ActionState
-import com.example.elearningapp.datasource.CourseData.allCourses
-import com.example.elearningapp.models.Course
+import com.example.elearningapp.datasource.CourseData.allCourseInformation
+import com.example.elearningapp.models.CourseInformation
 import com.example.elearningapp.ui.views.components.NoResultsMessage
 
 @Composable
 fun CourseOverviewScreen(
     programmeTopics: List<String>,
-    coursesState: ActionState<List<Course>>,
+    coursesState: ActionState<List<CourseInformation>>,
     fetchAllCourses: () -> Unit,
-    filterCourses: (String, String) -> List<Course>
+    filterCourses: (String, String) -> List<CourseInformation>
 ) {
     var search by remember { mutableStateOf("") }
     var sortTopic by remember { mutableStateOf("") }
@@ -138,12 +138,12 @@ fun TopicButton(topic: String, currentTopic: String, toggleTopic: () -> Unit, un
 
 
 @Composable
-fun CourseCard(course: Course) {
+fun CourseCard(courseInformation: CourseInformation) {
     Card(modifier = Modifier.height(120.dp),
         shape = RoundedCornerShape(5.dp),
         elevation = 12.dp) {
         val painter = rememberAsyncImagePainter(
-            ImageRequest.Builder(LocalContext.current).data(data = course.imageUrl).apply(block = fun ImageRequest.Builder.() {
+            ImageRequest.Builder(LocalContext.current).data(data = courseInformation.imageUrl).apply(block = fun ImageRequest.Builder.() {
                 crossfade(true)
             }).build()
         )
@@ -173,7 +173,7 @@ fun CourseCard(course: Course) {
                 .fillMaxHeight()
                 .weight(1f) ,verticalArrangement = Arrangement.SpaceBetween) {
                 Text(
-                    text = course.courseName,
+                    text = courseInformation.courseName,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 16.sp,
@@ -181,12 +181,12 @@ fun CourseCard(course: Course) {
                 )
                 Column {
                     Text(
-                        text = "Difficulty: " + course.difficulty,
+                        text = "Difficulty: " + courseInformation.difficulty,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Light
                     )
                     Text(
-                        text = course.timeToComplete.toString() + " - " + course.steps + " steps",
+                        text = courseInformation.timeToComplete.toString() + " - " + courseInformation.steps + " steps",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Light
                     )
@@ -224,7 +224,7 @@ fun CourseOverviewScreenPreview() {
                     BottomNavBar(bottomNavScreens, {}, MenuNavDestination.CourseOverview
                     )
                 },
-                content = { CourseOverviewScreen(programmeTopics, ActionState.Success(allCourses), {}, {_ ,_ -> allCourses}) }
+                content = { CourseOverviewScreen(programmeTopics, ActionState.Success(allCourseInformation), {}, { _, _ -> allCourseInformation}) }
             )
         }
     }
