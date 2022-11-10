@@ -2,11 +2,14 @@ package com.example.elearningapp.ui.views.courses
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -37,13 +40,18 @@ import com.example.elearningapp.models.CourseInformation
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 import com.example.elearningapp.ui.views.components.Loading
 import com.example.elearningapp.ui.views.components.TopBar
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 @Composable
 fun CourseDetailsScreen(
     courseInformation: CourseInformation,
     fetchCourseContent: () -> Unit,
     courseContentState: ActionState<CourseContent?>,
-    stepStatus: Int
+    stepStatus: Int,
+    hasUserStartedCourse: (String) -> Boolean,
+    updateUserActiveCourses: (CourseInformation) -> Unit,
+    navigateToScreenStep: (Int) -> Unit
 ) {
     LaunchedEffect(Unit, block = {
         fetchCourseContent.invoke()
@@ -123,7 +131,8 @@ fun CourseDetailsScreen(
                                         fontWeight = FontWeight.Light
                                     )
                                     Text(
-                                        text = courseInformation.timeToComplete.toString() + " - " + courseInformation.steps + " steps",
+                                        text = courseInformation.minutesToComplete.toDuration(
+                                            DurationUnit.MINUTES).toString() + " - " + courseInformation.steps + " steps",
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.Light
                                     )
@@ -178,13 +187,15 @@ fun CourseDetailsScreen(
                         val courseContent = courseContentState.data
                         if (courseContent != null) {
                             Column(
-                                modifier = Modifier.padding(bottom = 60.dp)
+                                modifier = Modifier.padding(bottom = 60.dp).verticalScroll(
+                                    ScrollState(0)
+                                )
                             ) {
-                                CourseStepCard(0 <= stepStatus, courseContent.articleContent.title)
-                                CourseStepCard(1 <= stepStatus, courseContent.videoArticleContent.title)
-                                CourseStepCard(2 <= stepStatus, "Quiz Test")
-                                CourseStepCard(3 <= stepStatus, courseContent.quizResults.title)
-                                CourseStepCard(4 == stepStatus, courseContent.courseSummary.title)
+                                CourseStepCard(1, stepStatus, courseContent.articleContent.title, navigateToScreenStep)
+                                CourseStepCard(2, stepStatus, courseContent.videoArticleContent.title, navigateToScreenStep)
+                                CourseStepCard(3, stepStatus, "Quiz Test", navigateToScreenStep)
+                                CourseStepCard(4, stepStatus, courseContent.quizResults.title, navigateToScreenStep)
+                                CourseStepCard(5, stepStatus, courseContent.courseSummary.title, navigateToScreenStep)
                             }
                         } else {
                             Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
@@ -209,21 +220,58 @@ fun CourseDetailsScreen(
         }
     }
     Box(modifier = Modifier.fillMaxSize()) {
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp)
-                .align(alignment = Alignment.BottomCenter),
-            onClick = { /*TODO*/ }) {
-            Text(text = "START COURSE")
+        if (!hasUserStartedCourse(courseInformation.courseName)) {
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+                    .align(alignment = Alignment.BottomCenter),
+                onClick = { updateUserActiveCourses(courseInformation) }) {
+                Text(text = "START COURSE")
+            }
+        } else {
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+                    .align(alignment = Alignment.BottomCenter),
+                onClick = { navigateToScreenStep(stepStatus) }) {
+                Text(text = "CONTINUE COURSE")
+            }
         }
     }
 }
 
 
 @Composable
-fun CourseStepCard(completedStep: Boolean, title: String) {
-    Text(text = completedStep.toString() + title)
+fun CourseStepCard(step: Int, stepStatus: Int, title: String, navigateToScreenStep: (Int) -> Unit) {
+    val completedStep = step <= stepStatus
+    Card(modifier = Modifier.height(40.dp),
+        shape = RoundedCornerShape(5.dp),
+        elevation = 12.dp
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            RadioButton(selected = completedStep,
+                onClick = {},
+                colors = RadioButtonDefaults.colors(Color.Green, Color.Gray)
+            )
+            Text(modifier = Modifier.weight(1f),
+                text = title,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium
+            )
+            Icon(modifier = Modifier.clickable(onClick = {navigateToScreenStep(step)}), imageVector = Icons.Filled.ArrowForward, contentDescription = "Jump to section", tint = MaterialTheme.colors.primary)
+        }
+    }
+    Spacer(modifier = Modifier.height(6.dp))
 }
 
 
@@ -239,7 +287,7 @@ fun CourseDetailsScreenPreview() {
                 topBar = { TopBar("course-details", {}, {}, {}) }
             ) { innerPadding ->
                 Box(modifier = Modifier.padding(innerPadding)) {
-                    CourseDetailsScreen(allCourseInformation[0],{},ActionState.Success(allCourseContent[0]),3)
+                    CourseDetailsScreen(allCourseInformation[0],{},ActionState.Success(allCourseContent[0]),3, {false}, {}, {})
                 }
             }
         }

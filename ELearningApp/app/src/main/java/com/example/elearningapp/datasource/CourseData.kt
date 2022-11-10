@@ -12,7 +12,7 @@ object CourseData {
             "Android Jetpack Compose",
             "https://miro.medium.com/max/715/1*XHnWaOao9drSl25Cfhz6WA.png",
             "Easy",
-            30.minutes,
+            30,
             5,
             "Jetpack Compose is a modern toolkit designed to simplify UI development. " +
                     "It combines a reactive programming model with the conciseness and ease of " +
@@ -23,7 +23,7 @@ object CourseData {
             "Android Dagger-Hilt",
             "https://miro.medium.com/max/960/1*uEOPfTwyX1EuL-0K8EBBuQ.jpeg",
             "Medium",
-            45.minutes,
+            45,
             5,
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                     "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
@@ -34,7 +34,7 @@ object CourseData {
             "SSH Encryption",
             "https://visualmodo.com/wp-content/uploads/2022/06/What-Is-SSH-Understanding-Secure-Socket-Shell-Encryption-Ports-and-Connection.png",
             "Hard",
-            55.minutes,
+            55,
             5,
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                     "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
@@ -45,7 +45,7 @@ object CourseData {
             "Transport Protocols",
             "https://dkrn4sk0rn31v.cloudfront.net/uploads/2019/06/11140050/sockets-redes-tcp-udp.png",
             "Hard",
-            45.minutes,
+            45,
             5,
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                     "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
@@ -59,7 +59,7 @@ object CourseData {
             "Android Jetpack Compose",
             "https://miro.medium.com/max/715/1*XHnWaOao9drSl25Cfhz6WA.png",
             "Easy",
-            30.minutes,
+            30,
             5,
             "Jetpack Compose is a modern toolkit designed to simplify UI development. " +
                     "It combines a reactive programming model with the conciseness and ease of " +
@@ -70,7 +70,7 @@ object CourseData {
             "Android Dagger-Hilt",
             "https://miro.medium.com/max/960/1*uEOPfTwyX1EuL-0K8EBBuQ.jpeg",
             "Medium",
-            45.minutes,
+            45,
             5,
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                     "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
@@ -81,7 +81,7 @@ object CourseData {
             "SSH Encryption",
             "https://visualmodo.com/wp-content/uploads/2022/06/What-Is-SSH-Understanding-Secure-Socket-Shell-Encryption-Ports-and-Connection.png",
             "Hard",
-            55.minutes,
+            55,
             5,
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                     "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
@@ -92,7 +92,7 @@ object CourseData {
             "Transport Protocols",
             "https://dkrn4sk0rn31v.cloudfront.net/uploads/2019/06/11140050/sockets-redes-tcp-udp.png",
             "Hard",
-            45.minutes,
+            45,
             5,
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                     "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
@@ -103,7 +103,7 @@ object CourseData {
             "Wireframe Prototypes",
             "https://landing.moqups.com/blog/wp-content/uploads/2022/07/header-blog2-1200x0-c-default.png",
             "Easy",
-            45.minutes,
+            45,
             5,
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                     "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
@@ -114,9 +114,12 @@ object CourseData {
             "Working with Big Data",
             "https://miro.medium.com/max/800/1*cDO5wuA0NdevLb45zHRvog.jpeg",
             "Hard",
-            45.minutes,
+            45,
             5,
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                    "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
+                    "quis nostrud exercitation ullamco laboris nisimini" +
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                     "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
                     "quis nostrud exercitation ullamco laboris nisimini",
             "Big Data"

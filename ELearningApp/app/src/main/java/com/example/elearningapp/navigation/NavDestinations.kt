@@ -62,3 +62,5 @@ sealed class AppNavigationFlow(
 val bottomNavScreens = listOf(MenuNavDestination.Overview, MenuNavDestination.CourseOverview, MenuNavDestination.NotesOverview, MenuNavDestination.Account)
 
 val loginNavScreens = listOf(LoginDestination.Welcome, LoginDestination.Login, LoginDestination.Register, LoginDestination.Programme)
+
+val courseNavScreens = listOf(CourseDestination.CourseDetails,CourseDestination.CourseArticle,CourseDestination.CourseVideo,CourseDestination.CourseQuiz,CourseDestination.CourseQuizAnswers,CourseDestination.CourseSummary)

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.elearningapp.common.ActionState
+import com.example.elearningapp.models.CourseInformation
 import com.example.elearningapp.models.CourseStatus
 import com.example.elearningapp.models.Programme
 import com.example.elearningapp.models.User
@@ -67,12 +68,17 @@ class UserViewModel @Inject internal constructor(private val _userRepository: Us
         }
     }
 
-    fun updateUserActiveCourses(activeCourses: List<CourseStatus>) {
+    fun updateUserActiveCourses(courseInformation: CourseInformation) {
+        _userData.value.activeCourses.add(CourseStatus(courseInformation = courseInformation))
         viewModelScope.launch {
-            _userRepository.updateUserActiveCourses(activeCourses).collect {
+            _userRepository.updateUserActiveCourses(_userData.value.activeCourses).collect {
                     response -> _updateState.value = response
             }
         }
+    }
+
+    fun hasUserStartedCourse(courseName: String) : Boolean {
+        return _userData.value.activeCourses.any { course -> course.courseInformation.courseName == courseName }
     }
 
     fun resetUserActionState() {

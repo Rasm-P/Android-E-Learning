@@ -38,13 +38,16 @@ import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.datasource.CourseData.allCourseInformation
 import com.example.elearningapp.models.CourseInformation
 import com.example.elearningapp.ui.views.components.NoResultsMessage
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 @Composable
 fun CourseOverviewScreen(
     programmeTopics: List<String>,
     coursesState: ActionState<List<CourseInformation>>,
     fetchAllCourses: () -> Unit,
-    filterCourses: (String, String) -> List<CourseInformation>
+    filterCourses: (String, String) -> List<CourseInformation>,
+    onViewCourse: (CourseInformation) -> Unit
 ) {
     var search by remember { mutableStateOf("") }
     var sortTopic by remember { mutableStateOf("") }
@@ -102,7 +105,7 @@ fun CourseOverviewScreen(
                     verticalArrangement = Arrangement.spacedBy(20.dp),
                     contentPadding = PaddingValues(bottom = 20.dp)
                 ) {
-                    items(courses) { course -> CourseCard(course) }
+                    items(courses) { course -> CourseCard(course, onViewCourse) }
                 }
             } else {
                 NoResultsMessage("No courses found",Icons.Filled.SearchOff)
@@ -138,7 +141,7 @@ fun TopicButton(topic: String, currentTopic: String, toggleTopic: () -> Unit, un
 
 
 @Composable
-fun CourseCard(courseInformation: CourseInformation) {
+fun CourseCard(courseInformation: CourseInformation, onViewCourse: (CourseInformation) -> Unit) {
     Card(modifier = Modifier.height(120.dp),
         shape = RoundedCornerShape(5.dp),
         elevation = 12.dp) {
@@ -186,12 +189,12 @@ fun CourseCard(courseInformation: CourseInformation) {
                         fontWeight = FontWeight.Light
                     )
                     Text(
-                        text = courseInformation.timeToComplete.toString() + " - " + courseInformation.steps + " steps",
+                        text = courseInformation.minutesToComplete.toDuration(DurationUnit.MINUTES).toString() + " - " + courseInformation.steps + " steps",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Light
                     )
                 }
-                Row(modifier = Modifier.clickable(onClick = {/*TODO*/}), verticalAlignment = Alignment.CenterVertically) {
+                Row(modifier = Modifier.clickable(onClick = {onViewCourse(courseInformation)}), verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = "VIEW COURSE",
                         fontSize = 16.sp,
@@ -224,7 +227,7 @@ fun CourseOverviewScreenPreview() {
                     BottomNavBar(bottomNavScreens, {}, MenuNavDestination.CourseOverview
                     )
                 },
-                content = { CourseOverviewScreen(programmeTopics, ActionState.Success(allCourseInformation), {}, { _, _ -> allCourseInformation}) }
+                content = { CourseOverviewScreen(programmeTopics, ActionState.Success(allCourseInformation), {}, { _, _ -> allCourseInformation},{}) }
             )
         }
     }

@@ -43,6 +43,9 @@ import com.example.elearningapp.ui.views.components.BottomNavBar
 import com.example.elearningapp.ui.views.components.NoResultsMessage
 import com.example.elearningapp.ui.views.components.TopBar
 import kotlin.math.roundToInt
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 @Composable
 fun OverviewScreen(
@@ -153,7 +156,7 @@ fun TrendingCourseCard(courseInformation: CourseInformation, onViewCourse: (Cour
                             fontWeight = FontWeight.Light
                         )
                         Text(
-                            text = courseInformation.timeToComplete.toString() + " - " + courseInformation.steps + " steps",
+                            text = courseInformation.minutesToComplete.toDuration(DurationUnit.MINUTES).toString() + " - " + courseInformation.steps + " steps",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Light
                         )
@@ -217,7 +220,7 @@ fun CourseStatusCard(courseStatus: CourseStatus, onViewCourse: (CourseInformatio
                     fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = courseStatus.courseInformation.timeToComplete.toString() + " - " + courseStatus.courseInformation.steps + " steps",
+                    text = courseStatus.courseInformation.minutesToComplete.toDuration(DurationUnit.MINUTES).toString() + " - " + courseStatus.courseInformation.steps + " steps",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Light
                 )

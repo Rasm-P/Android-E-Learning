@@ -9,8 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.navigation
 import com.example.elearningapp.models.User
 import com.example.elearningapp.ui.views.account.AccountScreen
-import com.example.elearningapp.ui.views.courses.CourseDetailsScreen
-import com.example.elearningapp.ui.views.courses.CourseOverviewScreen
+import com.example.elearningapp.ui.views.courses.*
 import com.example.elearningapp.ui.views.login.LoginScreen
 import com.example.elearningapp.ui.views.login.ProgrammeScreen
 import com.example.elearningapp.ui.views.login.RegisterScreen
@@ -69,7 +68,7 @@ fun AppNavHost(
                     fetchProgrammes = {programmeViewModel.fetchProgrammes()},
                     programmeState = programmeViewModel.programmeState.value,
                     setFirstTimeUser = {isFirstTimeUser = false},
-                    addUserData = {studentName, programme -> userViewModel.addUser(User(studentName, programme, emptyList()))},
+                    addUserData = {studentName, programme -> userViewModel.addUser(User(studentName, programme, ArrayList()))},
                     userState = userViewModel.userState.value,
                     resetActionState = {userViewModel.resetUserActionState()}
                 )
@@ -80,7 +79,7 @@ fun AppNavHost(
                 OverviewScreen(courseInformationState = courseViewModel.courseInformationState.value,
                 fetchTrendingCourses = {courseViewModel.fetchTrendingCourses()},
                 userCoursesStatus = userViewModel.userData.value.activeCourses,
-                    onViewCourse = { courseInformation -> courseViewModel.setCourseInformation(courseInformation)
+                onViewCourse = { courseInformation -> courseViewModel.setCourseInformation(courseInformation)
                     navController.navigateSingleTopTo(AppNavigationFlow.CourseFlow.route)}
                 )
             }
@@ -88,7 +87,9 @@ fun AppNavHost(
                 CourseOverviewScreen(programmeTopics = userViewModel.userData.value.studyProgramme.topics,
                 coursesState = courseViewModel.courseInformationState.value,
                 fetchAllCourses = {courseViewModel.fetchAllCourses()},
-                filterCourses = {searchFilter, topicFilter -> courseViewModel.filterCourses(searchFilter, topicFilter)}
+                filterCourses = {searchFilter, topicFilter -> courseViewModel.filterCourses(searchFilter, topicFilter)},
+                onViewCourse = { courseInformation -> courseViewModel.setCourseInformation(courseInformation)
+                    navController.navigateSingleTopTo(AppNavigationFlow.CourseFlow.route)}
                 )
             }
             composable(route = MenuNavDestination.NotesOverview.route) {
@@ -110,22 +111,26 @@ fun AppNavHost(
                 fetchCourseContent = {courseViewModel.fetchCourseContentByName()},
                 courseContentState = courseViewModel.courseContentState.value,
                 stepStatus = courseViewModel.getStepStatus(userViewModel.userData.value.activeCourses),
+                hasUserStartedCourse = {courseName -> userViewModel.hasUserStartedCourse(courseName)},
+                updateUserActiveCourses = {courseInformation -> userViewModel.updateUserActiveCourses(courseInformation)
+                    navController.navigateSingleTopTo(CourseDestination.CourseArticle.route)},
+                navigateToScreenStep = {step -> navController.navigateSingleTopTo(courseNavScreens[if (step > 0) step else 1].route)}
                 )
             }
             composable(route = CourseDestination.CourseArticle.route) {
-                { /*TODO*/ }
+                CourseArticleScreen()
             }
             composable(route = CourseDestination.CourseVideo.route) {
-                { /*TODO*/ }
+                CourseVideoArticleScreen()
             }
             composable(route = CourseDestination.CourseQuiz.route) {
-                { /*TODO*/ }
+                CourseQuizTestScreen()
             }
             composable(route = CourseDestination.CourseQuizAnswers.route) {
-                { /*TODO*/ }
+                CourseQuizResultsScreen()
             }
             composable(route = CourseDestination.CourseSummary.route) {
-                { /*TODO*/ }
+                CourseSummaryScreen()
             }
         }
     }
