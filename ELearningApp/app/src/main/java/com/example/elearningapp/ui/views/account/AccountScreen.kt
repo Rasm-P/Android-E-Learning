@@ -1,6 +1,5 @@
 package com.example.elearningapp.ui.views.account
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -122,7 +121,6 @@ fun AccountScreen(userData: User, userEmail: String) {
 }
 
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true)
 @Composable
 fun AccountScreenPreview() {
@@ -139,9 +137,12 @@ fun AccountScreenPreview() {
                     BottomNavBar(
                         bottomNavScreens, {}, MenuNavDestination.Account
                     )
-                },
-                content = { AccountScreen(user, "student@email.com") }
-            )
+                }
+            ) {
+                innerPadding -> Box(modifier = Modifier.padding(innerPadding)) {
+                    AccountScreen(user, "student@email.com")
+                }
+            }
         }
     }
 }

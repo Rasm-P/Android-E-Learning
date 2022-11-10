@@ -1,6 +1,5 @@
 package com.example.elearningapp.ui.views.overview
 
-import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -43,7 +42,6 @@ import com.example.elearningapp.ui.views.components.BottomNavBar
 import com.example.elearningapp.ui.views.components.NoResultsMessage
 import com.example.elearningapp.ui.views.components.TopBar
 import kotlin.math.roundToInt
-import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
@@ -100,7 +98,7 @@ fun OverviewScreen(
                 if (userCoursesStatus.isNotEmpty()) {
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(20.dp),
-                        contentPadding = PaddingValues(bottom = 100.dp)){
+                        contentPadding = PaddingValues(bottom = 20.dp)){
                         items(userCoursesStatus) { course -> CourseStatusCard(course, onViewCourse) }
                     }
                 } else {
@@ -243,7 +241,6 @@ fun CourseStatusCard(courseStatus: CourseStatus, onViewCourse: (CourseInformatio
 }
 
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true)
 @Composable
 fun OverviewScreenPreview() {
@@ -263,9 +260,12 @@ fun OverviewScreenPreview() {
                         {},
                         MenuNavDestination.Overview
                     )
-                },
-                content = { OverviewScreen(ActionState.Success(trendingCourses), {}, courses,{}) }
-            )
+                }
+            ) {
+                innerPadding -> Box(modifier = Modifier.padding(innerPadding)) {
+                    OverviewScreen(ActionState.Success(trendingCourses), {}, courses,{})
+                }
+            }
         }
         //CourseStatusCard(courses[0])
     }

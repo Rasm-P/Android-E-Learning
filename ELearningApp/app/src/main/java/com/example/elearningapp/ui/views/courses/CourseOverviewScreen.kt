@@ -1,6 +1,5 @@
 package com.example.elearningapp.ui.views.courses
 
-import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -210,7 +209,6 @@ fun CourseCard(courseInformation: CourseInformation, onViewCourse: (CourseInform
 }
 
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true)
 @Composable
 fun CourseOverviewScreenPreview() {
@@ -226,9 +224,12 @@ fun CourseOverviewScreenPreview() {
                 bottomBar = {
                     BottomNavBar(bottomNavScreens, {}, MenuNavDestination.CourseOverview
                     )
-                },
-                content = { CourseOverviewScreen(programmeTopics, ActionState.Success(allCourseInformation), {}, { _, _ -> allCourseInformation},{}) }
-            )
+                }
+            ) {
+                innerPadding -> Box(modifier = Modifier.padding(innerPadding)) {
+                    CourseOverviewScreen(programmeTopics, ActionState.Success(allCourseInformation), {}, { _, _ -> allCourseInformation},{})
+                }
+            }
         }
     }
 }

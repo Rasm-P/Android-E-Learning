@@ -1,6 +1,5 @@
 package com.example.elearningapp.ui.views.notes
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,7 +25,6 @@ import com.example.elearningapp.ui.theme.ELearningAppTheme
 import com.example.elearningapp.ui.views.components.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -175,7 +173,6 @@ fun NoteCard(
 }
 
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true)
 @Composable
 fun NotesOverviewScreenPreview() {
@@ -198,9 +195,12 @@ fun NotesOverviewScreenPreview() {
                     BottomNavBar(
                         bottomNavScreens, {}, MenuNavDestination.NotesOverview
                     )
-                },
-                content = { NotesOverviewScreen(MutableStateFlow(notes), {_,_->}, {_,_,_->}, {}, {_,_-> notes}) }
-            )
+                }
+            ) {
+                innerPadding -> Box(modifier = Modifier.padding(innerPadding)) {
+                    NotesOverviewScreen(MutableStateFlow(notes), {_,_->}, {_,_,_->}, {}, {_,_-> notes})
+                }
+            }
         }
     }
 }
