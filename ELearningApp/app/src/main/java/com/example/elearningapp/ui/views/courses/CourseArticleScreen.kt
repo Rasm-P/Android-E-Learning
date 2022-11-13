@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -31,7 +32,8 @@ import com.example.elearningapp.ui.views.components.TopBar
 @Composable
 fun CourseArticleScreen(
     courseContentState: ActionState<CourseContent?>,
-    saveNote: (String, String) -> Unit
+    saveNote: (String, String) -> Unit,
+    updateUserCourseSteps: (String, Int) -> Unit
 ) {
     if (courseContentState is ActionState.Success && courseContentState.data != null) {
         val articleContent = courseContentState.data.articleContent
@@ -42,6 +44,10 @@ fun CourseArticleScreen(
                     crossfade(true)
                 }).build()
         )
+
+        LaunchedEffect(Unit, block = {
+            updateUserCourseSteps(courseContentState.data.courseName, 1)
+        })
 
         Box(modifier = Modifier
             .fillMaxWidth()
@@ -124,6 +130,7 @@ fun CourseArticleScreenPreview() {
                     innerPadding -> Box(modifier = Modifier.padding(innerPadding)) {
                 CourseArticleScreen(
                     ActionState.Success(allCourseContent[0]),
+                    {_,_->},
                     {_,_->}
                 )
             }

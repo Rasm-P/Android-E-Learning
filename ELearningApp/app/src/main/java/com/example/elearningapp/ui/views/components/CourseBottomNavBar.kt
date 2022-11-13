@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.elearningapp.navigation.CourseDestination
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 
 private val NavBarHeight = 60.dp
@@ -21,7 +22,9 @@ private val NavBarHeight = 60.dp
 @Composable
 fun CourseBottomNavBar(
     onPreviousPressed: () -> Unit,
-    onNextPressed: () -> Unit
+    onNextPressed: () -> Unit,
+    onFinishedPressed: () -> Unit,
+    currentRoute: String
 ) {
     Surface(
         Modifier
@@ -35,11 +38,38 @@ fun CourseBottomNavBar(
                 Text(text = "Previous",
                     fontWeight = FontWeight.Medium)
             }
-            Row(modifier = Modifier.clickable(onClick = onNextPressed), verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Next",
-                    fontWeight = FontWeight.Medium)
-                Spacer(modifier = Modifier.width(6.dp))
-                Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = "Next", tint = MaterialTheme.colors.secondary)
+            if (currentRoute == CourseDestination.CourseSummary.route) {
+                Row(
+                    modifier = Modifier.clickable(onClick = onFinishedPressed),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Finish",
+                        fontWeight = FontWeight.Medium
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Icon(
+                        imageVector = Icons.Filled.ArrowForward,
+                        contentDescription = "Finish",
+                        tint = MaterialTheme.colors.secondary
+                    )
+                }
+            } else {
+                Row(
+                    modifier = Modifier.clickable(onClick = onNextPressed),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Next",
+                        fontWeight = FontWeight.Medium
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Icon(
+                        imageVector = Icons.Filled.ArrowForward,
+                        contentDescription = "Next",
+                        tint = MaterialTheme.colors.secondary
+                    )
+                }
             }
         }
     }
@@ -49,6 +79,6 @@ fun CourseBottomNavBar(
 @Composable
 fun CourseBottomNavBarPreview() {
     ELearningAppTheme {
-        CourseBottomNavBar({},{})
+        CourseBottomNavBar({}, {}, {}, "course-summary")
     }
 }

@@ -60,13 +60,23 @@ fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel, p
                         onAccountPressed = {navController.navigateSingleTopTo(MenuNavDestination.Account.route)},
                         onCourseDetailsPressed = {navController.navigateSingleTopTo(CourseDestination.CourseDetails.route)})
                          },
-                bottomBar = { if (bottomNavDestination is MenuNavDestination)
-                    BottomNavBar(screens = bottomNavScreens,
-                        onSelected = { screen -> navController.navigateSingleTopTo(screen.route)},
-                        currentDestination = bottomNavDestination)
-                            else if (courseNavScreens.any { screen -> screen.route == currentRoute &&  currentRoute != CourseDestination.CourseDetails.route })
-                                CourseBottomNavBar({},{})
-                        }
+                bottomBar = {
+                    if (bottomNavDestination is MenuNavDestination)
+                        BottomNavBar(
+                            screens = bottomNavScreens,
+                            onSelected = { screen -> navController.navigateSingleTopTo(screen.route) },
+                            currentDestination = bottomNavDestination
+                        )
+                    else if (courseNavScreens.any { screen -> screen.route == currentRoute && currentRoute != CourseDestination.CourseDetails.route }) {
+                        val currentStepIndex = courseNavScreens.indexOfFirst { screen -> screen.route == currentRoute }
+                        CourseBottomNavBar(
+                            onPreviousPressed = {navController.navigateSingleTopTo(courseNavScreens[currentStepIndex-1].route)},
+                            onNextPressed = {navController.navigateSingleTopTo(courseNavScreens[currentStepIndex+1].route)},
+                            onFinishedPressed = {navController.navigateSingleTopTo(MenuNavDestination.Overview.route)},
+                            currentRoute = currentRoute
+                        )
+                    }
+                }
             )
             {
                innerPadding -> AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding), loginViewModel, userViewModel, programmeViewModel, courseViewModel, noteViewModel)

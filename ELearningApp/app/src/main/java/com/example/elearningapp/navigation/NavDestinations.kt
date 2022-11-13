@@ -48,7 +48,7 @@ sealed class CourseDestination(
     object CourseVideo : CourseDestination("video-article")
     object CourseQuiz : CourseDestination("quiz-test")
     object CourseQuizAnswers : CourseDestination("quiz-results")
-    object CourseSummary : CourseDestination("summary")
+    object CourseSummary : CourseDestination("course-summary")
 }
 
 sealed class AppNavigationFlow(
