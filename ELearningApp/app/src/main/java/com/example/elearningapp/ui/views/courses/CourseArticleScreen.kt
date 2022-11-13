@@ -22,11 +22,8 @@ import coil.request.ImageRequest
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.datasource.CourseData.allCourseContent
 import com.example.elearningapp.models.CourseContent
-import com.example.elearningapp.navigation.MenuNavDestination
-import com.example.elearningapp.navigation.bottomNavScreens
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 import com.example.elearningapp.ui.views.components.AddNoteButton
-import com.example.elearningapp.ui.views.components.BottomNavBar
 import com.example.elearningapp.ui.views.components.CourseBottomNavBar
 import com.example.elearningapp.ui.views.components.TopBar
 
@@ -55,7 +52,7 @@ fun CourseArticleScreen(
             .padding(start = 20.dp, top = 20.dp, end = 20.dp)
             .verticalScroll(ScrollState(0))) {
             Card(
-                modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape (5.dp),
             elevation = 12.dp
             ) {

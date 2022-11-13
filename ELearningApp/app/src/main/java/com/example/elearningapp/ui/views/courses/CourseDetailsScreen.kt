@@ -195,11 +195,11 @@ fun CourseDetailsScreen(
                                         ScrollState(0)
                                     )
                             ) {
-                                CourseStepCard(1, stepStatus, courseContent.articleContent.title, navigateToScreenStep)
-                                CourseStepCard(2, stepStatus, courseContent.videoArticleContent.title, navigateToScreenStep)
+                                CourseStepCard(1, stepStatus, "Article", navigateToScreenStep)
+                                CourseStepCard(2, stepStatus, "Video Article", navigateToScreenStep)
                                 CourseStepCard(3, stepStatus, "Quiz Test", navigateToScreenStep)
-                                CourseStepCard(4, stepStatus, courseContent.quizResults.title, navigateToScreenStep)
-                                CourseStepCard(5, stepStatus, courseContent.courseSummary.title, navigateToScreenStep)
+                                CourseStepCard(4, stepStatus, "Quiz Results", navigateToScreenStep)
+                                CourseStepCard(5, stepStatus, "Course Summary", navigateToScreenStep)
                             }
                         } else {
                             Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {

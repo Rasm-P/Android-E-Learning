@@ -141,7 +141,7 @@ fun ProgrammeCard(
                         LazyColumn(
                             modifier = Modifier.padding(bottom = 60.dp)
                         ) {
-                            items(programmeState.data) { programme -> ItemCard(programme, selectedProgramme) {
+                            items(programmeState.data) { programme -> ProgrammeItem(programme, selectedProgramme) {
                                 selectedProgramme = programme
                             }
                             }
@@ -191,8 +191,9 @@ fun ProgrammeCard(
         }
     }
 
+
 @Composable
-fun ItemCard(programme: Programme, selectedProgramme: Programme, onSelect: () -> Unit) {
+fun ProgrammeItem(programme: Programme, selectedProgramme: Programme, onSelect: () -> Unit) {
     Row(modifier = Modifier
         .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
