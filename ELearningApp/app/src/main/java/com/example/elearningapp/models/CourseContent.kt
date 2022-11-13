@@ -19,7 +19,8 @@ data class ArticleContent(
 
 data class VideoArticleContent(
     val title: String,
-    val videoUrl: String,
+    val videoUri: String,
+    val videoThumbNailUri: String,
     val bulletPoints: List<String>
 )
 

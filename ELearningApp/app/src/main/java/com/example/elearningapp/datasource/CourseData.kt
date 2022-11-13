@@ -163,7 +163,8 @@ private fun dummyCourse(title: String): CourseContent {
         ),
         VideoArticleContent(
             "Lorem ipsum",
-            "https://youtu.be/1Zt6aIqZnqU",
+            "https://www.youtube.com/watch?v=1Zt6aIqZnqU&ab_channel=AndroidDevelopers",
+            "https://i.ytimg.com/vi/mnMCgjuMJPA/maxresdefault.jpg",
             listOf(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
                         "eiusmod tempor incididunt ut labore et dolore magna aliqua?",

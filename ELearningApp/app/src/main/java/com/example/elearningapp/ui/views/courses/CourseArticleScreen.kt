@@ -62,7 +62,7 @@ fun CourseArticleScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp)
+                        .padding(start = 20.dp, top = 10.dp, end = 20.dp, bottom = 20.dp)
                 ) {
                     Text(
                         text = articleContent.title,
