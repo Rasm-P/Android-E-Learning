@@ -3,15 +3,15 @@ package com.example.elearningapp.ui.views.components
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.FormatListBulleted
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.elearningapp.navigation.MenuNavDestination
-import com.example.elearningapp.navigation.bottomNavScreens
-import com.example.elearningapp.navigation.loginNavScreens
+import com.example.elearningapp.navigation.*
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -20,10 +20,12 @@ fun TopBar(
     route: String,
     onBackPressed: () -> Unit,
     onLogoutPressed: () -> Unit,
-    onAccountPressed: () -> Unit
+    onAccountPressed: () -> Unit,
+    onCourseDetailsPressed: () -> Unit
 ) {
     val isRouteInLoginFLow = loginNavScreens.any { screen -> screen.route == route }
     val isRouteInOverviewFLow = bottomNavScreens.any { screen -> screen.route == route }
+    val isRouteInCourseFlow = courseNavScreens.any { screen -> screen.route == route &&  route != CourseDestination.CourseDetails.route }
 
     CenterAlignedTopAppBar(
         colors = if (!isRouteInLoginFLow) TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colors.primary, titleContentColor = MaterialTheme.colors.secondary) else TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colors.background),
@@ -45,18 +47,26 @@ fun TopBar(
                         tint = MaterialTheme.colors.secondary
                     )
                 }
+            } else if (isRouteInCourseFlow) {
+                IconButton(onClick = onCourseDetailsPressed) {
+                    Icon(
+                        imageVector = Icons.Filled.FormatListBulleted,
+                        contentDescription = "To course details",
+                        tint = MaterialTheme.colors.secondary
+                    )
+                }
             } else {
                 IconButton(onClick = onBackPressed) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
                         contentDescription = "Back",
-                        tint = MaterialTheme.colors.primary
+                        tint = if (isRouteInLoginFLow) MaterialTheme.colors.primary else MaterialTheme.colors.secondary
                     )
                 }
             }
         },
         actions = {
-            if (!isRouteInLoginFLow && route != MenuNavDestination.Account.route) {
+            if (!isRouteInLoginFLow && route != MenuNavDestination.Account.route && isRouteInOverviewFLow) {
                 IconButton(onClick = onAccountPressed) {
                     Icon(
                         imageVector = Icons.Outlined.AccountCircle,
@@ -74,7 +84,7 @@ fun TopBar(
 @Composable
 fun TopBarPreview() {
     ELearningAppTheme {
-        TopBar("overview", {}, {}, {})
+        TopBar("overview", {}, {}, {}, {})
     }
 }
 

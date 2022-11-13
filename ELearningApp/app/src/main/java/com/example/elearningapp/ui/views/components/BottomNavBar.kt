@@ -30,7 +30,7 @@ import com.example.elearningapp.ui.theme.ELearningAppTheme
 // Built with inspiration from: https://developer.android.com/codelabs/jetpack-compose-navigation#0
 
 private val NavBarHeight = 80.dp
-private const val fadeDuration = 150
+private const val fadeDuration = 100
 
 @Composable
 fun BottomNavBar(screens: List<MenuNavDestination>, onSelected: (MenuNavDestination) -> Unit, currentDestination: MenuNavDestination) {

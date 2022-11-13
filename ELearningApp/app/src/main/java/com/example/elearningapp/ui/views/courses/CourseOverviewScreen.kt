@@ -220,7 +220,7 @@ fun CourseOverviewScreenPreview() {
             color = MaterialTheme.colors.background
         ) {
             Scaffold(
-                topBar = { TopBar("Courses", {}, {}, {}) },
+                topBar = { TopBar("Courses", {}, {}, {}, {}) },
                 bottomBar = {
                     BottomNavBar(bottomNavScreens, {}, MenuNavDestination.CourseOverview
                     )

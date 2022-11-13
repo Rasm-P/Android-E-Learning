@@ -190,7 +190,7 @@ fun NotesOverviewScreenPreview() {
             color = MaterialTheme.colors.background
         ) {
             Scaffold(
-                topBar = { TopBar("Notes", {}, {}, {}) },
+                topBar = { TopBar("Notes", {}, {}, {}, {}) },
                 bottomBar = {
                     BottomNavBar(
                         bottomNavScreens, {}, MenuNavDestination.NotesOverview

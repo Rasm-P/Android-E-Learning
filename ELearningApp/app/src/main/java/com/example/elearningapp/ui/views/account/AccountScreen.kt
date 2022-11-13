@@ -132,7 +132,7 @@ fun AccountScreenPreview() {
             color = MaterialTheme.colors.background
         ) {
             Scaffold(
-                topBar = { TopBar("Account", {}, {}, {}) },
+                topBar = { TopBar("Account", {}, {}, {}, {}) },
                 bottomBar = {
                     BottomNavBar(
                         bottomNavScreens, {}, MenuNavDestination.Account

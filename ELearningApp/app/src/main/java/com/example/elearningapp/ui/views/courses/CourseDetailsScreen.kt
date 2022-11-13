@@ -331,7 +331,7 @@ fun CourseDetailsScreenPreview() {
             color = MaterialTheme.colors.background
         ) {
             Scaffold(
-                topBar = { TopBar("course-details", {}, {}, {}) }
+                topBar = { TopBar("course-details", {}, {}, {}, {}) }
             ) { innerPadding ->
                 Box(modifier = Modifier.padding(innerPadding)) {
                     CourseDetailsScreen(allCourseInformation[0],{},ActionState.Success(allCourseContent[0]),3, {false}, {}, {})

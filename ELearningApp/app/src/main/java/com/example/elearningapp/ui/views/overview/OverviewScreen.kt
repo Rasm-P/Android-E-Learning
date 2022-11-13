@@ -253,7 +253,7 @@ fun OverviewScreenPreview() {
             color = MaterialTheme.colors.background
         ) {
             Scaffold(
-                topBar = { TopBar("Overview", {}, {}, {}) },
+                topBar = { TopBar("Overview", {}, {}, {}, {}) },
                 bottomBar = {
                     BottomNavBar(
                         bottomNavScreens,
