@@ -27,6 +27,7 @@ import com.example.elearningapp.navigation.bottomNavScreens
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 import com.example.elearningapp.ui.views.components.AddNoteButton
 import com.example.elearningapp.ui.views.components.BottomNavBar
+import com.example.elearningapp.ui.views.components.CourseBottomNavBar
 import com.example.elearningapp.ui.views.components.TopBar
 
 @Composable
@@ -120,12 +121,8 @@ fun CourseArticleScreenPreview() {
             color = MaterialTheme.colors.background
         ) {
             Scaffold(
-                topBar = { TopBar("Article", {}, {}, {}, {}) },
-                bottomBar = {
-                    BottomNavBar(
-                        bottomNavScreens, {}, MenuNavDestination.CourseOverview
-                    )
-                }
+                topBar = { TopBar("article", {}, {}, {}, {}) },
+                bottomBar = { CourseBottomNavBar({},{},{},"article") }
             ) {
                     innerPadding -> Box(modifier = Modifier.padding(innerPadding)) {
                 CourseArticleScreen(

@@ -23,12 +23,9 @@ class UserRepository @Inject internal constructor(private val firebaseDB: Fireba
     override suspend fun fetchUser() = flow {
         try {
             emit(ActionState.Loading)
-            lateinit var user: User
             val uid = Firebase.auth.uid!!
-            firebaseDB.collection("user").document(uid).get()
-                .addOnSuccessListener { document ->
-                   user = document.toObject(User::class.java)!!
-                }.await()
+            val result = firebaseDB.collection("user").document(uid).get().await()
+            val user = result.toObject(User::class.java)!!
             emit(ActionState.Success(user))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))

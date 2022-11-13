@@ -124,7 +124,10 @@ fun AppNavHost(
                 )
             }
             composable(route = CourseDestination.CourseVideo.route) {
-                CourseVideoArticleScreen()
+                CourseVideoArticleScreen(courseContentState = courseViewModel.courseContentState.value,
+                    saveNote = {title, noteText -> noteViewModel.insertNote(title, noteText)},
+                    updateUserCourseSteps = {courseName, updateStepsCompleted -> userViewModel.updateUserCourseSteps(courseName, updateStepsCompleted)}
+                )
             }
             composable(route = CourseDestination.CourseQuiz.route) {
                 CourseQuizTestScreen()
