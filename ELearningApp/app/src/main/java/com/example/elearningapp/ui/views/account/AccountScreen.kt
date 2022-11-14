@@ -15,6 +15,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.elearningapp.common.ActionState
+import com.example.elearningapp.datasource.ProgrammeData
 import com.example.elearningapp.models.Programme
 import com.example.elearningapp.models.User
 import com.example.elearningapp.navigation.MenuNavDestination
@@ -24,7 +26,12 @@ import com.example.elearningapp.ui.views.components.BottomNavBar
 import com.example.elearningapp.ui.views.components.TopBar
 
 @Composable
-fun AccountScreen(userData: User, userEmail: String) {
+fun AccountScreen(
+    userData: User,
+    userEmail: String,
+    fetchProgrammes: () -> Unit,
+    programmeState: ActionState<List<Programme>>
+) {
     var showEditAccountDialog by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier
@@ -116,7 +123,7 @@ fun AccountScreen(userData: User, userEmail: String) {
         }
     }
     if (showEditAccountDialog) {
-        EditAccountDialog(userData, userEmail) { showEditAccountDialog = false }
+        EditAccountDialog(userData, userEmail, { showEditAccountDialog = false }, fetchProgrammes, programmeState )
     }
 }
 
@@ -140,7 +147,7 @@ fun AccountScreenPreview() {
                 }
             ) {
                 innerPadding -> Box(modifier = Modifier.padding(innerPadding)) {
-                    AccountScreen(user, "student@email.com")
+                    AccountScreen(user, "student@email.com",{},ActionState.Success(ProgrammeData.programmes))
                 }
             }
         }
