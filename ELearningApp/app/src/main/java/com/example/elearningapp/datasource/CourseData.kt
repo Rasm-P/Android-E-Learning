@@ -240,7 +240,14 @@ private fun dummyCourse(title: String): CourseContent {
         ),
         QuizResults(
             "Lorem ipsum",
-            listOf(1, 3, 2, 0, 1)
+            listOf(1, 3, 5, 1, 2),
+            listOf(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            )
         ),
         CourseSummary(
             "Lorem ipsum",

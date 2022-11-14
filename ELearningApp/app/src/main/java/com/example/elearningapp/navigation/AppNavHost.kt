@@ -131,14 +131,18 @@ fun AppNavHost(
             }
             composable(route = CourseDestination.CourseQuiz.route) {
                 CourseQuizTestScreen(courseContentState = courseViewModel.courseContentState.value,
-                    userCoursesStatus = {courseName -> userViewModel.getUserCourseQuizAnswers(courseName)},
+                    userCourseAnswers = {courseName -> userViewModel.getUserCourseQuizAnswers(courseName)},
                     updateUserCourseSteps = {courseName, updateStepsCompleted -> userViewModel.updateUserCourseSteps(courseName, updateStepsCompleted)},
                     updateUserCourseQuizAnswers = {courseName, courseQuizAnswers -> userViewModel.updateUserCourseQuizAnswers(courseName, courseQuizAnswers)
                         navController.navigateSingleTopTo(CourseDestination.CourseQuizAnswers.route)}
                 )
             }
             composable(route = CourseDestination.CourseQuizAnswers.route) {
-                CourseQuizResultsScreen()
+                CourseQuizResultsScreen(courseContentState = courseViewModel.courseContentState.value,
+                    saveNote = {title, noteText -> noteViewModel.insertNote(title, noteText)},
+                    userCourseAnswers = {courseName -> userViewModel.getUserCourseQuizAnswers(courseName)},
+                    updateUserCourseSteps = {courseName, updateStepsCompleted -> userViewModel.updateUserCourseSteps(courseName, updateStepsCompleted)}
+                )
             }
             composable(route = CourseDestination.CourseSummary.route) {
                 CourseSummaryScreen()

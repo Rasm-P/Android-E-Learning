@@ -25,14 +25,14 @@ import com.example.elearningapp.ui.views.components.TopBar
 @Composable
 fun CourseQuizTestScreen(
     courseContentState: ActionState<CourseContent?>,
-    userCoursesStatus: (String) -> List<Int>,
+    userCourseAnswers: (String) -> List<Int>,
     updateUserCourseSteps: (String, Int) -> Unit,
     updateUserCourseQuizAnswers: (String, List<Int>) -> Unit
 ) {
     if (courseContentState is ActionState.Success && courseContentState.data != null) {
         val quizTestQuestions = courseContentState.data.quizTestQuestions
 
-        val userCourseQuizAnswers = userCoursesStatus(courseContentState.data.courseName)
+        val userCourseQuizAnswers = userCourseAnswers(courseContentState.data.courseName)
         val quizAnswerList = userCourseQuizAnswers.ifEmpty { List(quizTestQuestions.size) { 0 } }
 
         var currentQuestionIndex by remember { mutableStateOf(0) }
@@ -179,8 +179,8 @@ fun CourseQuizTestScreenPreview() {
             color = MaterialTheme.colors.background
         ) {
             Scaffold(
-                topBar = { TopBar("quiz-Test", {}, {}, {}, {}) },
-                bottomBar = { CourseBottomNavBar({},{},{},"quiz-Test") }
+                topBar = { TopBar("quiz-test", {}, {}, {}, {}) },
+                bottomBar = { CourseBottomNavBar({},{},{},"quiz-test") }
             ) {
                     innerPadding -> Box(modifier = Modifier.padding(innerPadding)) {
                 CourseQuizTestScreen(

@@ -33,7 +33,8 @@ data class QuizQuestion(
 
 data class QuizResults(
     val title: String,
-    val resultIndices: List<Int>
+    val resultIndices: List<Int>,
+    val quizAnswers: List<String>
 )
 
 data class CourseSummary(
