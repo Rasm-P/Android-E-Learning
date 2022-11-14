@@ -68,6 +68,11 @@ class UserViewModel @Inject internal constructor(private val _userRepository: Us
         }
     }
 
+    fun getUserCourseStepsCompleted(courseName: String): Int {
+        val currentSteps = _userData.value.activeCourses.find { course -> course.courseInformation.courseName == courseName }
+        return currentSteps?.stepsCompleted ?: 0
+    }
+
     fun updateUserCourseSteps(courseName: String, updateStepsCompleted: Int) {
         val currentSteps = _userData.value.activeCourses.find { course -> course.courseInformation.courseName == courseName }
         if(currentSteps != null && currentSteps.stepsCompleted < updateStepsCompleted) {

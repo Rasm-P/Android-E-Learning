@@ -101,7 +101,7 @@ fun CourseVideoArticleScreen(
                         Icon(
                             modifier = Modifier.size(80.dp).align(alignment = Alignment.Center),
                             imageVector = Icons.Outlined.PlayCircleFilled,
-                            contentDescription = "Account",
+                            contentDescription = "Play video",
                             tint = MaterialTheme.colors.primary
                         )
                     } else {

@@ -39,5 +39,6 @@ data class QuizResults(
 
 data class CourseSummary(
     val title: String,
-    val bulletPoints: List<String>
+    val bulletPoints: List<String>,
+    val learnMoreUri: String
 )

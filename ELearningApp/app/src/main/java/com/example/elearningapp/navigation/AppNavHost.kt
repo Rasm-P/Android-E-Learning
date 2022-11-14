@@ -145,7 +145,10 @@ fun AppNavHost(
                 )
             }
             composable(route = CourseDestination.CourseSummary.route) {
-                CourseSummaryScreen()
+                CourseSummaryScreen(courseContentState = courseViewModel.courseContentState.value,
+                    updateUserCourseSteps = {courseName, updateStepsCompleted -> userViewModel.updateUserCourseSteps(courseName, updateStepsCompleted)},
+                    getUserCourseStepsCompleted = {courseName -> userViewModel.getUserCourseStepsCompleted(courseName)}
+                )
             }
         }
     }

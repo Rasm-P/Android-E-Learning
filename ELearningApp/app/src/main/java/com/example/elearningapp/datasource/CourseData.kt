@@ -240,7 +240,7 @@ private fun dummyCourse(title: String): CourseContent {
         ),
         QuizResults(
             "Lorem ipsum",
-            listOf(1, 3, 5, 1, 2),
+            listOf(1, 3, 4, 1, 2),
             listOf(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -259,8 +259,11 @@ private fun dummyCourse(title: String): CourseContent {
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                         "tempor incididunt ut labore et dolore magna aliqua.",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                        "tempor incididunt ut labore et dolore magna aliqua.",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                         "tempor incididunt ut labore et dolore magna aliqua."
-            )
+            ),
+        "https://developer.android.com/jetpack/compose"
         )
     )
 }

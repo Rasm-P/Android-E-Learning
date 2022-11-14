@@ -31,8 +31,8 @@ fun CourseQuizResultsScreen(
 ) {
 
     if (courseContentState is ActionState.Success && courseContentState.data != null) {
-        val userCourseQuizAnswers = userCourseAnswers(courseContentState.data.courseName)
         val quizResultContent = courseContentState.data.quizResults
+        val userCourseQuizAnswers = userCourseAnswers(courseContentState.data.courseName)
 
         if (!userCourseQuizAnswers.contains(0)) {
             LaunchedEffect(Unit, block = {
@@ -135,7 +135,7 @@ fun CourseQuizResultsScreenPreview() {
                 CourseQuizResultsScreen(
                     ActionState.Success(CourseData.allCourseContent[0]),
                     {_,_->},
-                    { listOf(1, 5, 3, 1, 2) },
+                    { listOf(1, 4, 3, 1, 2) },
                     {_,_->}
                 )
             }
