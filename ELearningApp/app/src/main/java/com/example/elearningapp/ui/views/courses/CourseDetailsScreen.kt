@@ -12,6 +12,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.RadioButtonChecked
+import androidx.compose.material.icons.outlined.RadioButtonUnchecked
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -264,10 +267,12 @@ fun CourseStepCard(step: Int, stepStatus: Int, title: String, navigateToScreenSt
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            RadioButton(selected = completedStep,
-                onClick = {},
-                colors = RadioButtonDefaults.colors(Color.Green, Color.Gray)
+            Icon(modifier = Modifier,
+                imageVector = if (completedStep) Icons.Outlined.RadioButtonChecked else Icons.Outlined.RadioButtonUnchecked,
+                contentDescription = "Radio button",
+                tint = if (completedStep) Color.Green else Color.Gray
             )
+            Spacer(modifier = Modifier.width(8.dp))
             Text(modifier = Modifier.weight(1f),
                 text = title,
                 overflow = TextOverflow.Ellipsis,

@@ -80,6 +80,23 @@ class UserViewModel @Inject internal constructor(private val _userRepository: Us
         }
     }
 
+    fun getUserCourseQuizAnswers(courseName: String) : List<Int> {
+        val course = _userData.value.activeCourses.find { course -> course.courseInformation.courseName == courseName }
+        return course?.courseQuizAnswers ?: emptyList()
+    }
+
+    fun updateUserCourseQuizAnswers(courseName: String, courseQuizAnswers: List<Int>) {
+        val course = _userData.value.activeCourses.find { course -> course.courseInformation.courseName == courseName }
+        if(course != null) {
+            course.courseQuizAnswers = courseQuizAnswers
+            viewModelScope.launch {
+                _userRepository.updateUserActiveCourses(_userData.value.activeCourses).collect {
+                        response -> _updateState.value = response
+                }
+            }
+        }
+    }
+
     fun updateUserActiveCourses(courseInformation: CourseInformation) {
         _userData.value.activeCourses.add(CourseStatus(courseInformation = courseInformation))
         viewModelScope.launch {

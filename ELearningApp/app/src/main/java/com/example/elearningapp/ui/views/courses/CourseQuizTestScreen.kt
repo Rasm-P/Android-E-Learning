@@ -25,17 +25,18 @@ import com.example.elearningapp.ui.views.components.TopBar
 @Composable
 fun CourseQuizTestScreen(
     courseContentState: ActionState<CourseContent?>,
-    updateUserCourseSteps: (String, Int) -> Unit
+    userCoursesStatus: (String) -> List<Int>,
+    updateUserCourseSteps: (String, Int) -> Unit,
+    updateUserCourseQuizAnswers: (String, List<Int>) -> Unit
 ) {
     if (courseContentState is ActionState.Success && courseContentState.data != null) {
         val quizTestQuestions = courseContentState.data.quizTestQuestions
 
-        var currentQuestionIndex by remember { mutableStateOf(0) }
-        var questionAnswers by remember { mutableStateOf(IntArray(quizTestQuestions.size)) }
+        val userCourseQuizAnswers = userCoursesStatus(courseContentState.data.courseName)
+        val quizAnswerList = userCourseQuizAnswers.ifEmpty { List(quizTestQuestions.size) { 0 } }
 
-        LaunchedEffect(Unit, block = {
-            updateUserCourseSteps(courseContentState.data.courseName, 3)
-        })
+        var currentQuestionIndex by remember { mutableStateOf(0) }
+        var questionAnswers by remember { mutableStateOf(quizAnswerList) }
 
         Column(modifier = Modifier
             .fillMaxWidth()
@@ -82,7 +83,7 @@ fun CourseQuizTestScreen(
                         fontWeight = FontWeight.Medium
                     )
                     for ((index, option) in quizTestQuestions[currentQuestionIndex].options.withIndex()) {
-                        val answer = questionAnswers
+                        val answer = questionAnswers.toMutableList()
                         Row(modifier = Modifier
                             .fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
@@ -90,7 +91,7 @@ fun CourseQuizTestScreen(
                             RadioButton(
                                 selected = (answer[currentQuestionIndex] == index+1),
                                 onClick = {answer[currentQuestionIndex] = index+1
-                                    questionAnswers = answer.clone()},
+                                    questionAnswers = answer},
                                 colors = RadioButtonDefaults.colors(MaterialTheme.colors.primary, Color.Gray)
                             )
                             Text(
@@ -154,11 +155,13 @@ fun CourseQuizTestScreen(
         }
         Box(modifier = Modifier.fillMaxSize()) {
             Button(
+                enabled = !questionAnswers.contains(0),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(20.dp)
                     .align(alignment = Alignment.BottomCenter),
-                onClick = { /*TODO*/ }) {
+                onClick = { updateUserCourseQuizAnswers(courseContentState.data.courseName, questionAnswers)
+                    updateUserCourseSteps(courseContentState.data.courseName, 3)}) {
                 Text(text = "ANSWER")
             }
         }
@@ -182,6 +185,8 @@ fun CourseQuizTestScreenPreview() {
                     innerPadding -> Box(modifier = Modifier.padding(innerPadding)) {
                 CourseQuizTestScreen(
                     ActionState.Success(CourseData.allCourseContent[0]),
+                    {emptyList()},
+                    {_,_->},
                     {_,_->}
                 )
             }

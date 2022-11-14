@@ -72,7 +72,6 @@ fun ProgrammeScreen(
         }
         is ActionState.Error -> {
             addUserDataFailed = true
-            Toast.makeText(LocalContext.current, userState.message, Toast.LENGTH_LONG).show()
             resetActionState.invoke()
         }
     }

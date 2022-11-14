@@ -55,10 +55,6 @@ fun CourseVideoArticleScreen(
                 }).build()
         )
 
-        LaunchedEffect(Unit, block = {
-            updateUserCourseSteps(courseContentState.data.courseName, 2)
-        })
-
         Card(
             modifier = Modifier
                 .fillMaxSize()
@@ -89,6 +85,7 @@ fun CourseVideoArticleScreen(
                             youTubeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             youTubeIntent.setPackage("com.google.android.youtube")
                             localContext.startActivity(youTubeIntent)
+                            updateUserCourseSteps(courseContentState.data.courseName, 2)
                         }
                     ))
                 {

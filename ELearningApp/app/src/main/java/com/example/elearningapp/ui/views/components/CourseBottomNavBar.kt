@@ -54,7 +54,7 @@ fun CourseBottomNavBar(
                         tint = MaterialTheme.colors.secondary
                     )
                 }
-            } else {
+            } else if (currentRoute != CourseDestination.CourseQuiz.route) {
                 Row(
                     modifier = Modifier.clickable(onClick = onNextPressed),
                     verticalAlignment = Alignment.CenterVertically
