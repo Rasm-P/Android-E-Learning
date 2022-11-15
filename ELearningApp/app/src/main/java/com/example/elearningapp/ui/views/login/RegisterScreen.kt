@@ -31,7 +31,7 @@ import com.example.elearningapp.ui.views.components.Loading
 fun RegisterScreen(
     navigateLogin: () -> Unit,
     navigateProgramme: () -> Unit,
-    loginState: ActionState<Boolean>,
+    loginState: ActionState<String>,
     resetActionState: () -> Unit,
     onRegister: (String, String) -> Unit,
     setFirstTimeUser: () -> Unit
@@ -58,9 +58,7 @@ fun RegisterScreen(
             Loading()
         }
         is ActionState.Success -> {
-            if (loginState.data) {
-                navigateProgramme.invoke()
-            }
+            navigateProgramme.invoke()
             resetActionState.invoke()
         }
         is ActionState.Error -> {

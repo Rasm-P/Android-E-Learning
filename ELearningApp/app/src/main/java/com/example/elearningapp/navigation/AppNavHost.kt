@@ -110,10 +110,13 @@ fun AppNavHost(
                 updateEmail = {email -> loginViewModel.updateEmail(email)},
                 resetPassword = {email -> loginViewModel.resetPassword(email)},
                 deleteUser = {userViewModel.deleteUserData()
-                    navController.navigate(navController.graph.startDestinationId)
+                    navController.navigate(LoginDestination.Welcome.route)
                     loginViewModel.deleteUser()},
                 updateState = userViewModel.updateState.value,
-                resetActionState = {userViewModel.resetUserActionState()}
+                resetActionState = {userViewModel.resetUserActionState()
+                    loginViewModel.resetLoginActionState()},
+                loginState = loginViewModel.loginState.value,
+                onLogin = {email, password -> loginViewModel.login(email, password)}
                 )
             }
         }

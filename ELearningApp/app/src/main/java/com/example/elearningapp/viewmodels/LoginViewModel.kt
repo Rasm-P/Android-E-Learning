@@ -15,11 +15,11 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject internal constructor(private val _loginRepository: LoginRepositoryInterface): ViewModel() {
 
-    private val _loginState = mutableStateOf<ActionState<Boolean>>(ActionState.Initial)
-    val loginState: State<ActionState<Boolean>> = _loginState
+    private val _loginState = mutableStateOf<ActionState<String>>(ActionState.Initial)
+    val loginState: State<ActionState<String>> = _loginState
 
-    private val _resetState = mutableStateOf<ActionState<Boolean>>(ActionState.Initial)
-    val resetState: State<ActionState<Boolean>> = _resetState
+    private val _resetState = mutableStateOf<ActionState<String>>(ActionState.Initial)
+    val resetState: State<ActionState<String>> = _resetState
 
     fun login(email: String, password: String) {
         viewModelScope.launch {

@@ -39,7 +39,9 @@ fun AccountScreen(
     resetPassword: (String) -> Unit,
     deleteUser: () -> Unit,
     updateState: ActionState<String>,
-    resetActionState: () -> Unit
+    resetActionState: () -> Unit,
+    loginState: ActionState<String>,
+    onLogin: (String, String) -> Unit
 ) {
     var showEditAccountDialog by remember { mutableStateOf(false) }
 
@@ -55,7 +57,9 @@ fun AccountScreen(
         Text(
             text = "Hello " + userData.name,
             fontSize = 32.sp,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
         Spacer(modifier = Modifier.height(20.dp))
         Card(modifier = Modifier.fillMaxWidth(),
@@ -132,13 +136,19 @@ fun AccountScreen(
         }
     }
     if (showEditAccountDialog) {
-        EditAccountDialog(userData, userEmail, { showEditAccountDialog = false }, fetchProgrammes, programmeState, updateUserName, updateUserStudyProgramme, updateEmail, resetPassword, deleteUser)
+        EditAccountDialog(userData, userEmail, { showEditAccountDialog = false }, fetchProgrammes, programmeState, updateUserName, updateUserStudyProgramme, updateEmail, resetPassword, deleteUser, resetActionState, loginState, onLogin)
     }
     if (updateState is ActionState.Success) {
-        Toast.makeText(LocalContext.current, updateState.data, Toast.LENGTH_LONG).show()
+        Toast.makeText(LocalContext.current, updateState.data, Toast.LENGTH_SHORT).show()
         resetActionState.invoke()
     } else if (updateState is ActionState.Error) {
-        Toast.makeText(LocalContext.current, updateState.message, Toast.LENGTH_LONG).show()
+        Toast.makeText(LocalContext.current, updateState.message, Toast.LENGTH_SHORT).show()
+        resetActionState.invoke()
+    }
+    if (loginState is ActionState.Success) {
+        Toast.makeText(LocalContext.current, loginState.data, Toast.LENGTH_SHORT).show()
+    } else if (loginState is ActionState.Error) {
+        Toast.makeText(LocalContext.current, loginState.message, Toast.LENGTH_SHORT).show()
         resetActionState.invoke()
     }
 }
@@ -163,7 +173,7 @@ fun AccountScreenPreview() {
                 }
             ) {
                 innerPadding -> Box(modifier = Modifier.padding(innerPadding)) {
-                    AccountScreen(user, "student@email.com",{},ActionState.Success(ProgrammeData.programmes),{},{},{},{},{}, ActionState.Initial, {})
+                    AccountScreen(user, "student@email.com",{},ActionState.Success(ProgrammeData.programmes),{},{},{},{},{}, ActionState.Initial, {}, ActionState.Initial,{_,_->})
                 }
             }
         }

@@ -35,11 +35,11 @@ import com.example.elearningapp.ui.views.components.Loading
 fun LoginScreen(
     navigateRegister: () -> Unit,
     navigateOverview: () -> Unit,
-    loginState: ActionState<Boolean>,
+    loginState: ActionState<String>,
     resetActionState: () -> Unit,
     onLogin: (String, String) -> Unit,
     onPasswordReset: (String) -> Unit,
-    restPasswordState: ActionState<Boolean>,
+    restPasswordState: ActionState<String>,
     fetchUser: () -> Unit
 ) {
     val image: Painter = painterResource(id = R.drawable.e_learning)
@@ -64,10 +64,8 @@ fun LoginScreen(
             Loading()
         }
         is ActionState.Success -> {
-            if (loginState.data) {
-                navigateOverview.invoke()
-                fetchUser.invoke()
-            }
+            navigateOverview.invoke()
+            fetchUser.invoke()
             resetActionState.invoke()
         }
         is ActionState.Error -> {
@@ -85,7 +83,7 @@ fun LoginCard(
     resetActionState: () -> Unit,
     onLogin: (String, String) -> Unit,
     onPasswordReset: (String) -> Unit,
-    restPasswordState: ActionState<Boolean>
+    restPasswordState: ActionState<String>
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -193,7 +191,7 @@ fun LoginCard(
 }
 
 @Composable
-fun ForgotPasswordDialog(onDismiss: () -> Unit, resetActionState: () -> Unit, onPasswordReset: (String) -> Unit, restPasswordState: ActionState<Boolean>) {
+fun ForgotPasswordDialog(onDismiss: () -> Unit, resetActionState: () -> Unit, onPasswordReset: (String) -> Unit, restPasswordState: ActionState<String>) {
     var email by remember { mutableStateOf("") }
     var resetFailed by remember { mutableStateOf(false) }
     var resetSuccess by remember { mutableStateOf(false) }
@@ -257,11 +255,9 @@ fun ForgotPasswordDialog(onDismiss: () -> Unit, resetActionState: () -> Unit, on
                     Loading()
                 }
                 is ActionState.Success -> {
-                    if (restPasswordState.data) {
-                        email = ""
-                        resetFailed = false
-                        resetSuccess = true
-                    }
+                    email = ""
+                    resetFailed = false
+                    resetSuccess = true
                     resetActionState.invoke()
                 }
                 is ActionState.Error -> {
