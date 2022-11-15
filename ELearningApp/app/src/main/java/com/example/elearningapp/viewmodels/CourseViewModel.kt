@@ -74,14 +74,7 @@ class CourseViewModel @Inject internal constructor(private val _courseRepository
                 return courseStatus.stepsCompleted
             }
         }
-        return 0;
+        return 0
     }
-
-    fun resetCourseActionState() {
-        _courseInformationState.value = ActionState.Initial
-        _courseContentState.value = ActionState.Initial
-    }
-
-
 
 }

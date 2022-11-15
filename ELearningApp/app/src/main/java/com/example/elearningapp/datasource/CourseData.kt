@@ -1,7 +1,6 @@
 package com.example.elearningapp.datasource
 
 import com.example.elearningapp.models.*
-import kotlin.time.Duration.Companion.minutes
 
 /**
  * Pretend data fetched from external API.

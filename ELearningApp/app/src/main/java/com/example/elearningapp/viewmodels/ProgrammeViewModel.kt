@@ -25,8 +25,4 @@ class ProgrammeViewModel @Inject internal constructor(private val _programmeRepo
         }
     }
 
-    fun resetProgrammeActionState() {
-        _programmeState.value = ActionState.Initial
-    }
-
 }

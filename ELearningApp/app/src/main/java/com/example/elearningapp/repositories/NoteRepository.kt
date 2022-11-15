@@ -4,7 +4,6 @@ import com.example.elearningapp.database.dao.NoteDao
 import com.example.elearningapp.models.entities.NoteEntity
 import com.example.elearningapp.repositories.interfaces.NoteRepositoryInterface
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
