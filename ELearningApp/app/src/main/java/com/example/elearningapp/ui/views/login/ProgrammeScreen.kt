@@ -72,7 +72,6 @@ fun ProgrammeScreen(
         }
         is ActionState.Error -> {
             addUserDataFailed = true
-            Toast.makeText(LocalContext.current, userState.message, Toast.LENGTH_LONG).show()
             resetActionState.invoke()
         }
     }
@@ -141,7 +140,7 @@ fun ProgrammeCard(
                         LazyColumn(
                             modifier = Modifier.padding(bottom = 60.dp)
                         ) {
-                            items(programmeState.data) { programme -> ItemCard(programme, selectedProgramme) {
+                            items(programmeState.data) { programme -> ProgrammeItem(programme, selectedProgramme) {
                                 selectedProgramme = programme
                             }
                             }
@@ -152,7 +151,7 @@ fun ProgrammeCard(
                         Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                             Icon(imageVector = Icons.Filled.Error, contentDescription = "Error icon", tint = Color.LightGray)
                             Spacer(modifier = Modifier.height(12.dp))
-                            Text(text = "Couldn't Load Data!", color = Color.LightGray)
+                            Text(text = "Couldn't Load Data", color = Color.LightGray)
                             Spacer(modifier = Modifier.height(12.dp))
                             Text(text = "Retry", modifier = Modifier.clickable(onClick = fetchProgrammes), color = MaterialTheme.colors.error, textDecoration = TextDecoration.Underline)
                         }
@@ -191,8 +190,9 @@ fun ProgrammeCard(
         }
     }
 
+
 @Composable
-fun ItemCard(programme: Programme, selectedProgramme: Programme, onSelect: () -> Unit) {
+fun ProgrammeItem(programme: Programme, selectedProgramme: Programme, onSelect: () -> Unit) {
     Row(modifier = Modifier
         .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically

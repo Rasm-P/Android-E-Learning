@@ -5,7 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.elearningapp.common.ActionState
-import com.example.elearningapp.models.Course
+import com.example.elearningapp.models.CourseContent
+import com.example.elearningapp.models.CourseInformation
+import com.example.elearningapp.models.CourseStatus
 import com.example.elearningapp.repositories.interfaces.CourseRepositoryInterface
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,13 +16,19 @@ import javax.inject.Inject
 @HiltViewModel
 class CourseViewModel @Inject internal constructor(private val _courseRepository: CourseRepositoryInterface): ViewModel() {
 
-    private val _courseState = mutableStateOf<ActionState<List<Course>>>(ActionState.Initial)
-    val courseState: State<ActionState<List<Course>>> = _courseState
+    private val _courseInformationState = mutableStateOf<ActionState<List<CourseInformation>>>(ActionState.Initial)
+    val courseInformationState: State<ActionState<List<CourseInformation>>> = _courseInformationState
+
+    private val _courseContentState = mutableStateOf<ActionState<CourseContent?>>(ActionState.Initial)
+    val courseContentState: State<ActionState<CourseContent?>> = _courseContentState
+
+    private val _courseInformation = mutableStateOf(CourseInformation())
+    val courseInformation: State<CourseInformation> = _courseInformation
 
     fun fetchTrendingCourses() {
         viewModelScope.launch {
             _courseRepository.fetchTrendingCourses().collect {
-                    response -> _courseState.value = response
+                    response -> _courseInformationState.value = response
             }
         }
     }
@@ -28,14 +36,14 @@ class CourseViewModel @Inject internal constructor(private val _courseRepository
     fun fetchAllCourses() {
         viewModelScope.launch {
             _courseRepository.fetchAllCourses().collect {
-                    response -> _courseState.value = response
+                    response -> _courseInformationState.value = response
             }
         }
     }
 
-    fun filterCourses(searchFilter: String, topicFilter: String): List<Course> {
-        return if (_courseState.value is ActionState.Success) {
-            var filteredCourses = (_courseState.value as ActionState.Success<List<Course>>).data
+    fun filterCourses(searchFilter: String, topicFilter: String): List<CourseInformation> {
+        return if (_courseInformationState.value is ActionState.Success) {
+            var filteredCourses = (_courseInformationState.value as ActionState.Success<List<CourseInformation>>).data
             if (topicFilter != "") {
                 filteredCourses = filteredCourses.filter { it.topic.lowercase() == topicFilter.lowercase() }
             }
@@ -48,16 +56,25 @@ class CourseViewModel @Inject internal constructor(private val _courseRepository
         }
     }
 
-    fun fetchCourseByName() {
+    fun setCourseInformation(courseInformation: CourseInformation) {
+        _courseInformation.value = courseInformation
+    }
+
+    fun fetchCourseContentByName() {
         viewModelScope.launch {
-            _courseRepository.fetchTrendingCourses().collect {
-                    response -> _courseState.value = response
+            _courseRepository.fetchCourseContentByName(_courseInformation.value.courseName).collect {
+                    response -> _courseContentState.value = response
             }
         }
     }
 
-    fun resetCourseActionState() {
-        _courseState.value = ActionState.Initial
+    fun getStepStatus(courseStatusList: List<CourseStatus>): Int {
+        for (courseStatus in courseStatusList) {
+            if (courseStatus.courseInformation.courseName == courseInformation.value.courseName) {
+                return courseStatus.stepsCompleted
+            }
+        }
+        return 0
     }
 
 }

@@ -20,7 +20,7 @@ class LoginRepository @Inject internal constructor(private val firebaseAuth: Fir
         try {
             emit(ActionState.Loading)
             firebaseAuth.signInWithEmailAndPassword(email, password).await()
-            emit(ActionState.Success(true))
+            emit(ActionState.Success("Login successful!"))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
             Log.e("Error: Login", e.message ?: errorMessage)
@@ -31,7 +31,7 @@ class LoginRepository @Inject internal constructor(private val firebaseAuth: Fir
         try {
             emit(ActionState.Loading)
             firebaseAuth.createUserWithEmailAndPassword(email.trim(), password.trim()).await()
-            emit(ActionState.Success(true))
+            emit(ActionState.Success("Register successful!"))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
             Log.e("Error: Login", e.message ?: errorMessage)
@@ -42,7 +42,7 @@ class LoginRepository @Inject internal constructor(private val firebaseAuth: Fir
         try {
             emit(ActionState.Loading)
             firebaseAuth.sendPasswordResetEmail(email).await()
-            emit(ActionState.Success(true))
+            emit(ActionState.Success("Email password reset request has been sent!"))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
             Log.e("Error: Login", e.message ?: errorMessage)
@@ -53,7 +53,7 @@ class LoginRepository @Inject internal constructor(private val firebaseAuth: Fir
         try {
             emit(ActionState.Loading)
             firebaseAuth.currentUser!!.updateEmail(email).await()
-            emit(ActionState.Success(true))
+            emit(ActionState.Success("Account email has been updated!"))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
             Log.e("Error: Login", e.message ?: errorMessage)

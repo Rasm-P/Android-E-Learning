@@ -37,11 +37,11 @@ object ProgrammeData {
         ),
         Programme(
             "Computer Engineering",
-            listOf("Programming", "Electronics", "Hardware", "Data Communication", "Embedded Systems" )
+            listOf("Programming", "Security", "Data Communication", "UX Design", "Big Data" )
         ),
         Programme(
             "IT and Economics",
-            listOf("Programming", "Economics", "Organization", "Management", "UX Design" )
+            listOf("Programming", "Security", "Data Communication", "UX Design", "Big Data" )
         ),
         Programme(
             "Software Technology",

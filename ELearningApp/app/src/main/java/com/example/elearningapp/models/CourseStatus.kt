@@ -1,6 +1,7 @@
 package com.example.elearningapp.models
 
 data class CourseStatus (
-    val course: Course = Course(),
-    val stepsCompleted: Int = 0
+    val courseInformation: CourseInformation = CourseInformation(),
+    var stepsCompleted: Int = 0,
+    var courseQuizAnswers: List<Int> = ArrayList()
 )

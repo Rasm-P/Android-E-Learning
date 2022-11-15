@@ -1,6 +1,6 @@
 package com.example.elearningapp.ui.views.account
 
-import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -11,11 +11,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.elearningapp.common.ActionState
+import com.example.elearningapp.datasource.ProgrammeData
 import com.example.elearningapp.models.Programme
 import com.example.elearningapp.models.User
 import com.example.elearningapp.navigation.MenuNavDestination
@@ -25,7 +28,21 @@ import com.example.elearningapp.ui.views.components.BottomNavBar
 import com.example.elearningapp.ui.views.components.TopBar
 
 @Composable
-fun AccountScreen(userData: User, userEmail: String) {
+fun AccountScreen(
+    userData: User,
+    userEmail: String,
+    fetchProgrammes: () -> Unit,
+    programmeState: ActionState<List<Programme>>,
+    updateUserName: (String) -> Unit,
+    updateUserStudyProgramme: (Programme) -> Unit,
+    updateEmail: (String) -> Unit,
+    resetPassword: (String) -> Unit,
+    deleteUser: () -> Unit,
+    updateState: ActionState<String>,
+    resetActionState: () -> Unit,
+    loginState: ActionState<String>,
+    onLogin: (String, String) -> Unit
+) {
     var showEditAccountDialog by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier
@@ -40,7 +57,9 @@ fun AccountScreen(userData: User, userEmail: String) {
         Text(
             text = "Hello " + userData.name,
             fontSize = 32.sp,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
         Spacer(modifier = Modifier.height(20.dp))
         Card(modifier = Modifier.fillMaxWidth(),
@@ -117,12 +136,24 @@ fun AccountScreen(userData: User, userEmail: String) {
         }
     }
     if (showEditAccountDialog) {
-        EditAccountDialog(userData, userEmail) { showEditAccountDialog = false }
+        EditAccountDialog(userData, userEmail, { showEditAccountDialog = false }, fetchProgrammes, programmeState, updateUserName, updateUserStudyProgramme, updateEmail, resetPassword, deleteUser, resetActionState, loginState, onLogin)
+    }
+    if (updateState is ActionState.Success) {
+        Toast.makeText(LocalContext.current, updateState.data, Toast.LENGTH_SHORT).show()
+        resetActionState.invoke()
+    } else if (updateState is ActionState.Error) {
+        Toast.makeText(LocalContext.current, updateState.message, Toast.LENGTH_SHORT).show()
+        resetActionState.invoke()
+    }
+    if (loginState is ActionState.Success) {
+        Toast.makeText(LocalContext.current, loginState.data, Toast.LENGTH_SHORT).show()
+    } else if (loginState is ActionState.Error) {
+        Toast.makeText(LocalContext.current, loginState.message, Toast.LENGTH_SHORT).show()
+        resetActionState.invoke()
     }
 }
 
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true)
 @Composable
 fun AccountScreenPreview() {
@@ -134,14 +165,17 @@ fun AccountScreenPreview() {
             color = MaterialTheme.colors.background
         ) {
             Scaffold(
-                topBar = { TopBar("Account", {}, {}, {}) },
+                topBar = { TopBar("Account", {}, {}, {}, {}) },
                 bottomBar = {
                     BottomNavBar(
                         bottomNavScreens, {}, MenuNavDestination.Account
                     )
-                },
-                content = { AccountScreen(user, "student@email.com") }
-            )
+                }
+            ) {
+                innerPadding -> Box(modifier = Modifier.padding(innerPadding)) {
+                    AccountScreen(user, "student@email.com",{},ActionState.Success(ProgrammeData.programmes),{},{},{},{},{}, ActionState.Initial, {}, ActionState.Initial,{_,_->})
+                }
+            }
         }
     }
 }

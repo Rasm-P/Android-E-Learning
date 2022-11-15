@@ -17,6 +17,7 @@ import com.example.elearningapp.ui.theme.ELearningAppTheme
 import androidx.navigation.compose.rememberNavController
 import com.example.elearningapp.navigation.*
 import com.example.elearningapp.ui.views.components.BottomNavBar
+import com.example.elearningapp.ui.views.components.CourseBottomNavBar
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.elearningapp.ui.views.components.TopBar
 import com.example.elearningapp.viewmodels.*
@@ -51,8 +52,31 @@ fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel, p
             color = MaterialTheme.colors.background
         ) {
             Scaffold(
-                topBar = { if (currentRoute != LoginDestination.Welcome.route && currentRoute != LoginDestination.Programme.route) TopBar(route = currentRoute, onBackPressed = {navController.popBackStack()}, onLogoutPressed = { loginViewModel.logout(); navController.navigate(navController.graph.startDestinationId); } ) {navController.navigateSingleTopTo(MenuNavDestination.Account.route)} },
-                bottomBar = { if (bottomNavDestination is MenuNavDestination) BottomNavBar(screens = bottomNavScreens, onSelected = { screen -> navController.navigateSingleTopTo(screen.route)}, currentDestination = bottomNavDestination) }
+                topBar = { if (currentRoute != LoginDestination.Welcome.route && currentRoute != LoginDestination.Programme.route)
+                    TopBar(
+                        route = currentRoute,
+                        onBackPressed = {navController.popBackStack()},
+                        onLogoutPressed = { navController.navigate(navController.graph.startDestinationId); loginViewModel.logout(); },
+                        onAccountPressed = {navController.navigateSingleTopTo(MenuNavDestination.Account.route)},
+                        onCourseDetailsPressed = {navController.navigateSingleTopTo(CourseDestination.CourseDetails.route)})
+                         },
+                bottomBar = {
+                    if (bottomNavDestination is MenuNavDestination)
+                        BottomNavBar(
+                            screens = bottomNavScreens,
+                            onSelected = { screen -> navController.navigateSingleTopTo(screen.route) },
+                            currentDestination = bottomNavDestination
+                        )
+                    else if (courseNavScreens.any { screen -> screen.route == currentRoute && currentRoute != CourseDestination.CourseDetails.route }) {
+                        val currentStepIndex = courseNavScreens.indexOfFirst { screen -> screen.route == currentRoute }
+                        CourseBottomNavBar(
+                            onPreviousPressed = {navController.navigateSingleTopTo(courseNavScreens[currentStepIndex-1].route)},
+                            onNextPressed = {navController.navigateSingleTopTo(courseNavScreens[currentStepIndex+1].route)},
+                            onFinishedPressed = {navController.navigateSingleTopTo(MenuNavDestination.Overview.route)},
+                            currentRoute = currentRoute
+                        )
+                    }
+                }
             )
             {
                innerPadding -> AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding), loginViewModel, userViewModel, programmeViewModel, courseViewModel, noteViewModel)

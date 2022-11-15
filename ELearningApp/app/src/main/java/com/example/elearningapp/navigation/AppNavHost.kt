@@ -9,7 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.navigation
 import com.example.elearningapp.models.User
 import com.example.elearningapp.ui.views.account.AccountScreen
-import com.example.elearningapp.ui.views.courses.CourseOverviewScreen
+import com.example.elearningapp.ui.views.courses.*
 import com.example.elearningapp.ui.views.login.LoginScreen
 import com.example.elearningapp.ui.views.login.ProgrammeScreen
 import com.example.elearningapp.ui.views.login.RegisterScreen
@@ -68,7 +68,7 @@ fun AppNavHost(
                     fetchProgrammes = {programmeViewModel.fetchProgrammes()},
                     programmeState = programmeViewModel.programmeState.value,
                     setFirstTimeUser = {isFirstTimeUser = false},
-                    addUserData = {studentName, programme -> userViewModel.addUser(User(studentName, programme, emptyList()))},
+                    addUserData = {studentName, programme -> userViewModel.addUser(User(studentName, programme, ArrayList()))},
                     userState = userViewModel.userState.value,
                     resetActionState = {userViewModel.resetUserActionState()}
                 )
@@ -76,16 +76,20 @@ fun AppNavHost(
         }
         navigation(route = AppNavigationFlow.OverviewFlow.route, startDestination = MenuNavDestination.Overview.route) {
             composable(route = MenuNavDestination.Overview.route) {
-                OverviewScreen(courseState = courseViewModel.courseState.value,
+                OverviewScreen(courseInformationState = courseViewModel.courseInformationState.value,
                 fetchTrendingCourses = {courseViewModel.fetchTrendingCourses()},
-                userCoursesStatus = userViewModel.userData.value.activeCourses
+                userCoursesStatus = userViewModel.userData.value.activeCourses,
+                onViewCourse = { courseInformation -> courseViewModel.setCourseInformation(courseInformation)
+                    navController.navigateSingleTopTo(AppNavigationFlow.CourseFlow.route)}
                 )
             }
             composable(route = MenuNavDestination.CourseOverview.route) {
                 CourseOverviewScreen(programmeTopics = userViewModel.userData.value.studyProgramme.topics,
-                coursesState = courseViewModel.courseState.value,
+                coursesState = courseViewModel.courseInformationState.value,
                 fetchAllCourses = {courseViewModel.fetchAllCourses()},
-                filterCourses = {searchFilter, topicFilter -> courseViewModel.filterCourses(searchFilter, topicFilter)}
+                filterCourses = {searchFilter, topicFilter -> courseViewModel.filterCourses(searchFilter, topicFilter)},
+                onViewCourse = { courseInformation -> courseViewModel.setCourseInformation(courseInformation)
+                    navController.navigateSingleTopTo(AppNavigationFlow.CourseFlow.route)}
                 )
             }
             composable(route = MenuNavDestination.NotesOverview.route) {
@@ -98,27 +102,68 @@ fun AppNavHost(
             }
             composable(route = MenuNavDestination.Account.route) {
                 AccountScreen(userData = userViewModel.userData.value,
-                userEmail = loginViewModel.getEmail()!!)
+                userEmail = loginViewModel.getEmail(),
+                fetchProgrammes = {programmeViewModel.fetchProgrammes()},
+                programmeState = programmeViewModel.programmeState.value,
+                updateUserName = {name -> userViewModel.updateUserName(name)},
+                updateUserStudyProgramme = {programme -> userViewModel.updateUserStudyProgramme(programme)},
+                updateEmail = {email -> loginViewModel.updateEmail(email)},
+                resetPassword = {email -> loginViewModel.resetPassword(email)},
+                deleteUser = {userViewModel.deleteUserData()
+                    navController.navigate(LoginDestination.Welcome.route)
+                    loginViewModel.deleteUser()},
+                updateState = userViewModel.updateState.value,
+                resetActionState = {userViewModel.resetUserActionState()
+                    loginViewModel.resetLoginActionState()},
+                loginState = loginViewModel.loginState.value,
+                onLogin = {email, password -> loginViewModel.login(email, password)}
+                )
             }
         }
-        navigation(route = AppNavigationFlow.CourseFlow.route, startDestination = CourseDestination.CourseOverview.route) {
-            composable(route = CourseDestination.CourseOverview.route) {
-                { /*TODO*/ }
+        navigation(route = AppNavigationFlow.CourseFlow.route, startDestination = CourseDestination.CourseDetails.route) {
+            composable(route = CourseDestination.CourseDetails.route) {
+                CourseDetailsScreen(courseInformation = courseViewModel.courseInformation.value,
+                fetchCourseContent = {courseViewModel.fetchCourseContentByName()},
+                courseContentState = courseViewModel.courseContentState.value,
+                stepStatus = courseViewModel.getStepStatus(userViewModel.userData.value.activeCourses),
+                hasUserStartedCourse = {courseName -> userViewModel.hasUserStartedCourse(courseName)},
+                updateUserActiveCourses = {courseInformation -> userViewModel.updateUserActiveCourses(courseInformation)
+                    navController.navigateSingleTopTo(CourseDestination.CourseArticle.route)},
+                navigateToScreenStep = {step -> navController.navigateSingleTopTo(courseNavScreens[if (step > 0) step else 1].route)}
+                )
             }
             composable(route = CourseDestination.CourseArticle.route) {
-                { /*TODO*/ }
+                CourseArticleScreen(courseContentState = courseViewModel.courseContentState.value,
+                saveNote = {title, noteText -> noteViewModel.insertNote(title, noteText)},
+                updateUserCourseSteps = {courseName, updateStepsCompleted -> userViewModel.updateUserCourseSteps(courseName, updateStepsCompleted)}
+                )
             }
             composable(route = CourseDestination.CourseVideo.route) {
-                { /*TODO*/ }
+                CourseVideoArticleScreen(courseContentState = courseViewModel.courseContentState.value,
+                    saveNote = {title, noteText -> noteViewModel.insertNote(title, noteText)},
+                    updateUserCourseSteps = {courseName, updateStepsCompleted -> userViewModel.updateUserCourseSteps(courseName, updateStepsCompleted)}
+                )
             }
             composable(route = CourseDestination.CourseQuiz.route) {
-                { /*TODO*/ }
+                CourseQuizTestScreen(courseContentState = courseViewModel.courseContentState.value,
+                    userCourseAnswers = {courseName -> userViewModel.getUserCourseQuizAnswers(courseName)},
+                    updateUserCourseSteps = {courseName, updateStepsCompleted -> userViewModel.updateUserCourseSteps(courseName, updateStepsCompleted)},
+                    updateUserCourseQuizAnswers = {courseName, courseQuizAnswers -> userViewModel.updateUserCourseQuizAnswers(courseName, courseQuizAnswers)
+                        navController.navigateSingleTopTo(CourseDestination.CourseQuizAnswers.route)}
+                )
             }
             composable(route = CourseDestination.CourseQuizAnswers.route) {
-                { /*TODO*/ }
+                CourseQuizResultsScreen(courseContentState = courseViewModel.courseContentState.value,
+                    saveNote = {title, noteText -> noteViewModel.insertNote(title, noteText)},
+                    userCourseAnswers = {courseName -> userViewModel.getUserCourseQuizAnswers(courseName)},
+                    updateUserCourseSteps = {courseName, updateStepsCompleted -> userViewModel.updateUserCourseSteps(courseName, updateStepsCompleted)}
+                )
             }
             composable(route = CourseDestination.CourseSummary.route) {
-                { /*TODO*/ }
+                CourseSummaryScreen(courseContentState = courseViewModel.courseContentState.value,
+                    updateUserCourseSteps = {courseName, updateStepsCompleted -> userViewModel.updateUserCourseSteps(courseName, updateStepsCompleted)},
+                    getUserCourseStepsCompleted = {courseName -> userViewModel.getUserCourseStepsCompleted(courseName)}
+                )
             }
         }
     }

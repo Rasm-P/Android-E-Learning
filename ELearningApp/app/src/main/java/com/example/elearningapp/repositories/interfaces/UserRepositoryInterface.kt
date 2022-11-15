@@ -12,9 +12,11 @@ interface UserRepositoryInterface {
 
     suspend fun addUser(user: User): Flow<ActionState<User>>
 
-    suspend fun updateUserName(name: String): Flow<ActionState<Boolean>>
+    suspend fun updateUserName(name: String): Flow<ActionState<String>>
 
-    suspend fun updateUserStudyProgramme(programme: Programme): Flow<ActionState<Boolean>>
+    suspend fun updateUserStudyProgramme(programme: Programme): Flow<ActionState<String>>
 
-    suspend fun updateUserActiveCourses(activeCourses: List<CourseStatus>): Flow<ActionState<Boolean>>
+    suspend fun updateUserActiveCourses(activeCourses: List<CourseStatus>): Flow<ActionState<String>>
+
+    suspend fun deleteUser(): Flow<ActionState<String>>
 }

@@ -23,12 +23,9 @@ class UserRepository @Inject internal constructor(private val firebaseDB: Fireba
     override suspend fun fetchUser() = flow {
         try {
             emit(ActionState.Loading)
-            lateinit var user: User
             val uid = Firebase.auth.uid!!
-            firebaseDB.collection("user").document(uid).get()
-                .addOnSuccessListener { document ->
-                   user = document.toObject(User::class.java)!!
-                }.await()
+            val result = firebaseDB.collection("user").document(uid).get().await()
+            val user = result.toObject(User::class.java)!!
             emit(ActionState.Success(user))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
@@ -53,19 +50,19 @@ class UserRepository @Inject internal constructor(private val firebaseDB: Fireba
             emit(ActionState.Loading)
             val uid = Firebase.auth.uid!!
             firebaseDB.collection("user").document(uid).update("name", name).await()
-            emit(ActionState.Success(true))
+            emit(ActionState.Success("Username has been updated!"))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
             Log.e("Error: User", e.message ?: errorMessage)
         }
     }
 
-    override suspend fun updateUserStudyProgramme(studyProgramme: Programme) = flow {
+    override suspend fun updateUserStudyProgramme(programme: Programme) = flow {
         try {
             emit(ActionState.Loading)
             val uid = Firebase.auth.uid!!
-            firebaseDB.collection("user").document(uid).update("studyProgramme", studyProgramme).await()
-            emit(ActionState.Success(true))
+            firebaseDB.collection("user").document(uid).update("studyProgramme", programme).await()
+            emit(ActionState.Success("Study programme has been updated!"))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
             Log.e("Error: User", e.message ?: errorMessage)
@@ -77,7 +74,19 @@ class UserRepository @Inject internal constructor(private val firebaseDB: Fireba
             emit(ActionState.Loading)
             val uid = Firebase.auth.uid!!
             firebaseDB.collection("user").document(uid).update("activeCourses", activeCourses).await()
-            emit(ActionState.Success(true))
+            emit(ActionState.Success("Active courses has been updated!"))
+        } catch (e: Exception) {
+            emit(ActionState.Error(e.message ?: errorMessage))
+            Log.e("Error: User", e.message ?: errorMessage)
+        }
+    }
+
+    override suspend fun deleteUser() = flow {
+        try {
+            emit(ActionState.Loading)
+            val uid = Firebase.auth.uid!!
+            firebaseDB.collection("user").document(uid).delete().await()
+            emit(ActionState.Success("User was successfully deleted!"))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
             Log.e("Error: User", e.message ?: errorMessage)

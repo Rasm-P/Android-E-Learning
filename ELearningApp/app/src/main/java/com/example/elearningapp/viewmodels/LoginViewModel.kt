@@ -15,11 +15,11 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject internal constructor(private val _loginRepository: LoginRepositoryInterface): ViewModel() {
 
-    private val _loginState = mutableStateOf<ActionState<Boolean>>(ActionState.Initial)
-    val loginState: State<ActionState<Boolean>> = _loginState
+    private val _loginState = mutableStateOf<ActionState<String>>(ActionState.Initial)
+    val loginState: State<ActionState<String>> = _loginState
 
-    private val _resetState = mutableStateOf<ActionState<Boolean>>(ActionState.Initial)
-    val resetState: State<ActionState<Boolean>> = _resetState
+    private val _resetState = mutableStateOf<ActionState<String>>(ActionState.Initial)
+    val resetState: State<ActionState<String>> = _resetState
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
@@ -54,14 +54,22 @@ class LoginViewModel @Inject internal constructor(private val _loginRepository: 
         }
     }
 
-    fun getEmail(): String? {
-        return Firebase.auth.currentUser!!.email
+    fun getEmail(): String {
+        return Firebase.auth.currentUser?.email ?: "No email available"
     }
 
     fun updateEmail(email: String) {
         viewModelScope.launch {
             _loginRepository.updateEmail(email).collect {
                     response -> _loginState.value = response
+            }
+        }
+    }
+
+    fun deleteUser() {
+        Firebase.auth.currentUser?.delete()?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Firebase.auth.signOut()
             }
         }
     }

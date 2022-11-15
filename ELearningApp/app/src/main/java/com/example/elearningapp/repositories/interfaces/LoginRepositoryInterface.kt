@@ -5,12 +5,12 @@ import kotlinx.coroutines.flow.Flow
 
 interface LoginRepositoryInterface {
 
-    suspend fun login(email: String, password: String): Flow<ActionState<Boolean>>
+    suspend fun login(email: String, password: String): Flow<ActionState<String>>
 
-    suspend fun register(email: String, password: String): Flow<ActionState<Boolean>>
+    suspend fun register(email: String, password: String): Flow<ActionState<String>>
 
-    suspend fun resetPassword(email: String): Flow<ActionState<Boolean>>
+    suspend fun resetPassword(email: String): Flow<ActionState<String>>
 
-    suspend fun updateEmail(email: String): Flow<ActionState<Boolean>>
+    suspend fun updateEmail(email: String): Flow<ActionState<String>>
 
 }

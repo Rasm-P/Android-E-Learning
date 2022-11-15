@@ -43,11 +43,11 @@ sealed class LoginDestination(
 sealed class CourseDestination(
     val route: String
 ) {
-    object CourseOverview : CourseDestination("course-overview")
-    object CourseArticle : CourseDestination("course-article")
-    object CourseVideo : CourseDestination("course-video")
-    object CourseQuiz : CourseDestination("course-quiz")
-    object CourseQuizAnswers : CourseDestination("course-quiz-answers")
+    object CourseDetails : CourseDestination("course-details")
+    object CourseArticle : CourseDestination("article")
+    object CourseVideo : CourseDestination("video-article")
+    object CourseQuiz : CourseDestination("quiz-test")
+    object CourseQuizAnswers : CourseDestination("quiz-results")
     object CourseSummary : CourseDestination("course-summary")
 }
 
@@ -62,3 +62,5 @@ sealed class AppNavigationFlow(
 val bottomNavScreens = listOf(MenuNavDestination.Overview, MenuNavDestination.CourseOverview, MenuNavDestination.NotesOverview, MenuNavDestination.Account)
 
 val loginNavScreens = listOf(LoginDestination.Welcome, LoginDestination.Login, LoginDestination.Register, LoginDestination.Programme)
+
+val courseNavScreens = listOf(CourseDestination.CourseDetails,CourseDestination.CourseArticle,CourseDestination.CourseVideo,CourseDestination.CourseQuiz,CourseDestination.CourseQuizAnswers,CourseDestination.CourseSummary)

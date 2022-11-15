@@ -1,7 +1,7 @@
 package com.example.elearningapp.models
 
 data class User(
-    val name: String = "",
-    val studyProgramme: Programme = Programme(),
-    val activeCourses: List<CourseStatus> = emptyList()
+    var name: String = "",
+    var studyProgramme: Programme = Programme(),
+    var activeCourses: ArrayList<CourseStatus> = ArrayList()
 )
