@@ -104,7 +104,16 @@ fun AppNavHost(
                 AccountScreen(userData = userViewModel.userData.value,
                 userEmail = loginViewModel.getEmail(),
                 fetchProgrammes = {programmeViewModel.fetchProgrammes()},
-                programmeState = programmeViewModel.programmeState.value
+                programmeState = programmeViewModel.programmeState.value,
+                updateUserName = {name -> userViewModel.updateUserName(name)},
+                updateUserStudyProgramme = {programme -> userViewModel.updateUserStudyProgramme(programme)},
+                updateEmail = {email -> loginViewModel.updateEmail(email)},
+                resetPassword = {email -> loginViewModel.resetPassword(email)},
+                deleteUser = {userViewModel.deleteUserData()
+                    navController.navigate(navController.graph.startDestinationId)
+                    loginViewModel.deleteUser()},
+                updateState = userViewModel.updateState.value,
+                resetActionState = {userViewModel.resetUserActionState()}
                 )
             }
         }

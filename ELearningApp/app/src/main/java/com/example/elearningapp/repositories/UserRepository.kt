@@ -50,7 +50,7 @@ class UserRepository @Inject internal constructor(private val firebaseDB: Fireba
             emit(ActionState.Loading)
             val uid = Firebase.auth.uid!!
             firebaseDB.collection("user").document(uid).update("name", name).await()
-            emit(ActionState.Success(true))
+            emit(ActionState.Success("Username has been updated!"))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
             Log.e("Error: User", e.message ?: errorMessage)
@@ -62,7 +62,7 @@ class UserRepository @Inject internal constructor(private val firebaseDB: Fireba
             emit(ActionState.Loading)
             val uid = Firebase.auth.uid!!
             firebaseDB.collection("user").document(uid).update("studyProgramme", programme).await()
-            emit(ActionState.Success(true))
+            emit(ActionState.Success("Study programme has been updated!"))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
             Log.e("Error: User", e.message ?: errorMessage)
@@ -74,7 +74,19 @@ class UserRepository @Inject internal constructor(private val firebaseDB: Fireba
             emit(ActionState.Loading)
             val uid = Firebase.auth.uid!!
             firebaseDB.collection("user").document(uid).update("activeCourses", activeCourses).await()
-            emit(ActionState.Success(true))
+            emit(ActionState.Success("Active courses has been updated!"))
+        } catch (e: Exception) {
+            emit(ActionState.Error(e.message ?: errorMessage))
+            Log.e("Error: User", e.message ?: errorMessage)
+        }
+    }
+
+    override suspend fun deleteUser() = flow {
+        try {
+            emit(ActionState.Loading)
+            val uid = Firebase.auth.uid!!
+            firebaseDB.collection("user").document(uid).delete().await()
+            emit(ActionState.Success("User was successfully deleted!"))
         } catch (e: Exception) {
             emit(ActionState.Error(e.message ?: errorMessage))
             Log.e("Error: User", e.message ?: errorMessage)

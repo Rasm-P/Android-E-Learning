@@ -66,6 +66,14 @@ class LoginViewModel @Inject internal constructor(private val _loginRepository: 
         }
     }
 
+    fun deleteUser() {
+        Firebase.auth.currentUser?.delete()?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Firebase.auth.signOut()
+            }
+        }
+    }
+
     fun resetLoginActionState() {
         _loginState.value = ActionState.Initial
         _resetState.value = ActionState.Initial

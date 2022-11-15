@@ -25,8 +25,8 @@ class UserViewModel @Inject internal constructor(private val _userRepository: Us
     private val _userState = mutableStateOf<ActionState<User>>(ActionState.Initial)
     val userState: State<ActionState<User>> = _userState
 
-    private val _updateState = mutableStateOf<ActionState<Boolean>>(ActionState.Initial)
-    val updateState: State<ActionState<Boolean>> = _updateState
+    private val _updateState = mutableStateOf<ActionState<String>>(ActionState.Initial)
+    val updateState: State<ActionState<String>> = _updateState
 
     init {
         if (Firebase.auth.currentUser != null) {
@@ -53,6 +53,7 @@ class UserViewModel @Inject internal constructor(private val _userRepository: Us
     }
 
     fun updateUserName(name: String) {
+        _userData.value.name = name
         viewModelScope.launch {
             _userRepository.updateUserName(name).collect {
                     response -> _updateState.value = response
@@ -61,6 +62,7 @@ class UserViewModel @Inject internal constructor(private val _userRepository: Us
     }
 
     fun updateUserStudyProgramme(programme: Programme) {
+        _userData.value.studyProgramme = programme
         viewModelScope.launch {
             _userRepository.updateUserStudyProgramme(programme).collect {
                     response -> _updateState.value = response
@@ -113,6 +115,15 @@ class UserViewModel @Inject internal constructor(private val _userRepository: Us
 
     fun hasUserStartedCourse(courseName: String) : Boolean {
         return _userData.value.activeCourses.any { course -> course.courseInformation.courseName == courseName }
+    }
+
+    fun deleteUserData() {
+        _userData.value = User()
+        viewModelScope.launch {
+            _userRepository.deleteUser().collect {
+                    response -> _updateState.value = response
+            }
+        }
     }
 
     fun resetUserActionState() {

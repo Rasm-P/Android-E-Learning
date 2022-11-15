@@ -1,9 +1,7 @@
 package com.example.elearningapp.ui.views.account
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDropDown
@@ -23,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
-import androidx.compose.ui.window.PopupProperties
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.datasource.ProgrammeData
 import com.example.elearningapp.models.Programme
@@ -38,11 +35,16 @@ fun EditAccountDialog(
     userEmail: String,
     onDismiss: () -> Unit,
     fetchProgrammes: () -> Unit,
-    programmeState: ActionState<List<Programme>>
+    programmeState: ActionState<List<Programme>>,
+    updateUserName: (String) -> Unit,
+    updateUserStudyProgramme: (Programme) -> Unit,
+    updateEmail: (String) -> Unit,
+    resetPassword: (String) -> Unit,
+    deleteUser: () -> Unit
 ) {
     var name by remember { mutableStateOf(userData.name) }
     var email by remember { mutableStateOf(userEmail) }
-    var studyProgramme by remember { mutableStateOf(userData.studyProgramme.name) }
+    var studyProgramme by remember { mutableStateOf(userData.studyProgramme) }
 
     var dropdownExpanded by remember { mutableStateOf(false) }
     var dropdownWidth by remember { mutableStateOf(Size.Zero) }
@@ -65,7 +67,7 @@ fun EditAccountDialog(
                         fontWeight = FontWeight.Medium
                     )
                     Text(
-                        modifier = Modifier.clickable(onClick = {/*TODO*/}),
+                        modifier = Modifier.clickable(onClick = deleteUser),
                         text = "Delete Account",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Light,
@@ -103,8 +105,9 @@ fun EditAccountDialog(
                             .onGloballyPositioned { coordinates ->
                                 dropdownWidth = coordinates.size.toSize()
                             },
-                        value = studyProgramme,
-                        onValueChange = { studyProgramme = it },
+                        value = studyProgramme.name,
+                        readOnly = true,
+                        onValueChange = {},
                         singleLine = true,
                         leadingIcon = {
                             Icon(
@@ -127,7 +130,7 @@ fun EditAccountDialog(
                         ) {
                             programmeState.data.forEach { label ->
                                 DropdownMenuItem(onClick = {
-                                    studyProgramme = label.name
+                                    studyProgramme = label
                                     dropdownExpanded = false
                                 }) {
                                     Text(text = label.name)
@@ -142,7 +145,7 @@ fun EditAccountDialog(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium
                 )
-                Text(
+                Text(modifier = Modifier.clickable(onClick = {resetPassword(userEmail)}),
                     text = "Reset password by mail",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Light,
@@ -169,7 +172,18 @@ fun EditAccountDialog(
                     fontWeight = FontWeight.Light,
                     modifier = Modifier
                         .padding(20.dp)
-                        .clickable(onClick = onDismiss)
+                        .clickable(onClick = {
+                            if (name != userData.name) {
+                                updateUserName(name)
+                            }
+                            if (email !=userEmail) {
+                                updateEmail(email)
+                            }
+                            if (studyProgramme != userData.studyProgramme) {
+                                updateUserStudyProgramme(studyProgramme)
+                            }
+                            onDismiss.invoke()
+                        })
                 )
             }
         }
@@ -183,6 +197,6 @@ fun EditAccountDialogPreview() {
     val user = User(name = "Student", studyProgramme = Programme("Software Technology"))
 
     ELearningAppTheme {
-        EditAccountDialog(user, "student@email.com",{},{},ActionState.Success(ProgrammeData.programmes))
+        EditAccountDialog(user, "student@email.com",{},{},ActionState.Success(ProgrammeData.programmes),{},{},{},{},{})
     }
 }

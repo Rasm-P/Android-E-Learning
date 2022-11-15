@@ -1,5 +1,6 @@
 package com.example.elearningapp.ui.views.account
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -10,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,7 +32,14 @@ fun AccountScreen(
     userData: User,
     userEmail: String,
     fetchProgrammes: () -> Unit,
-    programmeState: ActionState<List<Programme>>
+    programmeState: ActionState<List<Programme>>,
+    updateUserName: (String) -> Unit,
+    updateUserStudyProgramme: (Programme) -> Unit,
+    updateEmail: (String) -> Unit,
+    resetPassword: (String) -> Unit,
+    deleteUser: () -> Unit,
+    updateState: ActionState<String>,
+    resetActionState: () -> Unit
 ) {
     var showEditAccountDialog by remember { mutableStateOf(false) }
 
@@ -123,7 +132,14 @@ fun AccountScreen(
         }
     }
     if (showEditAccountDialog) {
-        EditAccountDialog(userData, userEmail, { showEditAccountDialog = false }, fetchProgrammes, programmeState )
+        EditAccountDialog(userData, userEmail, { showEditAccountDialog = false }, fetchProgrammes, programmeState, updateUserName, updateUserStudyProgramme, updateEmail, resetPassword, deleteUser)
+    }
+    if (updateState is ActionState.Success) {
+        Toast.makeText(LocalContext.current, updateState.data, Toast.LENGTH_LONG).show()
+        resetActionState.invoke()
+    } else if (updateState is ActionState.Error) {
+        Toast.makeText(LocalContext.current, updateState.message, Toast.LENGTH_LONG).show()
+        resetActionState.invoke()
     }
 }
 
@@ -147,7 +163,7 @@ fun AccountScreenPreview() {
                 }
             ) {
                 innerPadding -> Box(modifier = Modifier.padding(innerPadding)) {
-                    AccountScreen(user, "student@email.com",{},ActionState.Success(ProgrammeData.programmes))
+                    AccountScreen(user, "student@email.com",{},ActionState.Success(ProgrammeData.programmes),{},{},{},{},{}, ActionState.Initial, {})
                 }
             }
         }
