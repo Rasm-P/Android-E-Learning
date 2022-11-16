@@ -65,7 +65,7 @@ fun AccountScreen(
         Card(modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(5.dp),
             elevation = 12.dp) {
-            Column(modifier = Modifier.padding(20.dp)) {
+            Column(modifier = Modifier.padding(start = 20.dp, top = 10.dp, end = 20.dp, bottom = 20.dp)) {
                 Text(
                     text = "Name",
                     maxLines = 1,
@@ -78,7 +78,7 @@ fun AccountScreen(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = "Email",
                     maxLines = 1,
@@ -91,7 +91,7 @@ fun AccountScreen(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = "Study Programme",
                     maxLines = 1,
@@ -104,7 +104,7 @@ fun AccountScreen(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = "Password",
                     maxLines = 1,

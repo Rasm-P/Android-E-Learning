@@ -262,7 +262,7 @@ fun AuthenticationRequestDialog(
         text = {
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "In order to perform this action you need to authenticate using your email and password",
+                    text = "In order to perform this action you need to authenticate using your account email and password.",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Light
                 )

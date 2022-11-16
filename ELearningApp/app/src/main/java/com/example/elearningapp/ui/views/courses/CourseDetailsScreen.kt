@@ -280,7 +280,14 @@ fun CourseStepCard(step: Int, stepStatus: Int, title: String, navigateToScreenSt
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium
             )
-            Icon(modifier = Modifier.clickable(onClick = {navigateToScreenStep(step)}), imageVector = Icons.Filled.ArrowForward, contentDescription = "Jump to section", tint = MaterialTheme.colors.primary)
+            if (completedStep) {
+                Icon(
+                    modifier = Modifier.clickable(onClick = { navigateToScreenStep(step) }),
+                    imageVector = Icons.Filled.ArrowForward,
+                    contentDescription = "Jump to section",
+                    tint = MaterialTheme.colors.primary
+                )
+            }
         }
     }
     Spacer(modifier = Modifier.height(6.dp))
