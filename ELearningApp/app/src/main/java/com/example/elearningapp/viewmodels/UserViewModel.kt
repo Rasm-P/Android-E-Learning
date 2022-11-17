@@ -9,15 +9,14 @@ import com.example.elearningapp.models.CourseInformation
 import com.example.elearningapp.models.CourseStatus
 import com.example.elearningapp.models.Programme
 import com.example.elearningapp.models.User
+import com.example.elearningapp.repositories.interfaces.LoginRepositoryInterface
 import com.example.elearningapp.repositories.interfaces.UserRepositoryInterface
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserViewModel @Inject internal constructor(private val _userRepository: UserRepositoryInterface): ViewModel() {
+class UserViewModel @Inject internal constructor(private val _userRepository: UserRepositoryInterface, _loginRepository: LoginRepositoryInterface): ViewModel() {
 
     private val _userData = mutableStateOf(User())
     val userData: State<User> = _userData
@@ -29,7 +28,7 @@ class UserViewModel @Inject internal constructor(private val _userRepository: Us
     val updateState: State<ActionState<String>> = _updateState
 
     init {
-        if (Firebase.auth.currentUser != null) {
+        if (_loginRepository.isLoggedIn()) {
             fetchUser()
         }
     }

@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.repositories.interfaces.LoginRepositoryInterface
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,12 +28,11 @@ class LoginViewModel @Inject internal constructor(private val _loginRepository: 
     }
 
     fun logout() {
-        Firebase.auth.signOut()
+        _loginRepository.logout()
     }
 
     fun isLoggedIn() : Boolean {
-        val user = Firebase.auth.currentUser
-        return user != null
+        return _loginRepository.isLoggedIn()
     }
 
     fun register(email: String, password: String) {
@@ -55,7 +52,7 @@ class LoginViewModel @Inject internal constructor(private val _loginRepository: 
     }
 
     fun getEmail(): String {
-        return Firebase.auth.currentUser?.email ?: "No email available"
+        return _loginRepository.currentUser()?.email ?: "No email available"
     }
 
     fun updateEmail(email: String) {
@@ -66,10 +63,11 @@ class LoginViewModel @Inject internal constructor(private val _loginRepository: 
         }
     }
 
-    fun deleteUser() {
-        Firebase.auth.currentUser?.delete()?.addOnCompleteListener { task ->
+    fun deleteUser(navigateWelcome: () -> Unit) {
+        _loginRepository.currentUser()?.delete()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Firebase.auth.signOut()
+                logout()
+                navigateWelcome.invoke()
             }
         }
     }

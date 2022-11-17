@@ -94,12 +94,8 @@ dependencies {
     kapt ("androidx.room:room-compiler:2.4.3")
 
     //Testing
-    testImplementation("io.mockk:mockk-android:1.9")
     androidTestImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
-    testImplementation 'org.mockito:mockito-core:2.23.0'
-    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0'
-    testImplementation 'org.mockito:mockito-inline:2.19.0'
     testImplementation 'android.arch.core:core-testing:1.1.1'
     testImplementation 'io.kotlintest:kotlintest-runner-junit5:3.3.2'
 }
