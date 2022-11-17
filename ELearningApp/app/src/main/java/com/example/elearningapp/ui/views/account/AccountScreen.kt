@@ -141,12 +141,11 @@ fun AccountScreen(
     if (updateState is ActionState.Success) {
         Toast.makeText(LocalContext.current, updateState.data, Toast.LENGTH_SHORT).show()
         resetActionState.invoke()
+    } else if (loginState is ActionState.Success) {
+        Toast.makeText(LocalContext.current, loginState.data, Toast.LENGTH_SHORT).show()
     } else if (updateState is ActionState.Error) {
         Toast.makeText(LocalContext.current, updateState.message, Toast.LENGTH_SHORT).show()
         resetActionState.invoke()
-    }
-    if (loginState is ActionState.Success) {
-        Toast.makeText(LocalContext.current, loginState.data, Toast.LENGTH_SHORT).show()
     } else if (loginState is ActionState.Error) {
         Toast.makeText(LocalContext.current, loginState.message, Toast.LENGTH_SHORT).show()
         resetActionState.invoke()

@@ -217,6 +217,7 @@ fun EditAccountDialog(
             onLogin,
             loginState,
             {if (deleteAccount) {
+                onDismiss.invoke()
                 deleteUser.invoke()
                 deleteAccount = false
             }},
