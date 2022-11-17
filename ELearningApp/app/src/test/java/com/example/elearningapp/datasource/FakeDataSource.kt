@@ -8,11 +8,11 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 // Built with inspiration from: https://developer.android.com/kotlin/flow/test
 
 class FakeDataSource {
-    private val userflow = MutableSharedFlow<ActionState<User>>()
-    suspend fun emitUser(value: ActionState<User>) = userflow.emit(value)
-    fun userFlowActionState(): Flow<ActionState<User>> = userflow
+    private val userFlow = MutableSharedFlow<ActionState<User>>()
+    suspend fun emitUser(value: ActionState<User>) = userFlow.emit(value)
+    fun userFlowActionState(): Flow<ActionState<User>> = userFlow
 
-    private val stringflow = MutableSharedFlow<ActionState<String>>()
-    suspend fun stringUser(value: ActionState<String>) = stringflow.emit(value)
-    fun stringFlowActionState(): Flow<ActionState<String>> = stringflow
+    private val stringFlow = MutableSharedFlow<ActionState<String>>()
+    suspend fun emitString(value: ActionState<String>) = stringFlow.emit(value)
+    fun stringFlowActionState(): Flow<ActionState<String>> = stringFlow
 }
