@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.example.elearningapp.R
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.datasource.CourseData.allCourseContent
 import com.example.elearningapp.models.CourseContent
@@ -33,9 +35,13 @@ fun CourseArticleScreen(
     saveNote: (String, String) -> Unit,
     updateUserCourseSteps: (String, Int) -> Unit
 ) {
+    //ActionState Success conditional
     if (courseContentState is ActionState.Success && courseContentState.data != null) {
+
+        //Course article content
         val articleContent = courseContentState.data.articleContent
 
+        //Article image painter value
         val painter = rememberAsyncImagePainter(
             ImageRequest.Builder(LocalContext.current).data(data = articleContent.imageUrl)
                 .apply(block = fun ImageRequest.Builder.() {
@@ -43,19 +49,23 @@ fun CourseArticleScreen(
                 }).build()
         )
 
+        //Updates user course content step
         LaunchedEffect(Unit, block = {
             updateUserCourseSteps(courseContentState.data.courseName, 1)
         })
 
+        //Article content box
         Box(modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, top = 20.dp, end = 20.dp)
             .verticalScroll(ScrollState(0))) {
+            //Article content card
             Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape (5.dp),
             elevation = 12.dp
             ) {
+                //Content column
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -72,10 +82,12 @@ fun CourseArticleScreen(
                         fontWeight = FontWeight.Light
                     )
                     Spacer(modifier = Modifier.height(12.dp))
+
+                    //Image box with CircularProgressIndicator
                     Box(modifier = Modifier.height(200.dp)) {
                         Image(
                             painter = painter,
-                            contentDescription = "Article image",
+                            contentDescription = stringResource(R.string.article_image),
                             contentScale = ContentScale.Fit,
                             modifier = Modifier
                                 .fillMaxSize()
@@ -104,6 +116,7 @@ fun CourseArticleScreen(
                 }
             }
         }
+        //Button for AddNoteDialog
         AddNoteButton(saveNote)
     }
 }

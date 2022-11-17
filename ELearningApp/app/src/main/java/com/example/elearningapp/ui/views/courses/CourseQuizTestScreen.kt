@@ -11,10 +11,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.elearningapp.R
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.datasource.CourseData
 import com.example.elearningapp.models.CourseContent
@@ -29,18 +31,25 @@ fun CourseQuizTestScreen(
     updateUserCourseSteps: (String, Int) -> Unit,
     updateUserCourseQuizAnswers: (String, List<Int>) -> Unit
 ) {
+    //CourseContent ActionState Success conditional
     if (courseContentState is ActionState.Success && courseContentState.data != null) {
+
+        //Quiz questions
         val quizTestQuestions = courseContentState.data.quizTestQuestions
 
+        //Users quiz answers
         val userCourseQuizAnswers = userCourseAnswers(courseContentState.data.courseName)
         val quizAnswerList = userCourseQuizAnswers.ifEmpty { List(quizTestQuestions.size) { 0 } }
 
+        //MutableState for current quiz index and answers
         var currentQuestionIndex by remember { mutableStateOf(0) }
         var questionAnswers by remember { mutableStateOf(quizAnswerList) }
 
+        //Content column
         Column(modifier = Modifier
             .fillMaxWidth()
             .padding(20.dp)) {
+            //Quiz question indicators
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                 for (index in quizTestQuestions.indices) {
                     Card(modifier = Modifier
@@ -62,9 +71,12 @@ fun CourseQuizTestScreen(
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
+
+            //Quiz question card
             Card(shape = RoundedCornerShape (5.dp),
                 elevation = 12.dp
             ) {
+                //Quiz content column
                 Column(modifier = Modifier.padding(start = 20.dp, top = 10.dp, end = 20.dp, bottom = 20.dp)) {
                     Text(
                         text = quizTestQuestions[currentQuestionIndex].title,
@@ -82,6 +94,7 @@ fun CourseQuizTestScreen(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium
                     )
+                    //Quiz questions
                     for ((index, option) in quizTestQuestions[currentQuestionIndex].options.withIndex()) {
                         val answer = questionAnswers.toMutableList()
                         Row(modifier = Modifier
@@ -105,6 +118,8 @@ fun CourseQuizTestScreen(
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
+
+            //Row for Previous and Next buttons
             Row(modifier = Modifier.fillMaxWidth() ,horizontalArrangement = Arrangement.SpaceBetween) {
                 val previousEnabled = currentQuestionIndex > 0
                 val nextEnabled = currentQuestionIndex < quizTestQuestions.size-1
@@ -121,11 +136,11 @@ fun CourseQuizTestScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Previous"
+                            contentDescription = stringResource(R.string.previous)
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "Previous",
+                            text = stringResource(R.string.previous),
                             fontWeight = FontWeight.Medium
                         )
                     }
@@ -141,18 +156,20 @@ fun CourseQuizTestScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Next",
+                            text = stringResource(R.string.next),
                             fontWeight = FontWeight.Medium
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Icon(
                             imageVector = Icons.Filled.ArrowForward,
-                            contentDescription = "Next"
+                            contentDescription = stringResource(R.string.next)
                         )
                     }
                 }
             }
         }
+
+        //Box for Answer button
         Box(modifier = Modifier.fillMaxSize()) {
             Button(
                 enabled = !questionAnswers.contains(0),
@@ -162,7 +179,7 @@ fun CourseQuizTestScreen(
                     .align(alignment = Alignment.BottomCenter),
                 onClick = { updateUserCourseQuizAnswers(courseContentState.data.courseName, questionAnswers)
                     updateUserCourseSteps(courseContentState.data.courseName, 3)}) {
-                Text(text = "ANSWER")
+                Text(text = stringResource(R.string.answer))
             }
         }
     }
