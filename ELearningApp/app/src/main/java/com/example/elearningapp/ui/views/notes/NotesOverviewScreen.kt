@@ -13,11 +13,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.elearningapp.R
 import com.example.elearningapp.models.entities.NoteEntity
 import com.example.elearningapp.navigation.MenuNavDestination
 import com.example.elearningapp.navigation.bottomNavScreens
@@ -35,10 +37,14 @@ fun NotesOverviewScreen(
     deleteNote: (Long) -> Unit,
     filterNotes: (List<NoteEntity>, String) -> List<NoteEntity>
 ) {
+    //MutableState for search bar
     var search by remember { mutableStateOf("") }
 
+    //Content column
     Column(modifier = Modifier
         .fillMaxSize()) {
+
+        //Card content
         Card(
             modifier = Modifier
                 .padding(start = 20.dp, top = 20.dp, end = 20.dp)
@@ -46,10 +52,11 @@ fun NotesOverviewScreen(
             shape = RoundedCornerShape(5.dp),
             elevation = 12.dp
         ) {
+            //Search bar text field
             OutlinedTextField(modifier = Modifier
                 .fillMaxWidth(),
                 value = search,
-                placeholder = { Text(text = "Search for a note") },
+                placeholder = { Text(text = stringResource(R.string.search_for_a_note)) },
                 onValueChange = { search = it },
                 singleLine = true,
                 leadingIcon = {
@@ -57,7 +64,7 @@ fun NotesOverviewScreen(
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Search,
-                            contentDescription = "Search",
+                            contentDescription = stringResource(R.string.search),
                             tint = MaterialTheme.colors.primary
                         )
                     }
@@ -69,16 +76,21 @@ fun NotesOverviewScreen(
                         if (search != "") {
                             Icon(
                                 imageVector = Icons.Filled.Clear,
-                                contentDescription = "Clear search"
+                                contentDescription = stringResource(R.string.clear_search)
                             )
                         }
                     }
                 }
             )
         }
+        //Notes as collected as state
         val notes by allNotesState.collectAsState()
         if (notes.isNotEmpty()) {
+
+            //Filtered notes
             val filteredNotes = filterNotes(notes,search)
+
+            //If filtered notes is not empty, a lacy column of NoteCard is shown
             if (filteredNotes.isNotEmpty()) {
                 LazyColumn(
                     modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp),
@@ -90,18 +102,19 @@ fun NotesOverviewScreen(
                     }
                 }
             } else {
-                NoResultsMessage("No notes found",Icons.Filled.SearchOff)
+                NoResultsMessage(stringResource(R.string.no_notes_found),Icons.Filled.SearchOff)
             }
+        //If there are no notes, icon is shown
         } else {
             Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                 Icon(
                     imageVector = Icons.Filled.StickyNote2,
                     modifier = Modifier.size(128.dp),
-                    contentDescription = "Notes icon",
+                    contentDescription = stringResource(R.string.notes_icon),
                     tint = MaterialTheme.colors.primary.copy(alpha = 0.5f)
                 )
                 Text(
-                    text = "Your notes list is empty",
+                    text = stringResource(R.string.notes_list_empty),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Light,
                     color = MaterialTheme.colors.primary.copy(alpha = 0.5f)
@@ -109,6 +122,7 @@ fun NotesOverviewScreen(
             }
         }
     }
+    //Add Note button
     AddNoteButton(saveNote)
 }
 
@@ -119,13 +133,19 @@ fun NoteCard(
     editNote: (Long, String, String) -> Unit,
     deleteNote: (Long) -> Unit
 ) {
+    //MutableState for edit note dialog
     var showEditNoteDialog by remember { mutableStateOf(false) }
 
+    //Note card content
     Card(modifier = Modifier.height(120.dp),
         shape = RoundedCornerShape(5.dp),
         elevation = 12.dp) {
+
+        //Note column content
         Column(modifier = Modifier.padding(start = 20.dp, top= 10.dp, end = 20.dp), verticalArrangement = Arrangement.SpaceBetween) {
             Column(modifier = Modifier.weight(1f)) {
+
+                //Row for title and edit icon
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -142,11 +162,13 @@ fun NoteCard(
                     )
                     Icon(modifier = Modifier.clickable( onClick = { showEditNoteDialog = true } ),
                         imageVector = Icons.Outlined.Edit,
-                        contentDescription = "Edit note",
+                        contentDescription = stringResource(R.string.edit_note),
                         tint = MaterialTheme.colors.primary
                     )
                 }
                 Spacer(modifier = Modifier.height(4.dp))
+
+                //Note text
                 Text(
                     text = note.text,
                     overflow = TextOverflow.Ellipsis,
@@ -155,6 +177,7 @@ fun NoteCard(
                     fontWeight = FontWeight.Light
                 )
             }
+            //Last edited text
             Text(
                 modifier = Modifier
                     .align(Alignment.End)
@@ -167,6 +190,7 @@ fun NoteCard(
             )
         }
     }
+    //conditional for edit note dialog
     if (showEditNoteDialog) {
         EditNoteDialog({ showEditNoteDialog = false }, note, editNote, deleteNote)
     }

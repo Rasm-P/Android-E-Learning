@@ -95,8 +95,8 @@ fun LoginCard(
     restPasswordState: ActionState<String>
 ) {
     //MutableState for user interaction
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("user@user.mail.com") } //Pre-filled email
+    var password by remember { mutableStateOf("12344321") } //Pre-filled password
     var passwordVisible by remember { mutableStateOf(false) }
     var showForgotPasswordDialog by remember { mutableStateOf(false) }
 

@@ -92,4 +92,15 @@
     <string name="already_a_user">Already a user?</string>
     <string name="welcome">Welcome!</string>
     <string name="e_learning_app">E-Learning is the mobile learning platform that covers all your needs, be it entire courses, lecture videos or educational quizzes on relevant topics.</string>
+    <string name="delete_note">Delete note</string>
+    <string name="search_for_a_note">Search for a note</string>
+    <string name="no_notes_found">No notes found</string>
+    <string name="notes_icon">Notes icon</string>
+    <string name="notes_list_empty">Your notes list is empty</string>
+    <string name="edit_note">Edit note</string>
+    <string name="new_and_trending">New and Trending Courses</string>
+    <string name="course_progress">Your Course Progress</string>
+    <string name="course_activity">No course activity yet</string>
+    <string name="completed">"Completed: "</string>
+    <string name="view_course_text">View course</string>
 </resources>
