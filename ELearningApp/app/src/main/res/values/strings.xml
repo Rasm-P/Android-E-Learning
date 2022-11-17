@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">ELearning</string>
+    <string name="account_icon_description">Account icon</string>
+    <string name="hello">"Hello "</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="study_programme">Study Programme</string>
+    <string name="password">Password</string>
+    <string name="password_must_be">Must be at least 8 characters long</string>
+    <string name="edit_account">Edit account</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="edit_name">Edit name</string>
+    <string name="edit_email">Edit email</string>
+    <string name="dropdown_icon_description">Study programme drop down</string>
+    <string name="change_password">Change Password</string>
+    <string name="reset_password_by_mail">Reset password by mail</string>
+    <string name="close">Close</string>
+    <string name="save">Save</string>
+    <string name="authentication_required">Authentication Required</string>
+    <string name="in_order_to_perform">In order to perform this action you need to authenticate using your account email and password.</string>
+    <string name="clear_email">Clear email</string>
+    <string name="password_visible">Password visible</string>
+    <string name="password_not_visible">Password not visible</string>
+    <string name="wrong_email_or_password">Wrong email or password!</string>
+    <string name="submit">Submit</string>
 </resources>

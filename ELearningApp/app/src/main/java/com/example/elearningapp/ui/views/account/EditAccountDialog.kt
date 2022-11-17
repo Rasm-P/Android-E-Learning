@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -28,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
+import com.example.elearningapp.R
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.datasource.ProgrammeData
 import com.example.elearningapp.models.Programme
@@ -53,33 +55,41 @@ fun EditAccountDialog(
     loginState: ActionState<String>,
     onLogin: (String, String) -> Unit
 ) {
+    //MutableState for user interaction
     var name by remember { mutableStateOf(userData.name) }
     var email by remember { mutableStateOf(userEmail) }
     var studyProgramme by remember { mutableStateOf(userData.studyProgramme) }
 
+    //Drop down menu variables
     var dropdownExpanded by remember { mutableStateOf(false) }
     var dropdownWidth by remember { mutableStateOf(Size.Zero) }
 
+    //MutableState for authenticationRequestDialog
     var authenticationRequestDialog by remember { mutableStateOf(false) }
 
+    //Mutable state for delete, update and reset actions
     var deleteAccount by remember { mutableStateOf(false) }
     var emailUpdate by remember { mutableStateOf(false) }
     var passwordReset by remember { mutableStateOf(false) }
 
+    //Fetches available studyProgrammes
     LaunchedEffect(Unit, block = {
         fetchProgrammes.invoke()
     })
 
+    //EditAccountDialog
     AlertDialog(
         text = {
+            //Column content for dialog text
             Column(modifier = Modifier.fillMaxWidth()) {
+                //Top of dialog text row
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "Password",
+                        text = stringResource(R.string.password),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -88,7 +98,7 @@ fun EditAccountDialog(
                             authenticationRequestDialog = true
                             deleteAccount = true
                         }),
-                        text = "Delete Account",
+                        text = stringResource(R.string.delete_account),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Light,
                         color = MaterialTheme.colors.error,
@@ -104,7 +114,7 @@ fun EditAccountDialog(
                     onValueChange = {name = it},
                     singleLine = true,
                     leadingIcon = {
-                        Icon(Icons.Outlined.Edit, "Edit name", tint = MaterialTheme.colors.primary)
+                        Icon(Icons.Outlined.Edit, stringResource(R.string.edit_name), tint = MaterialTheme.colors.primary)
                     }
                 )
                 Spacer(modifier = Modifier.height(20.dp))
@@ -114,10 +124,12 @@ fun EditAccountDialog(
                     onValueChange = {email = it},
                     singleLine = true,
                     leadingIcon = {
-                        Icon(Icons.Outlined.Edit, "Edit email", tint = MaterialTheme.colors.primary)
+                        Icon(Icons.Outlined.Edit, stringResource(R.string.edit_email), tint = MaterialTheme.colors.primary)
                     }
                 )
                 Spacer(modifier = Modifier.height(20.dp))
+
+                //Box for dropdown menu
                 Box {
                     OutlinedTextField(
                         modifier = Modifier
@@ -132,7 +144,7 @@ fun EditAccountDialog(
                         leadingIcon = {
                             Icon(
                                 if (dropdownExpanded) Icons.Outlined.ArrowDropUp else Icons.Outlined.ArrowDropDown,
-                                "Study programme drop down",
+                                stringResource(R.string.dropdown_icon_description),
                                 modifier = Modifier.clickable {
                                     dropdownExpanded = !dropdownExpanded
                                 },
@@ -160,8 +172,10 @@ fun EditAccountDialog(
                     }
                 }
                 Spacer(modifier = Modifier.height(20.dp))
+
+                //Reset password text
                 Text(
-                    text = "Change Password",
+                    text = stringResource(R.string.change_password),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -169,7 +183,7 @@ fun EditAccountDialog(
                     authenticationRequestDialog = true
                     passwordReset = true
                 }),
-                    text = "Reset password by mail",
+                    text = stringResource(R.string.reset_password_by_mail),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Light,
                     color = MaterialTheme.colors.error,
@@ -180,9 +194,10 @@ fun EditAccountDialog(
         },
         onDismissRequest = onDismiss,
         buttons = {
+            //Row for bottom buttons
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "Close",
+                    text = stringResource(R.string.close),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light,
                     modifier = Modifier
@@ -190,12 +205,13 @@ fun EditAccountDialog(
                         .clickable(onClick = onDismiss)
                 )
                 Text(
-                    text = "Save",
+                    text = stringResource(R.string.save),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light,
                     modifier = Modifier
                         .padding(20.dp)
                         .clickable(onClick = {
+                            //onClick save conditionals
                             if (name != userData.name) {
                                 updateUserName(name)
                             }
@@ -211,6 +227,7 @@ fun EditAccountDialog(
             }
         }
     )
+    //AuthenticationRequestDialog conditional
     if (authenticationRequestDialog) {
         AuthenticationRequestDialog(
             {authenticationRequestDialog = false },
@@ -245,25 +262,29 @@ fun AuthenticationRequestDialog(
     updateEmail: () -> Unit,
     resetPassword: () -> Unit
 ) {
+    //MutableState for user interaction
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     var authenticationFailed by remember { mutableStateOf(false) }
 
+    //AuthenticationRequestDialog
     AlertDialog(
         title = {
+            //Title box
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 Text(
-                    text = "Authentication Required",
+                    text = stringResource(R.string.authentication_required),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium
                 )
             }
         },
         text = {
+            //Dialog content column
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "In order to perform this action you need to authenticate using your account email and password.",
+                    text = stringResource(R.string.in_order_to_perform),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Light
                 )
@@ -271,7 +292,7 @@ fun AuthenticationRequestDialog(
                 OutlinedTextField(modifier = Modifier
                     .fillMaxWidth(),
                     value = email,
-                    label = { Text(text = "Email") },
+                    label = { Text(text = stringResource(R.string.email)) },
                     onValueChange = { email = it },
                     singleLine = true,
                     trailingIcon = {
@@ -279,7 +300,7 @@ fun AuthenticationRequestDialog(
                             email = ""
                         }) {
                             if (email != "") {
-                                Icon(Icons.Filled.Clear, "Clear email")
+                                Icon(Icons.Filled.Clear, stringResource(R.string.clear_email))
                             }
                         }
                     }
@@ -289,7 +310,7 @@ fun AuthenticationRequestDialog(
                     modifier = Modifier
                         .fillMaxWidth(),
                     value = password,
-                    label = { Text(text = "Password") },
+                    label = { Text(text = stringResource(R.string.password)) },
                     onValueChange = { password = it },
                     singleLine = true,
                     trailingIcon = {
@@ -297,18 +318,19 @@ fun AuthenticationRequestDialog(
                             passwordVisible = !passwordVisible
                         }) {
                             if (passwordVisible) {
-                                Icon(Icons.Filled.Visibility, "Password visible")
+                                Icon(Icons.Filled.Visibility, stringResource(R.string.password_visible))
                             } else {
-                                Icon(Icons.Filled.VisibilityOff, "Password not visible")
+                                Icon(Icons.Filled.VisibilityOff, stringResource(R.string.password_not_visible))
                             }
                         }
                     },
                     visualTransformation = if (passwordVisible) VisualTransformation.None
                     else PasswordVisualTransformation()
                 )
+                //Text for authenticationFailed conditional
                 if (authenticationFailed) {
                     Text(
-                        text = "Wrong email or password!",
+                        text = stringResource(R.string.wrong_email_or_password),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Light,
                         color = MaterialTheme.colors.error,
@@ -320,9 +342,10 @@ fun AuthenticationRequestDialog(
                     Spacer(modifier = Modifier.height(32.dp))
                 }
                 Button(onClick = { onLogin(email,password) }) {
-                    Text(text = "Submit")
+                    Text(text = stringResource(R.string.submit))
                 }    
             }
+            //ActionState when clause
             when(loginState) {
                 is ActionState.Initial -> {}
                 is ActionState.Loading -> {
@@ -340,9 +363,10 @@ fun AuthenticationRequestDialog(
                 }
             }
         },
+        //Close button
         onDismissRequest = onDismiss,
         buttons = { Text(
-            text = "Close",
+            text = stringResource(R.string.close),
             fontSize = 16.sp,
             fontWeight = FontWeight.Light,
             modifier = Modifier.padding(20.dp).clickable(onClick = onDismiss)
