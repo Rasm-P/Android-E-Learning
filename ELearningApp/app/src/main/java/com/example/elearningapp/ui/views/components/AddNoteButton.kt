@@ -162,7 +162,6 @@ fun AddNoteDialogPreview() {
             color = MaterialTheme.colors.background
         ) {
             AddNoteDialog({},{_,_->})
-            //AddNoteButton()
         }
     }
 }
