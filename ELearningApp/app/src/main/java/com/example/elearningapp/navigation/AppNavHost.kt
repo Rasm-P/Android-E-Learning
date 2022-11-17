@@ -30,17 +30,27 @@ fun AppNavHost(
     courseViewModel: CourseViewModel,
     noteViewModel: NoteViewModel
 ) {
+    //MutableState for when user first log in
     var isFirstTimeUser by remember { mutableStateOf(false) }
+
+    //NavHost startDestination determined by if the user is logged in and if they are a first time user
     val startDestination = if (loginViewModel.isLoggedIn() && !isFirstTimeUser) AppNavigationFlow.OverviewFlow.route else AppNavigationFlow.LoginFlow.route
 
+    //App NavHost
     NavHost(navController = navController, startDestination = startDestination, modifier = modifier) {
+
+        //Login navigational flow
         navigation(route = AppNavigationFlow.LoginFlow.route, startDestination = LoginDestination.Welcome.route) {
+
+            //Welcome screen
             composable(route = LoginDestination.Welcome.route) {
                 WelcomeScreen(
                     navigateLogin = {navController.navigateSingleTopTo(LoginDestination.Login.route)},
                     navigateRegister = {navController.navigateSingleTopTo(LoginDestination.Register.route)}
                 )
             }
+
+            //login screen
             composable(route = LoginDestination.Login.route) {
                 LoginScreen(
                     navigateRegister = {navController.navigateSingleTopTo(LoginDestination.Register.route)},
@@ -53,6 +63,8 @@ fun AppNavHost(
                     fetchUser = {userViewModel.fetchUser()}
                 )
             }
+
+            //Register screen
             composable(route = LoginDestination.Register.route) {
                 RegisterScreen(
                     navigateLogin = {navController.navigateSingleTopTo(LoginDestination.Login.route)},
@@ -63,6 +75,8 @@ fun AppNavHost(
                     setFirstTimeUser = {isFirstTimeUser = true}
                 )
             }
+
+            //Programme screen
             composable(route = LoginDestination.Programme.route) {
                 ProgrammeScreen(navigateOverview = {navController.navigate(navController.graph.startDestinationId)},
                     fetchProgrammes = {programmeViewModel.fetchProgrammes()},
@@ -74,7 +88,11 @@ fun AppNavHost(
                 )
             }
         }
+
+        //Overview navigational flow
         navigation(route = AppNavigationFlow.OverviewFlow.route, startDestination = MenuNavDestination.Overview.route) {
+
+            //Overview screen
             composable(route = MenuNavDestination.Overview.route) {
                 OverviewScreen(courseInformationState = courseViewModel.courseInformationState.value,
                 fetchTrendingCourses = {courseViewModel.fetchTrendingCourses()},
@@ -83,6 +101,8 @@ fun AppNavHost(
                     navController.navigateSingleTopTo(AppNavigationFlow.CourseFlow.route)}
                 )
             }
+
+            //CourseOverview screen
             composable(route = MenuNavDestination.CourseOverview.route) {
                 CourseOverviewScreen(programmeTopics = userViewModel.userData.value.studyProgramme.topics,
                 coursesState = courseViewModel.courseInformationState.value,
@@ -92,6 +112,8 @@ fun AppNavHost(
                     navController.navigateSingleTopTo(AppNavigationFlow.CourseFlow.route)}
                 )
             }
+
+            //NotesOverview screen
             composable(route = MenuNavDestination.NotesOverview.route) {
                 NotesOverviewScreen(allNotesState = noteViewModel.allNotesState,
                 saveNote = {title, noteText -> noteViewModel.insertNote(title, noteText)},
@@ -100,6 +122,8 @@ fun AppNavHost(
                 filterNotes = {notes, searchFilter -> noteViewModel.filterNotes(notes, searchFilter)}
                 )
             }
+
+            //Account screen
             composable(route = MenuNavDestination.Account.route) {
                 AccountScreen(userData = userViewModel.userData.value,
                 userEmail = loginViewModel.getEmail(),
@@ -120,7 +144,11 @@ fun AppNavHost(
                 )
             }
         }
+
+        //Course navigational flow
         navigation(route = AppNavigationFlow.CourseFlow.route, startDestination = CourseDestination.CourseDetails.route) {
+
+            //CourseDetails screen
             composable(route = CourseDestination.CourseDetails.route) {
                 CourseDetailsScreen(courseInformation = courseViewModel.courseInformation.value,
                 fetchCourseContent = {courseViewModel.fetchCourseContentByName()},
@@ -132,18 +160,24 @@ fun AppNavHost(
                 navigateToScreenStep = {step -> navController.navigateSingleTopTo(courseNavScreens[if (step > 0) step else 1].route)}
                 )
             }
+
+            //CourseArticle screen
             composable(route = CourseDestination.CourseArticle.route) {
                 CourseArticleScreen(courseContentState = courseViewModel.courseContentState.value,
                 saveNote = {title, noteText -> noteViewModel.insertNote(title, noteText)},
                 updateUserCourseSteps = {courseName, updateStepsCompleted -> userViewModel.updateUserCourseSteps(courseName, updateStepsCompleted)}
                 )
             }
+
+            //CourseVideo screen
             composable(route = CourseDestination.CourseVideo.route) {
                 CourseVideoArticleScreen(courseContentState = courseViewModel.courseContentState.value,
                     saveNote = {title, noteText -> noteViewModel.insertNote(title, noteText)},
                     updateUserCourseSteps = {courseName, updateStepsCompleted -> userViewModel.updateUserCourseSteps(courseName, updateStepsCompleted)}
                 )
             }
+
+            //CourseQuiz screen
             composable(route = CourseDestination.CourseQuiz.route) {
                 CourseQuizTestScreen(courseContentState = courseViewModel.courseContentState.value,
                     userCourseAnswers = {courseName -> userViewModel.getUserCourseQuizAnswers(courseName)},
@@ -152,6 +186,8 @@ fun AppNavHost(
                         navController.navigateSingleTopTo(CourseDestination.CourseQuizAnswers.route)}
                 )
             }
+
+            //CourseQuizAnswers screen
             composable(route = CourseDestination.CourseQuizAnswers.route) {
                 CourseQuizResultsScreen(courseContentState = courseViewModel.courseContentState.value,
                     saveNote = {title, noteText -> noteViewModel.insertNote(title, noteText)},
@@ -159,6 +195,8 @@ fun AppNavHost(
                     updateUserCourseSteps = {courseName, updateStepsCompleted -> userViewModel.updateUserCourseSteps(courseName, updateStepsCompleted)}
                 )
             }
+
+            //CourseSummary screen
             composable(route = CourseDestination.CourseSummary.route) {
                 CourseSummaryScreen(courseContentState = courseViewModel.courseContentState.value,
                     updateUserCourseSteps = {courseName, updateStepsCompleted -> userViewModel.updateUserCourseSteps(courseName, updateStepsCompleted)},
@@ -169,6 +207,7 @@ fun AppNavHost(
     }
 }
 
+//NavHostController for launching single top on back stack
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) {
         popUpTo(
