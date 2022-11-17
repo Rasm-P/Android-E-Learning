@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -42,22 +43,30 @@ fun LoginScreen(
     restPasswordState: ActionState<String>,
     fetchUser: () -> Unit
 ) {
+    //Image painter
     val image: Painter = painterResource(id = R.drawable.e_learning)
+
+    //MutableState for login failed
     var loginFailed by remember { mutableStateOf(false) }
 
+    //Content column
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
+
+        //Image logo
         Image(
             modifier = Modifier
                 .weight(1f)
                 .size(128.dp),
             painter = image,
-            contentDescription = "App Logo"
+            contentDescription = stringResource(R.string.app_logo)
         )
+        //Login card
         Box(modifier = Modifier
             .weight(2f)) {
             LoginCard(navigateRegister, loginFailed, resetActionState, onLogin, onPasswordReset, restPasswordState)
         }
     }
+    //When clause for login ActionState
     when(loginState) {
         is ActionState.Initial -> {}
         is ActionState.Loading -> {
@@ -85,27 +94,30 @@ fun LoginCard(
     onPasswordReset: (String) -> Unit,
     restPasswordState: ActionState<String>
 ) {
+    //MutableState for user interaction
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     var showForgotPasswordDialog by remember { mutableStateOf(false) }
 
+    //Content card
     Card(shape = RoundedCornerShape(20.dp, 20.dp),
         elevation = 12.dp) {
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(30.dp)) {
             Text(
-                text = "Login",
+                text = stringResource(R.string.login),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Medium
             )
+            //Column for login text fields
             Column {
                 Spacer(modifier = Modifier.height(12.dp))
                 OutlinedTextField(modifier = Modifier
                     .fillMaxWidth(),
                     value = email,
-                    label = { Text(text = "Email") },
+                    label = { Text(text = stringResource(R.string.email)) },
                     onValueChange = {email = it},
                     singleLine = true,
                     trailingIcon = {
@@ -113,7 +125,7 @@ fun LoginCard(
                             email = ""
                         }) {
                             if (email != "") {
-                                Icon(Icons.Filled.Clear, "Clear email")
+                                Icon(Icons.Filled.Clear, stringResource(R.string.clear_email))
                             }
                         }
                     }
@@ -122,7 +134,7 @@ fun LoginCard(
                 OutlinedTextField(modifier = Modifier
                     .fillMaxWidth(),
                     value = password,
-                    label = { Text(text = "Password") },
+                    label = { Text(text = stringResource(R.string.password)) },
                     onValueChange = {password = it},
                     singleLine = true,
                     trailingIcon = {
@@ -130,18 +142,19 @@ fun LoginCard(
                             passwordVisible = !passwordVisible
                         }) {
                             if (passwordVisible) {
-                                Icon(Icons.Filled.Visibility, "Password visible")
+                                Icon(Icons.Filled.Visibility, stringResource(R.string.password_visible))
                             } else {
-                                Icon(Icons.Filled.VisibilityOff, "Password not visible")
+                                Icon(Icons.Filled.VisibilityOff, stringResource(R.string.password_not_visible))
                             }
                         }
                     },
                     visualTransformation = if (passwordVisible) VisualTransformation.None
                     else PasswordVisualTransformation()
                 )
+                //If login failed error text is shown
                 if (loginFailed) {
                     Text(
-                        text = "Wrong email or password!",
+                        text = stringResource(R.string.wrong_email_or_password),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Light,
                         color = MaterialTheme.colors.error,
@@ -152,29 +165,34 @@ fun LoginCard(
                 } else {
                     Spacer(modifier = Modifier.height(32.dp))
                 }
+                //Login button
                 Button(modifier = Modifier
                     .fillMaxWidth()
                     .height(40.dp),
                     onClick = { onLogin(email, password) }) {
-                    Text(text = "LOGIN")
+                    Text(text = stringResource(R.string.login_button))
                 }
                 Spacer(modifier = Modifier.height(6.dp))
+
+                //Forgot password: clickable text
                 Text(
                     modifier = Modifier
                         .align(Alignment.End)
                         .clickable ( onClick = {showForgotPasswordDialog = true} ),
-                    text = "Forgot Password?",
+                    text = stringResource(R.string.forgot_password),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light
                 )
                 Spacer(modifier = Modifier.weight(1f))
+
+                //Don't have an account: clickable text
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Row {
-                        Text(text = "Don't have an account?",
+                        Text(text = stringResource(R.string.dont_have_account),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Light)
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text(text = "SIGN UP",
+                        Text(text = stringResource(R.string.sign_up),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Light,
                             color = MaterialTheme.colors.primary,
@@ -182,6 +200,7 @@ fun LoginCard(
                             modifier = Modifier.clickable( onClick = navigateRegister ))
                     }
                 }
+                //Forgot password dialog
                 if (showForgotPasswordDialog) {
                     ForgotPasswordDialog({ showForgotPasswordDialog = false }, resetActionState, onPasswordReset, restPasswordState)
                 }
@@ -192,20 +211,24 @@ fun LoginCard(
 
 @Composable
 fun ForgotPasswordDialog(onDismiss: () -> Unit, resetActionState: () -> Unit, onPasswordReset: (String) -> Unit, restPasswordState: ActionState<String>) {
+
+    //MutableState for user interaction
     var email by remember { mutableStateOf("") }
     var resetFailed by remember { mutableStateOf(false) }
     var resetSuccess by remember { mutableStateOf(false) }
 
+    //Alert dialog for forgot password
     AlertDialog(
         title = { Text(
-            text = "Forgot Password",
+            text = stringResource(R.string.forgot_password_title),
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
         ) },
         text = {
-            Column() {
+            //Column text content
+            Column {
                 Text(
-                    text = "To reset your password, please enter your account email below.",
+                    text = stringResource(R.string.to_reset_password),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light
                 )
@@ -214,16 +237,17 @@ fun ForgotPasswordDialog(onDismiss: () -> Unit, resetActionState: () -> Unit, on
                     value = email,
                     onValueChange = {email = it},
                     singleLine = true,
-                    label = { Text(text = "Email") },
-                    placeholder = { Text(text = "Email", color = Color.LightGray) },
+                    label = { Text(text = stringResource(R.string.email)) },
+                    placeholder = { Text(text = stringResource(R.string.email), color = Color.LightGray) },
                     trailingIcon = {
                         if (resetFailed)
-                            Icon(Icons.Filled.Error,"Login error", tint = MaterialTheme.colors.error)
+                            Icon(Icons.Filled.Error,stringResource(R.string.email_error), tint = MaterialTheme.colors.error)
                     }
                 )
+                //Reset failed and success conditional
                 if (resetFailed) {
                     Text(
-                        text = "Email does not exist!",
+                        text = stringResource(R.string.email_not_exsist),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Light,
                         color = MaterialTheme.colors.error,
@@ -233,7 +257,7 @@ fun ForgotPasswordDialog(onDismiss: () -> Unit, resetActionState: () -> Unit, on
                 }
                 if (resetSuccess) {
                     Text(
-                        text = "Password reset email sent!",
+                        text = stringResource(R.string.reset_mail_sendt),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Light,
                         color = Color.Green,
@@ -246,9 +270,10 @@ fun ForgotPasswordDialog(onDismiss: () -> Unit, resetActionState: () -> Unit, on
                     .fillMaxWidth()
                     .height(40.dp),
                     onClick = { onPasswordReset(email) }) {
-                    Text(text = "SEND")
+                    Text(text = stringResource(R.string.send))
                 }
             }
+            //When clause for reset password state
             when(restPasswordState) {
                 is ActionState.Initial -> {}
                 is ActionState.Loading -> {
@@ -270,8 +295,9 @@ fun ForgotPasswordDialog(onDismiss: () -> Unit, resetActionState: () -> Unit, on
         },
         onDismissRequest = onDismiss,
         buttons = {
+            //Close dialog
             Text(
-                text = "Close",
+                text = stringResource(R.string.close),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Light,
                 modifier = Modifier.padding(20.dp).clickable( onClick = onDismiss )

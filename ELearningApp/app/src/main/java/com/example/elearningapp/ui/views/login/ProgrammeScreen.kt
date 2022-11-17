@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,26 +42,34 @@ fun ProgrammeScreen(
     userState: ActionState<User>,
     resetActionState: () -> Unit
 ) {
+    //Image painter
     val image: Painter = painterResource(id = R.drawable.e_learning)
+
+    //MutableState for add user data failed
     var addUserDataFailed by remember { mutableStateOf(false) }
 
+    //Fetches all programmes
     LaunchedEffect(Unit, block = {
         fetchProgrammes.invoke()
     })
 
+    //Content column
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
+
+        //Image logo
         Image(
             modifier = Modifier
                 .weight(1f)
                 .size(112.dp),
             painter = image,
-            contentDescription = "App Logo"
+            contentDescription = stringResource(R.string.app_logo)
         )
         Box(modifier = Modifier
             .weight(3f)) {
             ProgrammeCard(fetchProgrammes, programmeState, setFirstTimeUser, addUserData, addUserDataFailed)
         }
     }
+    //When clause for user ActionState
     when(userState) {
         is ActionState.Initial -> {}
         is ActionState.Loading -> {
@@ -85,22 +94,26 @@ fun ProgrammeCard(
     addUserData: (String, Programme) -> Unit,
     addUserDataFailed: Boolean
 ) {
+    //MutableState for user interaction
     var studentName by remember { mutableStateOf("") }
     var selectedProgramme by remember { mutableStateOf(Programme("", emptyList())) }
 
+    //Content card
     Card(modifier = Modifier.fillMaxSize(),
         shape = RoundedCornerShape(20.dp, 20.dp),
         elevation = 12.dp) {
+        //Content column
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(30.dp)
         ) {
             Text(
-                text = "Name and Programme",
+                text = stringResource(R.string.name_and_programme),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Medium
             )
+            //User student name text field
             Column {
                 Spacer(modifier = Modifier.height(12.dp))
                 OutlinedTextField(modifier = Modifier
@@ -108,34 +121,37 @@ fun ProgrammeCard(
                     value = studentName,
                     onValueChange = {studentName = it},
                     singleLine = true,
-                    label = { Text(text = "Student Name") },
+                    label = { Text(text = stringResource(R.string.student_name)) },
                     trailingIcon = {
                         IconButton(onClick = {
                             studentName = ""
                         }) {
                             if (studentName != "") {
-                                Icon(Icons.Filled.Clear, "Clear Student name")
+                                Icon(Icons.Filled.Clear, stringResource(R.string.clear_student_name))
                             }
                         }
                     }
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "Study Programme",
+                    text = stringResource(R.string.study_programme),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light
                 )
                 Text(
-                    text = "Choose a study programme from the list. \nThis will help determine the courses show to you.",
+                    text = stringResource(R.string.choose_a_study_programme),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.ExtraLight
                 )
                 Spacer(modifier = Modifier.height(12.dp))
+
+                //When clause for programme state
                 when(programmeState) {
                     is ActionState.Initial -> {}
                     is ActionState.Loading -> {
                         Loading()
                     }
+                    //Lazy column for programmes fetched on ActionState Success
                     is ActionState.Success -> {
                         LazyColumn(
                             modifier = Modifier.padding(bottom = 60.dp)
@@ -146,28 +162,31 @@ fun ProgrammeCard(
                             }
                         }
                     }
+                    //Icon and message on ActionState Error
                     is ActionState.Error -> {
                         Toast.makeText(LocalContext.current, programmeState.message, Toast.LENGTH_LONG).show()
                         Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                            Icon(imageVector = Icons.Filled.Error, contentDescription = "Error icon", tint = Color.LightGray)
+                            Icon(imageVector = Icons.Filled.Error, contentDescription = stringResource(R.string.error_icon), tint = Color.LightGray)
                             Spacer(modifier = Modifier.height(12.dp))
-                            Text(text = "Couldn't Load Data", color = Color.LightGray)
+                            Text(text = stringResource(R.string.couldnt_load_data), color = Color.LightGray)
                             Spacer(modifier = Modifier.height(12.dp))
-                            Text(text = "Retry", modifier = Modifier.clickable(onClick = fetchProgrammes), color = MaterialTheme.colors.error, textDecoration = TextDecoration.Underline)
+                            Text(text = stringResource(R.string.retry), modifier = Modifier.clickable(onClick = fetchProgrammes), color = MaterialTheme.colors.error, textDecoration = TextDecoration.Underline)
                         }
                     }
                 }
             }
-
             }
+            //Finish button box
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .padding(30.dp),
                 contentAlignment = Alignment.BottomCenter) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+                    //Message if add user data failed
                     if (addUserDataFailed) {
                         Text(
-                            text = "Something went wrong! Please try again.",
+                            text = stringResource(R.string.something_went_wrong),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Light,
                             color = MaterialTheme.colors.error,
@@ -175,6 +194,7 @@ fun ProgrammeCard(
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                     }
+                    //Finish button
                     Button(modifier = Modifier
                         .fillMaxWidth()
                         .height(40.dp),
@@ -183,7 +203,7 @@ fun ProgrammeCard(
                             setFirstTimeUser.invoke()
                             addUserData(studentName, selectedProgramme)
                         }) {
-                        Text(text = "FINISH")
+                        Text(text = stringResource(R.string.finish_button))
                     }
                 }
             }
@@ -193,6 +213,8 @@ fun ProgrammeCard(
 
 @Composable
 fun ProgrammeItem(programme: Programme, selectedProgramme: Programme, onSelect: () -> Unit) {
+
+    //Row for programme item entry
     Row(modifier = Modifier
         .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
