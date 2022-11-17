@@ -35,6 +35,8 @@ private const val fadeDuration = 100
 
 @Composable
 fun BottomNavBar(screens: List<MenuNavDestination>, onSelected: (MenuNavDestination) -> Unit, currentDestination: MenuNavDestination) {
+
+    //NavBar surface
     Surface(
         Modifier
             .fillMaxWidth()
@@ -42,6 +44,7 @@ fun BottomNavBar(screens: List<MenuNavDestination>, onSelected: (MenuNavDestinat
         border = BorderStroke(width = 1.dp, color = if(isSystemInDarkTheme()) MaterialTheme.colors.secondary else Color.LightGray),
         shape = RoundedCornerShape(5.dp,5.dp)
     ) {
+        //Content row
         Row(Modifier.selectableGroup(), horizontalArrangement = Arrangement.SpaceEvenly) {
             screens.forEach { screen ->
                 NavBarTab(
@@ -57,6 +60,7 @@ fun BottomNavBar(screens: List<MenuNavDestination>, onSelected: (MenuNavDestinat
 
 @Composable
 private fun NavBarTab(text: String, icon: ImageVector, onSelected: () -> Unit, selected: Boolean) {
+    //Color and aspect values
     val greyColor = Color.LightGray
     val colorSelected = MaterialTheme.colors.primary
     val animationSpec = remember {
@@ -70,6 +74,7 @@ private fun NavBarTab(text: String, icon: ImageVector, onSelected: () -> Unit, s
         targetValue = if (selected) colorSelected else greyColor,
         animationSpec = animationSpec
     )
+    //Icon content column
     Column(modifier = Modifier
         .padding(16.dp)
         .animateContentSize()

@@ -8,9 +8,10 @@ import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.elearningapp.R
 import com.example.elearningapp.navigation.*
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 
@@ -23,13 +24,16 @@ fun TopBar(
     onAccountPressed: () -> Unit,
     onCourseDetailsPressed: () -> Unit
 ) {
+    //Boolean values to determine content depending on the current route
     val isRouteInLoginFLow = loginNavScreens.any { screen -> screen.route == route }
     val isRouteInOverviewFLow = bottomNavScreens.any { screen -> screen.route == route }
     val isRouteInCourseFlow = courseNavScreens.any { screen -> screen.route == route &&  route != CourseDestination.CourseDetails.route }
 
+    //App TopBar content
     CenterAlignedTopAppBar(
         colors = if (!isRouteInLoginFLow) TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colors.primary, titleContentColor = MaterialTheme.colors.secondary) else TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colors.background),
         title = {
+            //Title conditional
             if (!isRouteInLoginFLow) {
                 Text(
                     text = routeAsTitle(route),
@@ -39,11 +43,12 @@ fun TopBar(
             }
         },
         navigationIcon = {
+            //Left icon conditionals
             if (isRouteInOverviewFLow) {
                 IconButton(onClick = onLogoutPressed) {
                     Icon(
                         imageVector = Icons.Filled.Logout,
-                        contentDescription = "Logout",
+                        contentDescription = stringResource(R.string.logout),
                         tint = MaterialTheme.colors.secondary
                     )
                 }
@@ -51,7 +56,7 @@ fun TopBar(
                 IconButton(onClick = onCourseDetailsPressed) {
                     Icon(
                         imageVector = Icons.Filled.FormatListBulleted,
-                        contentDescription = "To course details",
+                        contentDescription = stringResource(R.string.to_course_details),
                         tint = MaterialTheme.colors.secondary
                     )
                 }
@@ -59,18 +64,19 @@ fun TopBar(
                 IconButton(onClick = onBackPressed) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "Back",
+                        contentDescription = stringResource(R.string.back),
                         tint = if (isRouteInLoginFLow) MaterialTheme.colors.primary else MaterialTheme.colors.secondary
                     )
                 }
             }
         },
         actions = {
+            //Right icon conditionals
             if (!isRouteInLoginFLow && route != MenuNavDestination.Account.route && isRouteInOverviewFLow) {
                 IconButton(onClick = onAccountPressed) {
                     Icon(
                         imageVector = Icons.Outlined.AccountCircle,
-                        contentDescription = "Account",
+                        contentDescription = stringResource(R.string.account),
                         tint = MaterialTheme.colors.secondary
                     )
                 }
@@ -88,7 +94,8 @@ fun TopBarPreview() {
     }
 }
 
-
+//Function for using route as screen title
 fun routeAsTitle(destination: String) : String {
-    return destination.replace("-", " ").split(" ").map { it.capitalize() }.joinToString(" ")
+    return destination.replace("-", " ").split(" ")
+        .joinToString(" ") { it -> it.replaceFirstChar { it.uppercase() } }
 }

@@ -11,20 +11,24 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.elearningapp.R
 import com.example.elearningapp.ui.theme.ELearningAppTheme
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun AddNoteButton(saveNote: (String, String) -> Unit) {
+    //MutableState for AddNoteDialog
     var showAddNoteDialog by remember { mutableStateOf(false) }
 
+    //Note button box
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
         Button(
             modifier = Modifier.padding(end = 40.dp, bottom = 15.dp),
@@ -32,14 +36,15 @@ fun AddNoteButton(saveNote: (String, String) -> Unit) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Outlined.Edit,
-                    contentDescription = "Add note",
+                    contentDescription = stringResource(R.string.add_note),
                     tint = MaterialTheme.colors.secondary
                 )
                 Spacer(modifier = Modifier.width(6.dp))
-                Text(text = "Add a Note")
+                Text(text = stringResource(R.string.add_a_note))
             }
         }
     }
+    //AddNoteDialog conditional
     if (showAddNoteDialog) {
         AddNoteDialog({ showAddNoteDialog = false }, saveNote)
     }
@@ -48,13 +53,16 @@ fun AddNoteButton(saveNote: (String, String) -> Unit) {
 
 @Composable
 fun AddNoteDialog(onDismiss: () -> Unit, saveNote: (String, String) -> Unit) {
+    //MutableState for user interaction
     var title by remember { mutableStateOf("") }
     var noteText by remember { mutableStateOf("") }
     val dateTime = OffsetDateTime.now()
     val maxNoteChars = 500
 
+    //AddNoteDialog
     AlertDialog(
         text = {
+            //Dialog content column
             Column(modifier = Modifier.fillMaxWidth()) {
                 BasicTextField(
                     modifier = Modifier.fillMaxWidth(),
@@ -68,7 +76,7 @@ fun AddNoteDialog(onDismiss: () -> Unit, saveNote: (String, String) -> Unit) {
                     decorationBox = { innerTextField ->
                         if (title.isEmpty()) {
                             Text(
-                                text = "Title",
+                                text = stringResource(R.string.title),
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Medium
                             )
@@ -79,6 +87,8 @@ fun AddNoteDialog(onDismiss: () -> Unit, saveNote: (String, String) -> Unit) {
                 Spacer(modifier = Modifier.height(20.dp))
                 Divider(color = Color.LightGray, thickness = 1.dp)
                 Spacer(modifier = Modifier.height(4.dp))
+
+                //Information row for date and number of char
                 Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                     Text(
                         text = dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
@@ -105,7 +115,7 @@ fun AddNoteDialog(onDismiss: () -> Unit, saveNote: (String, String) -> Unit) {
                     onValueChange = { if (it.length <= maxNoteChars) noteText = it },
                     decorationBox = { innerTextField ->
                         if (noteText.isEmpty()) {
-                            Text(text = "Write your note")
+                            Text(text = stringResource(R.string.write_your_note))
                         }
                         innerTextField()
                     }
@@ -114,11 +124,12 @@ fun AddNoteDialog(onDismiss: () -> Unit, saveNote: (String, String) -> Unit) {
         },
         onDismissRequest = onDismiss,
         buttons = {
+            //Bottom row for buttons
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp), verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(
-                    text = "Close",
+                    text = stringResource(R.string.close),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light,
                     modifier = Modifier.clickable(onClick = onDismiss)
@@ -129,11 +140,11 @@ fun AddNoteDialog(onDismiss: () -> Unit, saveNote: (String, String) -> Unit) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Outlined.NoteAdd,
-                            contentDescription = "Save note",
+                            contentDescription = stringResource(R.string.save_note),
                             tint = MaterialTheme.colors.secondary
                         )
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text(text = "Save note")
+                        Text(text = stringResource(R.string.save_note))
                     }
                 }
             }
