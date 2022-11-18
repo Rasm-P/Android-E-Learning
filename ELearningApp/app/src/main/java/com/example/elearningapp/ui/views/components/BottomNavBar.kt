@@ -5,6 +5,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -34,13 +35,16 @@ private const val fadeDuration = 100
 
 @Composable
 fun BottomNavBar(screens: List<MenuNavDestination>, onSelected: (MenuNavDestination) -> Unit, currentDestination: MenuNavDestination) {
+
+    //NavBar surface
     Surface(
         Modifier
             .fillMaxWidth()
             .height(NavBarHeight), color = MaterialTheme.colors.secondary,
-        border = BorderStroke(width = 1.dp, color = Color.LightGray),
+        border = BorderStroke(width = 1.dp, color = if(isSystemInDarkTheme()) MaterialTheme.colors.secondary else Color.LightGray),
         shape = RoundedCornerShape(5.dp,5.dp)
     ) {
+        //Content row
         Row(Modifier.selectableGroup(), horizontalArrangement = Arrangement.SpaceEvenly) {
             screens.forEach { screen ->
                 NavBarTab(
@@ -56,6 +60,7 @@ fun BottomNavBar(screens: List<MenuNavDestination>, onSelected: (MenuNavDestinat
 
 @Composable
 private fun NavBarTab(text: String, icon: ImageVector, onSelected: () -> Unit, selected: Boolean) {
+    //Color and aspect values
     val greyColor = Color.LightGray
     val colorSelected = MaterialTheme.colors.primary
     val animationSpec = remember {
@@ -69,6 +74,7 @@ private fun NavBarTab(text: String, icon: ImageVector, onSelected: () -> Unit, s
         targetValue = if (selected) colorSelected else greyColor,
         animationSpec = animationSpec
     )
+    //Icon content column
     Column(modifier = Modifier
         .padding(16.dp)
         .animateContentSize()

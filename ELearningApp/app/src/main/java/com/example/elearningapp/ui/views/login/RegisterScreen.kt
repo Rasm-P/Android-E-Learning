@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -36,22 +37,29 @@ fun RegisterScreen(
     onRegister: (String, String) -> Unit,
     setFirstTimeUser: () -> Unit
 ) {
+    //Image painter
     val image: Painter = painterResource(id = R.drawable.e_learning)
+
+    //MutableState for register failed
     var registerFailed by remember { mutableStateOf(false) }
 
+    //Column content
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
+        //Image logo
         Image(
             modifier = Modifier
                 .weight(1f)
                 .size(128.dp),
             painter = image,
-            contentDescription = "App Logo"
+            contentDescription = stringResource(R.string.app_logo)
         )
+        //Content box for card
         Box(modifier = Modifier
             .weight(2f)) {
             RegisterCard(navigateLogin, registerFailed, {registerFailed = true}, onRegister, setFirstTimeUser)
         }
     }
+    //When clause for login state
     when(loginState) {
         is ActionState.Initial -> {}
         is ActionState.Loading -> {
@@ -77,31 +85,35 @@ fun RegisterCard(
     onRegister: (String, String) -> Unit,
     setFirstTimeUser: () -> Unit
 ) {
+    //MutableState for user interaction
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var repeatPassword by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
+    //Content card
     Card(
         shape = RoundedCornerShape(20.dp, 20.dp),
         elevation = 12.dp
     ) {
+        //Content column
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(30.dp)
         ) {
             Text(
-                text = "Sign Up",
+                text = stringResource(R.string.sign_up_text),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Medium
             )
+            //Text field column
             Column {
                 Spacer(modifier = Modifier.height(12.dp))
                 OutlinedTextField(modifier = Modifier
                     .fillMaxWidth(),
                     value = email,
-                    label = { Text(text = "Email") },
+                    label = { Text(text = stringResource(R.string.email)) },
                     onValueChange = { email = it },
                     singleLine = true,
                     trailingIcon = {
@@ -109,7 +121,7 @@ fun RegisterCard(
                             email = ""
                         }) {
                             if (email != "") {
-                                Icon(Icons.Filled.Clear, "Clear email")
+                                Icon(Icons.Filled.Clear, stringResource(R.string.clear_email))
                             }
                         }
                     }
@@ -119,7 +131,7 @@ fun RegisterCard(
                     modifier = Modifier
                         .fillMaxWidth(),
                     value = password,
-                    label = { Text(text = "Password") },
+                    label = { Text(text = stringResource(R.string.password)) },
                     onValueChange = { password = it },
                     singleLine = true,
                     trailingIcon = {
@@ -127,9 +139,9 @@ fun RegisterCard(
                             passwordVisible = !passwordVisible
                         }) {
                             if (passwordVisible) {
-                                Icon(Icons.Filled.Visibility, "Password visible")
+                                Icon(Icons.Filled.Visibility, stringResource(R.string.password_visible))
                             } else {
-                                Icon(Icons.Filled.VisibilityOff, "Password not visible")
+                                Icon(Icons.Filled.VisibilityOff, stringResource(R.string.password_not_visible))
                             }
                         }
                     },
@@ -141,7 +153,7 @@ fun RegisterCard(
                     modifier = Modifier
                         .fillMaxWidth(),
                     value = repeatPassword,
-                    label = { Text(text = "Repeat Password") },
+                    label = { Text(text = stringResource(R.string.repeat_password)) },
                     onValueChange = { repeatPassword = it },
                     singleLine = true,
                     trailingIcon = {
@@ -149,18 +161,19 @@ fun RegisterCard(
                             passwordVisible = !passwordVisible
                         }) {
                             if (passwordVisible) {
-                                Icon(Icons.Filled.Visibility, "Password visible")
+                                Icon(Icons.Filled.Visibility, stringResource(R.string.password_visible))
                             } else {
-                                Icon(Icons.Filled.VisibilityOff, "Password not visible")
+                                Icon(Icons.Filled.VisibilityOff, stringResource(R.string.password_not_visible))
                             }
                         }
                     },
                     visualTransformation = if (passwordVisible) VisualTransformation.None
                     else PasswordVisualTransformation()
                 )
+                //If registration fails text is shown
                 if (registerFailed) {
                     Text(
-                        text = if (password != repeatPassword) "Passwords were not the same!" else "Email or password was not valid!",
+                        text = if (password != repeatPassword) stringResource(R.string.passwords_not_same) else stringResource(R.string.email_password_not_valid) ,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Light,
                         color = MaterialTheme.colors.error,
@@ -171,6 +184,7 @@ fun RegisterCard(
                 } else {
                     Spacer(modifier = Modifier.height(32.dp))
                 }
+                //Sign Up button
                 Button(modifier = Modifier
                     .fillMaxWidth()
                     .height(40.dp),
@@ -183,19 +197,21 @@ fun RegisterCard(
                         }
                     }
                 ) {
-                    Text(text = "SIGN UP")
+                    Text(text = stringResource(R.string.sign_up))
                 }
                 Spacer(modifier = Modifier.weight(1f))
+
+                //Box for clickable bottom text
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Row {
                         Text(
-                            text = "Already a user?",
+                            text = stringResource(R.string.already_a_user),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Light
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "LOGIN",
+                            text = stringResource(R.string.login_button),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Light,
                             color = MaterialTheme.colors.primary,

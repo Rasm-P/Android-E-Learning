@@ -14,6 +14,7 @@ import com.example.elearningapp.ui.theme.ELearningAppTheme
 
 @Composable
 fun Loading() {
+    //Box for loading progress indicator
     Box(modifier = Modifier.fillMaxSize().background(Color.White.copy(alpha = 0.6f)), contentAlignment = Alignment.Center) {
         CircularProgressIndicator(color = MaterialTheme.colors.primary)
     }

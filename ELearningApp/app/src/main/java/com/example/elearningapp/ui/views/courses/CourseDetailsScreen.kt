@@ -12,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Error
-import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.RadioButtonChecked
 import androidx.compose.material.icons.outlined.RadioButtonUnchecked
 import androidx.compose.material3.CircularProgressIndicator
@@ -25,6 +24,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.example.elearningapp.R
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.datasource.CourseData.allCourseContent
 import com.example.elearningapp.datasource.CourseData.allCourseInformation
@@ -56,35 +57,42 @@ fun CourseDetailsScreen(
     updateUserActiveCourses: (CourseInformation) -> Unit,
     navigateToScreenStep: (Int) -> Unit
 ) {
+    //MutableState for ReadMoreDialog
     var showReadMoreDialog by remember { mutableStateOf(false) }
 
+    //Image painter for course image
+    val painter = rememberAsyncImagePainter(
+        ImageRequest.Builder(LocalContext.current).data(data = courseInformation.imageUrl)
+            .apply(block = fun ImageRequest.Builder.() {
+                crossfade(true)
+            }).build()
+    )
+
+    //Fetches course content
     LaunchedEffect(Unit, block = {
         fetchCourseContent.invoke()
     })
 
+    //Content column
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(20.dp)) {
         Box(modifier = Modifier
             .fillMaxWidth()
             .weight(1f)) {
+            //Course description card
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(5.dp),
                 elevation = 12.dp
             ) {
-                val painter = rememberAsyncImagePainter(
-                    ImageRequest.Builder(LocalContext.current).data(data = courseInformation.imageUrl)
-                        .apply(block = fun ImageRequest.Builder.() {
-                            crossfade(true)
-                        }).build()
-                )
                 Column {
                     Box(modifier = Modifier.weight(1f)
                     ) {
+                        //Course image
                         Image(
                             painter = painter,
-                            contentDescription = "Course image",
+                            contentDescription = stringResource(R.string.course_image),
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .fillMaxSize()
@@ -104,6 +112,7 @@ fun CourseDetailsScreen(
                                     size = size
                                 )
                             })
+                        //CircularProgressIndicator for when loading image
                         if (painter.state !is AsyncImagePainter.State.Success) {
                             Box(modifier = Modifier.fillMaxSize()) {
                                 CircularProgressIndicator(
@@ -122,6 +131,7 @@ fun CourseDetailsScreen(
                         )
 
                     }
+                    //Course description
                     Box(modifier = Modifier.weight(1f)) {
                         Column(
                             modifier = Modifier
@@ -131,13 +141,13 @@ fun CourseDetailsScreen(
                             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.SpaceBetween) {
                                 Column {
                                     Text(
-                                        text = "Difficulty: " + courseInformation.difficulty,
+                                        text = stringResource(R.string.difficulty) + courseInformation.difficulty,
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.Light
                                     )
                                     Text(
                                         text = courseInformation.minutesToComplete.toDuration(
-                                            DurationUnit.MINUTES).toString() + " - " + courseInformation.steps + " steps",
+                                            DurationUnit.MINUTES).toString() + " - " + courseInformation.steps + stringResource(R.string.steps),
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.Light
                                     )
@@ -146,7 +156,7 @@ fun CourseDetailsScreen(
                             }
                             Spacer(modifier = Modifier.height(10.dp))
                             Text(
-                                text = "Description",
+                                text = stringResource(R.string.description),
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Medium
                             )
@@ -162,7 +172,7 @@ fun CourseDetailsScreen(
                                 modifier = Modifier
                                     .align(alignment = Alignment.End)
                                     .clickable(onClick = { showReadMoreDialog = true }),
-                                text = "Read More",
+                                text = stringResource(R.string.read_more),
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Light,
                                 color = MaterialTheme.colors.error,
@@ -173,21 +183,25 @@ fun CourseDetailsScreen(
                 }
             }
         }
+        //Course steps box
         Box(modifier = Modifier
             .fillMaxWidth()
             .padding(top = 20.dp)
             .weight(1f)) {
+            //Content column
             Column {
                 Text(modifier = Modifier.padding(bottom = 10.dp),
-                    text = "Course Steps",
+                    text = stringResource(R.string.course_steps),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium
                 )
+                //When clause for courseSteps ActionState
                 when(courseContentState) {
                     is ActionState.Initial -> {}
                     is ActionState.Loading -> {
                         Loading()
                     }
+                    //Show course steps when ActionState success
                     is ActionState.Success -> {
                         val courseContent = courseContentState.data
                         if (courseContent != null) {
@@ -198,34 +212,37 @@ fun CourseDetailsScreen(
                                         ScrollState(0)
                                     )
                             ) {
-                                CourseStepCard(1, stepStatus, "Article", navigateToScreenStep)
-                                CourseStepCard(2, stepStatus, "Video Article", navigateToScreenStep)
-                                CourseStepCard(3, stepStatus, "Quiz Test", navigateToScreenStep)
-                                CourseStepCard(4, stepStatus, "Quiz Results", navigateToScreenStep)
-                                CourseStepCard(5, stepStatus, "Course Summary", navigateToScreenStep)
+                                //Course steps
+                                CourseStepCard(1, stepStatus, stringResource(R.string.article), navigateToScreenStep)
+                                CourseStepCard(2, stepStatus, stringResource(R.string.video_article), navigateToScreenStep)
+                                CourseStepCard(3, stepStatus, stringResource(R.string.quiz_test), navigateToScreenStep)
+                                CourseStepCard(4, stepStatus, stringResource(R.string.quiz_results), navigateToScreenStep)
+                                CourseStepCard(5, stepStatus, stringResource(R.string.course_summary), navigateToScreenStep)
                             }
                         } else {
                             Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                                Icon(imageVector = Icons.Filled.Error, contentDescription = "Error icon", tint = Color.LightGray)
+                                Icon(imageVector = Icons.Filled.Error, contentDescription = stringResource(R.string.error_icon), tint = Color.LightGray)
                                 Spacer(modifier = Modifier.height(12.dp))
-                                Text(text = "No steps found for this course", color = Color.LightGray)
+                                Text(text = stringResource(R.string.no_steps_found), color = Color.LightGray)
                             }
                         }
                     }
+                    //ActionState Error if course steps cannot be loaded
                     is ActionState.Error -> {
                         Toast.makeText(LocalContext.current, courseContentState.message, Toast.LENGTH_LONG).show()
                         Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                            Icon(imageVector = Icons.Filled.Error, contentDescription = "Error icon", tint = Color.LightGray)
+                            Icon(imageVector = Icons.Filled.Error, contentDescription = stringResource(R.string.error_icon), tint = Color.LightGray)
                             Spacer(modifier = Modifier.height(12.dp))
-                            Text(text = "Couldn't Load Data", color = Color.LightGray)
+                            Text(text = stringResource(R.string.couldnt_load_data), color = Color.LightGray)
                             Spacer(modifier = Modifier.height(12.dp))
-                            Text(text = "Retry", modifier = Modifier.clickable(onClick = fetchCourseContent), color = MaterialTheme.colors.error, textDecoration = TextDecoration.Underline)
+                            Text(text = stringResource(R.string.retry), modifier = Modifier.clickable(onClick = fetchCourseContent), color = MaterialTheme.colors.error, textDecoration = TextDecoration.Underline)
                         }
                     }
                 }
             }
         }
     }
+    //Bottom button box
     Box(modifier = Modifier.fillMaxSize()) {
         if (!hasUserStartedCourse(courseInformation.courseName)) {
             Button(
@@ -234,7 +251,7 @@ fun CourseDetailsScreen(
                     .padding(20.dp)
                     .align(alignment = Alignment.BottomCenter),
                 onClick = { updateUserActiveCourses(courseInformation) }) {
-                Text(text = "START COURSE")
+                Text(text = stringResource(R.string.start_course))
             }
         } else {
             Button(
@@ -243,10 +260,12 @@ fun CourseDetailsScreen(
                     .padding(20.dp)
                     .align(alignment = Alignment.BottomCenter),
                 onClick = { navigateToScreenStep(stepStatus) }) {
-                Text(text = "CONTINUE COURSE")
+                Text(text = stringResource(R.string.continue_course))
             }
         }
     }
+
+    //ReadMoreDialog conditional
     if (showReadMoreDialog) {
         ReadMoreDialog({ showReadMoreDialog = false }, courseInformation)
     }
@@ -255,11 +274,15 @@ fun CourseDetailsScreen(
 
 @Composable
 fun CourseStepCard(step: Int, stepStatus: Int, title: String, navigateToScreenStep: (Int) -> Unit) {
+    //Steps completed value
     val completedStep = step <= stepStatus
+
+    //Course step card
     Card(modifier = Modifier.height(40.dp),
         shape = RoundedCornerShape(5.dp),
         elevation = 12.dp
     ) {
+        //Content row
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -267,9 +290,10 @@ fun CourseStepCard(step: Int, stepStatus: Int, title: String, navigateToScreenSt
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            //Icon step indicator
             Icon(modifier = Modifier,
                 imageVector = if (completedStep) Icons.Outlined.RadioButtonChecked else Icons.Outlined.RadioButtonUnchecked,
-                contentDescription = "Radio button",
+                contentDescription = stringResource(R.string.radio_button),
                 tint = if (completedStep) Color.Green else Color.Gray
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -280,7 +304,15 @@ fun CourseStepCard(step: Int, stepStatus: Int, title: String, navigateToScreenSt
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium
             )
-            Icon(modifier = Modifier.clickable(onClick = {navigateToScreenStep(step)}), imageVector = Icons.Filled.ArrowForward, contentDescription = "Jump to section", tint = MaterialTheme.colors.primary)
+            //Jump to section if step has been completed
+            if (completedStep) {
+                Icon(
+                    modifier = Modifier.clickable(onClick = { navigateToScreenStep(step) }),
+                    imageVector = Icons.Filled.ArrowForward,
+                    contentDescription = stringResource(R.string.jump_to_section),
+                    tint = MaterialTheme.colors.primary
+                )
+            }
         }
     }
     Spacer(modifier = Modifier.height(6.dp))
@@ -289,6 +321,7 @@ fun CourseStepCard(step: Int, stepStatus: Int, title: String, navigateToScreenSt
 
 @Composable
 fun ReadMoreDialog(onDismiss: () -> Unit, courseInformation: CourseInformation) {
+    //Read more dialog
     AlertDialog(
         title = {
             Text(
@@ -307,6 +340,7 @@ fun ReadMoreDialog(onDismiss: () -> Unit, courseInformation: CourseInformation) 
         },
         onDismissRequest = onDismiss,
         buttons = {
+            //Back button content box
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 Button(
                     modifier = Modifier.padding(bottom = 15.dp),
@@ -314,11 +348,11 @@ fun ReadMoreDialog(onDismiss: () -> Unit, courseInformation: CourseInformation) 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.back),
                             tint = MaterialTheme.colors.secondary
                         )
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text(text = "Back")
+                        Text(text = stringResource(R.string.back))
                     }
                 }
             }

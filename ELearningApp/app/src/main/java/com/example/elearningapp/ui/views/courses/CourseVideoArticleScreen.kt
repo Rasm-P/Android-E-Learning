@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.example.elearningapp.R
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.datasource.CourseData
 import com.example.elearningapp.models.CourseContent
@@ -42,12 +44,17 @@ fun CourseVideoArticleScreen(
     saveNote: (String, String) -> Unit,
     updateUserCourseSteps: (String, Int) -> Unit
 ) {
+    //CourseContent ActionState Success conditional
     if (courseContentState is ActionState.Success && courseContentState.data != null) {
+
+        //Video article content value
         val videoArticleContent = courseContentState.data.videoArticleContent
 
+        //Local configuration
         val localContext = LocalContext.current
         val configuration = LocalConfiguration.current
 
+        //Image painter
         val painter = rememberAsyncImagePainter(
             ImageRequest.Builder(LocalContext.current).data(data = videoArticleContent.videoThumbNailUri)
                 .apply(block = fun ImageRequest.Builder.() {
@@ -55,6 +62,12 @@ fun CourseVideoArticleScreen(
                 }).build()
         )
 
+        //Updates user course steps
+        LaunchedEffect(Unit, block = {
+            updateUserCourseSteps(courseContentState.data.courseName, 2)
+        })
+
+        //Content card
         Card(
             modifier = Modifier
                 .fillMaxSize()
@@ -62,6 +75,7 @@ fun CourseVideoArticleScreen(
             shape = RoundedCornerShape (5.dp),
             elevation = 12.dp
         ) {
+            //Content column
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -73,6 +87,8 @@ fun CourseVideoArticleScreen(
                     fontWeight = FontWeight.Medium
                 )
                 Spacer(modifier = Modifier.height(6.dp))
+
+                //Clickable video image box that launches YouTube Activity
                 Box(modifier = Modifier
                     .fillMaxWidth()
                     .height(((configuration.screenWidthDp - 80) * 9 / 16).dp)
@@ -85,23 +101,24 @@ fun CourseVideoArticleScreen(
                             youTubeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             youTubeIntent.setPackage("com.google.android.youtube")
                             localContext.startActivity(youTubeIntent)
-                            updateUserCourseSteps(courseContentState.data.courseName, 2)
                         }
                     ))
                 {
+                    //Image thumbnail
                     Image(
                         painter = painter,
-                        contentDescription = "Video thumbnail",
+                        contentDescription = stringResource(R.string.video_thumbnail),
                         contentScale = ContentScale.Fit,
                         modifier = Modifier
                             .fillMaxSize()
                             .border(1.dp, Color.LightGray)
                     )
+                    //Conditional for Play Video icon and CircularProgressIndicator
                     if (painter.state is AsyncImagePainter.State.Success) {
                         Icon(
                             modifier = Modifier.size(80.dp).align(alignment = Alignment.Center),
                             imageVector = Icons.Outlined.PlayCircleFilled,
-                            contentDescription = "Play video",
+                            contentDescription = stringResource(R.string.play_video),
                             tint = MaterialTheme.colors.primary
                         )
                     } else {
@@ -113,6 +130,7 @@ fun CourseVideoArticleScreen(
                         }
                     }
                 }
+                //Video bullet point lazy column
                 LazyColumn {
                     items(videoArticleContent.bulletPoints) {
                         Spacer(modifier = Modifier.height(12.dp))
@@ -133,6 +151,7 @@ fun CourseVideoArticleScreen(
                 Spacer(modifier = Modifier.height(80.dp))
             }
         }
+        //Add Note button
         AddNoteButton(saveNote)
     }
 }

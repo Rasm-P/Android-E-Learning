@@ -12,11 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.elearningapp.R
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.datasource.ProgrammeData
 import com.example.elearningapp.models.Programme
@@ -43,31 +45,35 @@ fun AccountScreen(
     loginState: ActionState<String>,
     onLogin: (String, String) -> Unit
 ) {
+    //MutableState for EditAccountDialog
     var showEditAccountDialog by remember { mutableStateOf(false) }
 
+    //Account screen content column
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Icon(
             imageVector = Icons.Filled.AccountCircle,
             modifier = Modifier.size(128.dp),
-            contentDescription = "No results icon",
+            contentDescription = stringResource(R.string.account_icon_description),
             tint = Color.LightGray
         )
         Text(
-            text = "Hello " + userData.name,
+            text = stringResource(R.string.hello) + userData.name,
             fontSize = 32.sp,
             fontWeight = FontWeight.Medium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
         Spacer(modifier = Modifier.height(20.dp))
+
+        //Account information card
         Card(modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(5.dp),
             elevation = 12.dp) {
-            Column(modifier = Modifier.padding(20.dp)) {
+            Column(modifier = Modifier.padding(start = 20.dp, top = 10.dp, end = 20.dp, bottom = 20.dp)) {
                 Text(
-                    text = "Name",
+                    text = stringResource(R.string.name),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 20.sp,
@@ -78,9 +84,9 @@ fun AccountScreen(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Email",
+                    text = stringResource(R.string.email),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 20.sp,
@@ -91,9 +97,9 @@ fun AccountScreen(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Study Programme",
+                    text = stringResource(R.string.study_programme),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 20.sp,
@@ -104,22 +110,24 @@ fun AccountScreen(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Password",
+                    text = stringResource(R.string.password),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = "Must be at least 8 characters long",
+                    text = stringResource(R.string.password_must_be),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light
                 )
             }
         }
     }
+
+    //Edit account button box
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
         Button(
             modifier = Modifier.padding(end = 40.dp, bottom = 15.dp),
@@ -127,26 +135,29 @@ fun AccountScreen(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Filled.ManageAccounts,
-                    contentDescription = "Edit account",
+                    contentDescription = stringResource(R.string.edit_account),
                     tint = MaterialTheme.colors.secondary
                 )
                 Spacer(modifier = Modifier.width(6.dp))
-                Text(text = "Edit Account")
+                Text(text = stringResource(R.string.edit_account))
             }
         }
     }
+
+    //Edit account dialog conditional
     if (showEditAccountDialog) {
         EditAccountDialog(userData, userEmail, { showEditAccountDialog = false }, fetchProgrammes, programmeState, updateUserName, updateUserStudyProgramme, updateEmail, resetPassword, deleteUser, resetActionState, loginState, onLogin)
     }
+
+    //ActionState Toasts for Success or Error
     if (updateState is ActionState.Success) {
         Toast.makeText(LocalContext.current, updateState.data, Toast.LENGTH_SHORT).show()
         resetActionState.invoke()
+    } else if (loginState is ActionState.Success) {
+        Toast.makeText(LocalContext.current, loginState.data, Toast.LENGTH_SHORT).show()
     } else if (updateState is ActionState.Error) {
         Toast.makeText(LocalContext.current, updateState.message, Toast.LENGTH_SHORT).show()
         resetActionState.invoke()
-    }
-    if (loginState is ActionState.Success) {
-        Toast.makeText(LocalContext.current, loginState.data, Toast.LENGTH_SHORT).show()
     } else if (loginState is ActionState.Error) {
         Toast.makeText(LocalContext.current, loginState.message, Toast.LENGTH_SHORT).show()
         resetActionState.invoke()

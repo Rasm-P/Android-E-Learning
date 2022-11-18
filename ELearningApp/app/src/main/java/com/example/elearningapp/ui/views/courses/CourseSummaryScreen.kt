@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.School
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,12 +17,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.elearningapp.R
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.datasource.CourseData
 import com.example.elearningapp.models.CourseContent
@@ -37,27 +38,34 @@ fun CourseSummaryScreen(
     updateUserCourseSteps: (String, Int) -> Unit,
     getUserCourseStepsCompleted: (String) -> Int
 ){
+    //CourseContent ActionState Success conditional
     if (courseContentState is ActionState.Success && courseContentState.data != null) {
+
+        //Course summary values
         val summaryContent = courseContentState.data.courseSummary
         val localContext = LocalContext.current
         val courseName = courseContentState.data.courseName
 
+        //Updates user steps completed
         LaunchedEffect(Unit, block = {
             if (getUserCourseStepsCompleted(courseName) == 4) {
                 updateUserCourseSteps(courseName, 5)
             }
         })
 
+        //Summary box content
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp)
         ) {
+            //Summary card
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(5.dp),
                 elevation = 12.dp
             ) {
+                //Summary text column
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -68,6 +76,7 @@ fun CourseSummaryScreen(
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Medium
                     )
+                    //Summary bullet points
                     LazyColumn {
                         items(summaryContent.bulletPoints) {
                             Spacer(modifier = Modifier.height(12.dp))
@@ -86,6 +95,8 @@ fun CourseSummaryScreen(
                         }
                     }
                     Spacer(modifier = Modifier.height(20.dp))
+
+                    //Lean More clickable text
                     Text(
                         modifier = Modifier
                             .align(alignment = Alignment.CenterHorizontally)
@@ -97,7 +108,7 @@ fun CourseSummaryScreen(
                                 googleIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                 localContext.startActivity(googleIntent)
                             }),
-                        text = "Learn more about this topic",
+                        text = stringResource(R.string.learn_more),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Light,
                         color = MaterialTheme.colors.error,
@@ -105,9 +116,10 @@ fun CourseSummaryScreen(
                     )
                 }
             }
+            //Success icon
             Icon(
                 imageVector = Icons.Filled.School,
-                contentDescription = "Success icon",
+                contentDescription = stringResource(R.string.success_icon),
                 tint = MaterialTheme.colors.primary.copy(alpha = 0.3f),
                 modifier = Modifier.align(alignment = Alignment.Center).size(size = 180.dp)
             )

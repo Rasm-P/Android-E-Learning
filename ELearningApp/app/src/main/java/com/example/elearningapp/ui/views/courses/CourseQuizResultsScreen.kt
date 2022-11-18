@@ -10,10 +10,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.elearningapp.R
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.datasource.CourseData
 import com.example.elearningapp.models.CourseContent
@@ -29,21 +31,28 @@ fun CourseQuizResultsScreen(
     userCourseAnswers: (String) -> List<Int>,
     updateUserCourseSteps: (String, Int) -> Unit
 ) {
-
+    //CourseContent ActionState Success conditional
     if (courseContentState is ActionState.Success && courseContentState.data != null) {
+
+        //Course quiz result and quiz answer values
         val quizResultContent = courseContentState.data.quizResults
         val userCourseQuizAnswers = userCourseAnswers(courseContentState.data.courseName)
 
+        //If user has answered all quiz questions
         if (!userCourseQuizAnswers.contains(0)) {
+
+            //Updates user course steps
             LaunchedEffect(Unit, block = {
                 updateUserCourseSteps(courseContentState.data.courseName, 4)
             })
 
+            //Content box
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(20.dp)
             ) {
+                //Content card
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(5.dp),
@@ -60,9 +69,15 @@ fun CourseQuizResultsScreen(
                             fontWeight = FontWeight.Medium
                         )
                         Spacer(modifier = Modifier.height(20.dp))
+
+                        //Quiz answer column
                         Column(modifier = Modifier.fillMaxWidth(), Arrangement.spacedBy(40.dp)) {
                             for (index in quizResultContent.quizAnswers.indices) {
+
+                                //Is answer correct boolean value
                                 val correct = userCourseQuizAnswers[index] == quizResultContent.resultIndices[index]
+
+                                //Quiz answer content row
                                 Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                                     Card(
                                         modifier = Modifier
@@ -89,7 +104,7 @@ fun CourseQuizResultsScreen(
                                     )
                                     Icon(modifier = Modifier,
                                         imageVector = if (correct) Icons.Filled.Check else Icons.Filled.Close,
-                                        contentDescription = "Radio button",
+                                        contentDescription = stringResource(R.string.radio_button),
                                         tint = if (correct) Color.Green else Color.Red
                                     )
                                 }
@@ -98,17 +113,19 @@ fun CourseQuizResultsScreen(
                     }
                 }
             }
+            //Add note button
             AddNoteButton(saveNote)
         } else {
+            //If quiz has not been answered yet
             Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                 Icon(
                     imageVector = Icons.Filled.Quiz,
                     modifier = Modifier.size(128.dp),
-                    contentDescription = "Quiz not answered yet",
+                    contentDescription = stringResource(R.string.quiz_not_answered),
                     tint = MaterialTheme.colors.primary.copy(alpha = 0.5f)
                 )
                 Text(
-                    text = "Quiz has not been answered yet",
+                    text = stringResource(R.string.quiz_not_answered),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Light,
                     color = MaterialTheme.colors.primary.copy(alpha = 0.5f)

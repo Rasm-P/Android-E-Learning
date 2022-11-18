@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.repositories.interfaces.LoginRepositoryInterface
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -58,6 +59,19 @@ class LoginRepository @Inject internal constructor(private val firebaseAuth: Fir
             emit(ActionState.Error(e.message ?: errorMessage))
             Log.e("Error: Login", e.message ?: errorMessage)
         }
+    }
+
+    override fun logout() {
+        firebaseAuth.signOut()
+    }
+
+    override fun currentUser(): FirebaseUser? {
+        return firebaseAuth.currentUser
+    }
+
+    override fun isLoggedIn(): Boolean {
+        val user = currentUser()
+        return user != null
     }
 
 }

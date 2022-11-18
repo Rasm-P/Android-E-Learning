@@ -25,6 +25,7 @@ import com.example.elearningapp.viewmodels.*
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    //App viewModels
     private val loginViewModel: LoginViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val programmeViewModel: ProgrammeViewModel by viewModels()
@@ -33,6 +34,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //App compose content
         setContent {
             ELearningApp(loginViewModel, userViewModel, programmeViewModel, courseViewModel, noteViewModel)
         }
@@ -42,17 +45,22 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel, programmeViewModel: ProgrammeViewModel, courseViewModel: CourseViewModel, noteViewModel: NoteViewModel) {
     ELearningAppTheme {
+
+        //Values for navController and the current route destination
         val navController = rememberNavController()
         val navBackStackEntry  by navController.currentBackStackEntryAsState()
         val bottomNavDestination = bottomNavScreens.find { it.route == navBackStackEntry?.destination?.route }
         val currentRoute = navBackStackEntry?.destination?.route ?: LoginDestination.Welcome.route
 
+        //App surface
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
             Scaffold(
-                topBar = { if (currentRoute != LoginDestination.Welcome.route && currentRoute != LoginDestination.Programme.route)
+                topBar = {
+                    //App TopBar
+                    if (currentRoute != LoginDestination.Welcome.route && currentRoute != LoginDestination.Programme.route)
                     TopBar(
                         route = currentRoute,
                         onBackPressed = {navController.popBackStack()},
@@ -61,6 +69,7 @@ fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel, p
                         onCourseDetailsPressed = {navController.navigateSingleTopTo(CourseDestination.CourseDetails.route)})
                          },
                 bottomBar = {
+                    //App BottomNavBar and CourseBottomNavBar conditional
                     if (bottomNavDestination is MenuNavDestination)
                         BottomNavBar(
                             screens = bottomNavScreens,
@@ -79,6 +88,7 @@ fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel, p
                 }
             )
             {
+               //App NavHost
                innerPadding -> AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding), loginViewModel, userViewModel, programmeViewModel, courseViewModel, noteViewModel)
             }
         }

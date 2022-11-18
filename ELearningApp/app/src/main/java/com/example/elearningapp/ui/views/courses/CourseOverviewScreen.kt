@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.example.elearningapp.R
 import com.example.elearningapp.common.ActionState
 import com.example.elearningapp.datasource.CourseData.allCourseInformation
 import com.example.elearningapp.models.CourseInformation
@@ -48,24 +50,29 @@ fun CourseOverviewScreen(
     filterCourses: (String, String) -> List<CourseInformation>,
     onViewCourse: (CourseInformation) -> Unit
 ) {
+    //MutableState for user interaction search and topic filer
     var search by remember { mutableStateOf("") }
     var sortTopic by remember { mutableStateOf("") }
 
+    //Fetches all courses
     LaunchedEffect(Unit, block = {
         fetchAllCourses.invoke()
     })
 
+    //Content column
     Column(modifier = Modifier
         .fillMaxSize()) {
+        //Content card
         Card(modifier = Modifier
             .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 6.dp)
             .wrapContentSize(),
             shape = RoundedCornerShape(5.dp),
             elevation = 12.dp) {
+            //Starch bar
             OutlinedTextField(modifier = Modifier
                 .fillMaxWidth(),
                 value = search,
-                placeholder = { Text(text = "Search for a course") },
+                placeholder = { Text(text = stringResource(R.string.search_for_a_course)) },
                 onValueChange = { search = it },
                 singleLine = true,
                 leadingIcon = {
@@ -73,7 +80,7 @@ fun CourseOverviewScreen(
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Search,
-                            contentDescription = "Search",
+                            contentDescription = stringResource(R.string.search),
                             tint = MaterialTheme.colors.primary
                         )
                     }
@@ -85,20 +92,23 @@ fun CourseOverviewScreen(
                         if (search != "") {
                             Icon(
                                 imageVector = Icons.Filled.Clear,
-                                contentDescription = "Clear search"
+                                contentDescription = stringResource(R.string.clear_search)
                             )
                         }
                     }
                 }
             )
         }
+        //Topic buttons lazy row
         LazyRow(contentPadding = PaddingValues(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             items(programmeTopics) { topic ->  TopicButton(topic, sortTopic, { sortTopic = topic }) { sortTopic = "" } }
         }
+        //Courses ActionState Success conditional
         if (coursesState is ActionState.Success) {
             val courses = filterCourses(search,sortTopic)
             if (courses.isNotEmpty()) {
+                //Courses lazy column
                 LazyColumn(
                     modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp),
                     verticalArrangement = Arrangement.spacedBy(20.dp),
@@ -107,16 +117,17 @@ fun CourseOverviewScreen(
                     items(courses) { course -> CourseCard(course, onViewCourse) }
                 }
             } else {
-                NoResultsMessage("No courses found",Icons.Filled.SearchOff)
+                NoResultsMessage(stringResource(R.string.no_courses_found),Icons.Filled.SearchOff)
             }
+            //Course ActionState Error icon
         } else if (coursesState is ActionState.Error) {
             Toast.makeText(LocalContext.current, coursesState.message, Toast.LENGTH_LONG).show()
             Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                Icon(imageVector = Icons.Filled.Error, contentDescription = "Error icon", tint = Color.LightGray)
+                Icon(imageVector = Icons.Filled.Error, contentDescription = stringResource(R.string.error_icon), tint = Color.LightGray)
                 Spacer(modifier = Modifier.height(12.dp))
-                Text(text = "Couldn't Load Data!", color = Color.LightGray)
+                Text(text = stringResource(R.string.couldnt_load_data), color = Color.LightGray)
                 Spacer(modifier = Modifier.height(12.dp))
-                Text(text = "Retry", modifier = Modifier.clickable(onClick = fetchAllCourses), color = MaterialTheme.colors.error, textDecoration = TextDecoration.Underline)
+                Text(text = stringResource(R.string.retry), modifier = Modifier.clickable(onClick = fetchAllCourses), color = MaterialTheme.colors.error, textDecoration = TextDecoration.Underline)
             }
         }
     }
@@ -125,8 +136,10 @@ fun CourseOverviewScreen(
 
 @Composable
 fun TopicButton(topic: String, currentTopic: String, toggleTopic: () -> Unit, unToggleTopic: () -> Unit) {
+    //Topic enabled status value
     val enabled = currentTopic == topic
 
+    //Topic button
     Button(
         onClick = if (!enabled) toggleTopic else unToggleTopic,
         elevation = ButtonDefaults.elevation(disabledElevation = 12.dp, defaultElevation = 12.dp),
@@ -141,21 +154,26 @@ fun TopicButton(topic: String, currentTopic: String, toggleTopic: () -> Unit, un
 
 @Composable
 fun CourseCard(courseInformation: CourseInformation, onViewCourse: (CourseInformation) -> Unit) {
+
+    //Course card
     Card(modifier = Modifier.height(120.dp),
         shape = RoundedCornerShape(5.dp),
         elevation = 12.dp) {
+        //Image painter
         val painter = rememberAsyncImagePainter(
             ImageRequest.Builder(LocalContext.current).data(data = courseInformation.imageUrl).apply(block = fun ImageRequest.Builder.() {
                 crossfade(true)
             }).build()
         )
+        //Content row
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(20.dp), horizontalArrangement = Arrangement.spacedBy(20.dp), verticalAlignment = Alignment.CenterVertically) {
+            //Course image box
             Box(modifier = Modifier.width(80.dp)) {
                 Image(
                     painter = painter,
-                    contentDescription = "Course image",
+                    contentDescription = stringResource(R.string.course_image),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxSize()
@@ -171,6 +189,7 @@ fun CourseCard(courseInformation: CourseInformation, onViewCourse: (CourseInform
                     }
                 }
             }
+            //Course text column
             Column(modifier = Modifier
                 .fillMaxHeight()
                 .weight(1f) ,verticalArrangement = Arrangement.SpaceBetween) {
@@ -183,25 +202,25 @@ fun CourseCard(courseInformation: CourseInformation, onViewCourse: (CourseInform
                 )
                 Column {
                     Text(
-                        text = "Difficulty: " + courseInformation.difficulty,
+                        text = stringResource(R.string.difficulty) + courseInformation.difficulty,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Light
                     )
                     Text(
-                        text = courseInformation.minutesToComplete.toDuration(DurationUnit.MINUTES).toString() + " - " + courseInformation.steps + " steps",
+                        text = courseInformation.minutesToComplete.toDuration(DurationUnit.MINUTES).toString() + " - " + courseInformation.steps + stringResource(R.string.steps),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Light
                     )
                 }
                 Row(modifier = Modifier.clickable(onClick = {onViewCourse(courseInformation)}), verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "VIEW COURSE",
+                        text = stringResource(R.string.view_course),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colors.primary
                     )
                     Spacer(modifier = Modifier.width(6.dp))
-                    Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = "View course", tint = MaterialTheme.colors.primary)
+                    Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = stringResource(R.string.view_course), tint = MaterialTheme.colors.primary)
                 }
             }
         }
