@@ -2,27 +2,19 @@ package com.example.elearningapp
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.TestCoroutineScope
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.*
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
-//Taken from the following codelab: https://developer.android.com/codelabs/advanced-android-kotlin-training-testing-survey#3
-
 @ExperimentalCoroutinesApi
 class MainCoroutineRule(
-    private val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
-) : TestWatcher(), TestCoroutineScope by TestCoroutineScope(dispatcher) {
-    override fun starting(description: Description?) {
-        super.starting(description)
+    private val dispatcher: TestDispatcher = UnconfinedTestDispatcher()
+) : TestWatcher() {
+    override fun starting(description: Description) {
         Dispatchers.setMain(dispatcher)
     }
 
-    override fun finished(description: Description?) {
-        super.finished(description)
-        cleanupTestCoroutines()
+    override fun finished(description: Description) {
         Dispatchers.resetMain()
     }
 }
