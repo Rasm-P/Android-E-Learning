@@ -60,10 +60,9 @@ object CourseData {
             "Easy",
             30,
             5,
-            "Jetpack Compose is a modern toolkit designed to simplify UI development. " +
-                    "It combines a reactive programming model with the conciseness and ease of " +
-                    "use of the Kotlin programming language.",
-            "Programming"
+            "Jetpack Compose is Android’s recommended modern toolkit for building native UI. " +
+                    "It simplifies and accelerates UI development on Android. Quickly bring your app to " +
+                    "life with less code, powerful tools, and intuitive Kotlin APIs."
         ),
         CourseInformation(
             "Android Dagger-Hilt",
@@ -123,7 +122,137 @@ object CourseData {
     )
 
     val allCourseContent: List<CourseContent> = listOf(
-        dummyCourse("Android Jetpack Compose"),
+        // This course is made using content and text from Android Developers: https://developer.android.com/jetpack/compose/tutorial
+        CourseContent(
+            "Android Jetpack Compose",
+            ArticleContent(
+                "Jetpack Compose",
+                "Jetpack Compose is a modern toolkit for building native Android UI. Jetpack " +
+                        "Compose simplifies and accelerates UI development on Android with less code, " +
+                        "powerful tools, and intuitive Kotlin APIs.\n" +
+                        "\n" +
+                        "In this course, you'll build a simple UI component with declarative functions. " +
+                        "You won't be editing any XML layouts or using the Layout Editor. Instead, you will " +
+                        "call composable functions to define what elements you want, and the Compose compiler " +
+                        "will do the rest.",
+                "https://miro.medium.com/max/927/1*GQWup8VDdr1FRg72kSfzWw.png",
+                "Composable functions",
+                "Jetpack Compose is built around composable functions. These functions let you " +
+                        "define your app's UI programmatically by describing how it should look and " +
+                        "providing data dependencies, rather than focusing on the process of the UI's " +
+                        "construction (initializing an element, attaching it to a parent, etc.). " +
+                        "To create a composable function, just add the @Composable annotation to " +
+                        "the function name.\n" +
+                        "\n" +
+                        "Jetpack Compose uses a Kotlin compiler plugin to transform these composable " +
+                        "functions into the app's UI elements. For example, the Text composable function " +
+                        "that is defined by the Compose UI library displays a text label on the screen."
+            ),
+            VideoArticleContent(
+                "Jetpack Compose Video",
+                "https://www.youtube.com/watch?v=U5BwfqBpiWU&ab_channel=AndroidDevelopers",
+                "https://i.ytimg.com/vi/U5BwfqBpiWU/maxresdefault.jpg",
+                listOf(
+                    "Jetpack Compose is Android’s new modern UI toolkit for building " +
+                            "native Android UI",
+                    "Compose simplifies & accelerates your UI development, " +
+                            "allowing you to create richer, more robust and responsive UIs",
+                    "Jetpack Compose simplifies and accelerates UI development " +
+                            "on Android with less code, powerful tools, and intuitive Kotlin APIs.",
+                    "You won't be editing any XML layouts or using the Layout Editor. " +
+                            "Instead, you will call composable functions to define what elements you want."
+                )
+            ),
+            listOf(
+                QuizQuestion(
+                    "Jetpack Compose Quiz",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+                            "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    "Lorem ipsum dolor sit amet?",
+                    listOf(
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    )
+                ),
+                QuizQuestion(
+                    "Lorem ipsum",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+                            "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    "Lorem ipsum dolor sit amet?",
+                    listOf(
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    )
+                ),
+                QuizQuestion(
+                    "Lorem ipsum",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+                            "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    "Lorem ipsum dolor sit amet?",
+                    listOf(
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    )
+                ),
+                QuizQuestion(
+                    "Lorem ipsum",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+                            "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    "Lorem ipsum dolor sit amet?",
+                    listOf(
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    )
+                ),
+                QuizQuestion(
+                    "Lorem ipsum",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+                            "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    "Lorem ipsum dolor sit amet?",
+                    listOf(
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    )
+                )
+            ),
+            QuizResults(
+                "Lorem ipsum",
+                listOf(1, 3, 4, 1, 2),
+                listOf(
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                )
+            ),
+            CourseSummary(
+                "Lorem ipsum",
+                listOf(
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                            "tempor incididunt ut labore et dolore magna aliqua.",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                            "tempor incididunt ut labore et dolore magna aliqua.",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                            "tempor incididunt ut labore et dolore magna aliqua.",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                            "tempor incididunt ut labore et dolore magna aliqua.",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                            "tempor incididunt ut labore et dolore magna aliqua."
+                ),
+                "https://developer.android.com/jetpack/compose"
+            )
+        ),
         dummyCourse("Android Dagger-Hilt"),
         dummyCourse("SSH Encryption"),
         dummyCourse("Transport Protocols"),
@@ -134,6 +263,7 @@ object CourseData {
     fun getCourseContentByName(name: String): CourseContent? {
         return allCourseContent.find { course -> course.courseName == name }
     }
+
 }
 
 private fun dummyCourse(title: String): CourseContent {
