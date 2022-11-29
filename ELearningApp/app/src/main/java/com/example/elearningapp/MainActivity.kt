@@ -21,6 +21,7 @@ import com.example.elearningapp.ui.views.components.CourseBottomNavBar
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.elearningapp.ui.views.components.TopBar
 import com.example.elearningapp.viewmodels.*
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -52,6 +53,18 @@ fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel, p
         val bottomNavDestination = bottomNavScreens.find { it.route == navBackStackEntry?.destination?.route }
         val currentRoute = navBackStackEntry?.destination?.route ?: LoginDestination.Welcome.route
 
+        //System status and navigation bar colors
+        val systemUiController = rememberSystemUiController()
+        systemUiController.setStatusBarColor(
+            color = if(isRouteInLoginNavScreens(currentRoute)) MaterialTheme.colors.background
+            else MaterialTheme.colors.primary
+        )
+        systemUiController.setNavigationBarColor(
+            color = if (currentRoute == CourseDestination.CourseDetails.route) MaterialTheme.colors.background
+            else if(isRouteInCourseNavScreens(currentRoute)) MaterialTheme.colors.primary
+            else MaterialTheme.colors.secondary
+        )
+
         //App surface
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -76,7 +89,7 @@ fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel, p
                             onSelected = { screen -> navController.navigateSingleTopTo(screen.route) },
                             currentDestination = bottomNavDestination
                         )
-                    else if (courseNavScreens.any { screen -> screen.route == currentRoute && currentRoute != CourseDestination.CourseDetails.route }) {
+                    else if (isRouteInCourseNavScreens(currentRoute) && currentRoute != CourseDestination.CourseDetails.route) {
                         val currentStepIndex = courseNavScreens.indexOfFirst { screen -> screen.route == currentRoute }
                         CourseBottomNavBar(
                             onPreviousPressed = {navController.navigateSingleTopTo(courseNavScreens[currentStepIndex-1].route)},

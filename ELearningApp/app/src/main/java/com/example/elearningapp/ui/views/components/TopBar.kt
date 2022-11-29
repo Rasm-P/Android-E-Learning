@@ -25,9 +25,9 @@ fun TopBar(
     onCourseDetailsPressed: () -> Unit
 ) {
     //Boolean values to determine content depending on the current route
-    val isRouteInLoginFLow = loginNavScreens.any { screen -> screen.route == route }
-    val isRouteInOverviewFLow = bottomNavScreens.any { screen -> screen.route == route }
-    val isRouteInCourseFlow = courseNavScreens.any { screen -> screen.route == route &&  route != CourseDestination.CourseDetails.route }
+    val isRouteInLoginFLow = isRouteInLoginNavScreens(route)
+    val isRouteInOverviewFLow = isRouteInBottomNavScreens(route)
+    val isRouteInCourseFlow = isRouteInCourseNavScreens(route) && route != CourseDestination.CourseDetails.route
 
     //App TopBar content
     CenterAlignedTopAppBar(

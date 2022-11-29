@@ -4,8 +4,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -41,8 +39,8 @@ fun BottomNavBar(screens: List<MenuNavDestination>, onSelected: (MenuNavDestinat
         Modifier
             .fillMaxWidth()
             .height(NavBarHeight), color = MaterialTheme.colors.secondary,
-        border = BorderStroke(width = 1.dp, color = if(isSystemInDarkTheme()) MaterialTheme.colors.secondary else Color.LightGray),
-        shape = RoundedCornerShape(5.dp,5.dp)
+        shape = RoundedCornerShape(5.dp,5.dp),
+        elevation = 12.dp
     ) {
         //Content row
         Row(Modifier.selectableGroup(), horizontalArrangement = Arrangement.SpaceEvenly) {
