@@ -153,14 +153,10 @@ object CourseData {
                 "https://www.youtube.com/watch?v=U5BwfqBpiWU&ab_channel=AndroidDevelopers",
                 "https://i.ytimg.com/vi/U5BwfqBpiWU/maxresdefault.jpg",
                 listOf(
-                    "Jetpack Compose is Android’s new modern UI toolkit for building " +
-                            "native Android UI",
-                    "Compose simplifies & accelerates your UI development, " +
-                            "allowing you to create richer, more robust and responsive UIs",
-                    "Jetpack Compose simplifies and accelerates UI development " +
-                            "on Android with less code, powerful tools, and intuitive Kotlin APIs.",
-                    "You won't be editing any XML layouts or using the Layout Editor. " +
-                            "Instead, you will call composable functions to define what elements you want."
+                    "Do more with less code and avoid entire classes of bugs, so code is simple and easy to maintain.",
+                    "Just describe your UI, and Compose takes care of the rest. As app state changes, your UI automatically updates.",
+                    "Compatible with all your existing code so you can adopt when and where you want. Iterate fast with live previews and full Android Studio support.",
+                    "Create beautiful apps with direct access to the Android platform APIs and built-in support for Material Design, Dark theme, animations, and more."
                 )
             ),
             listOf(
@@ -222,23 +218,23 @@ object CourseData {
                     "Modifier parameters tell a UI element how to lay out, display, or behave within its parent layout.",
                     "Previews lets you preview composable functions within the IDE, without downloading the app to a device or emulator.",
                     "Scaffold allows you to implement a UI with the basic Material Design layout structure.",
-                    "You can migrate screens and use Compose as a replacement part of an existing screen or migrate whole fragments to Compose one at a time.",
-                    "The Android Emulator simulates Android devices on your computer so that you can test your application without a physical device."
+                    "You can migrate screens and use Compose as a replacement part of an existing screen or migrate whole fragments to Compose",
+                    "The Android Emulator simulates Android devices on your computer so that you can test your app without a real device."
                 )
             ),
             CourseSummary(
                 "Jetpack Compose",
                 listOf(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
-                            "tempor incididunt ut labore et dolore magna aliqua.",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
-                            "tempor incididunt ut labore et dolore magna aliqua.",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
-                            "tempor incididunt ut labore et dolore magna aliqua.",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
-                            "tempor incididunt ut labore et dolore magna aliqua.",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
-                            "tempor incididunt ut labore et dolore magna aliqua."
+                    "Jetpack Compose is a modern toolkit for building native Android UI. Jetpack " +
+                            "Compose simplifies and accelerates UI development on Android with less code",
+                    "Jetpack Compose is built around composable functions. These functions let you " +
+                            "define your app's UI programmatically by describing how it should look",
+                    "To create a composable function, just add the @Composable annotation to " +
+                            "the function name.",
+                    "Jetpack Compose uses a Kotlin compiler plugin to transform these composable " +
+                            "functions into the app's UI elements.",
+                    "Jetpack Compose has direct access to the Android platform APIs and built-in " +
+                            "support for Material Design, Dark theme, animations, and more."
                 ),
                 "https://developer.android.com/jetpack/compose"
             )
@@ -286,13 +282,13 @@ private fun dummyCourse(title: String): CourseContent {
             "https://i.ytimg.com/vi/mnMCgjuMJPA/maxresdefault.jpg",
             listOf(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-                        "eiusmod tempor incididunt ut labore et dolore magna aliqua?",
+                        "eiusmod tempor incididunt ut labore et dolore magna.",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-                        "eiusmod tempor incididunt ut labore et dolore magna aliqua?",
+                        "eiusmod tempor incididunt ut labore et dolore magna.",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-                        "eiusmod tempor incididunt ut labore et dolore magna aliqua?",
+                        "eiusmod tempor incididunt ut labore et dolore magna.?",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-                        "eiusmod tempor incididunt ut labore et dolore magna aliqua?"
+                        "eiusmod tempor incididunt ut labore et dolore magna."
             )
         ),
         listOf(
@@ -354,13 +350,13 @@ private fun dummyCourse(title: String): CourseContent {
         ),
         QuizResults(
             "Lorem ipsum",
-            listOf(1, 3, 4, 1, 2),
+            listOf(1, 2, 3, 4, 1),
             listOf(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
             )
         ),
         CourseSummary(

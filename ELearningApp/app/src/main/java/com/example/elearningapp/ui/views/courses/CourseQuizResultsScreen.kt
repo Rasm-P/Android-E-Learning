@@ -73,7 +73,7 @@ fun CourseQuizResultsScreen(
                         Spacer(modifier = Modifier.height(12.dp))
 
                         //Quiz answer column
-                        Column(modifier = Modifier.fillMaxWidth().verticalScroll(ScrollState(0)), Arrangement.spacedBy(12.dp)) {
+                        Column(modifier = Modifier.fillMaxWidth(), Arrangement.spacedBy(20.dp)) {
                             for (index in quizResultContent.quizAnswers.indices) {
 
                                 //Is answer correct boolean value
