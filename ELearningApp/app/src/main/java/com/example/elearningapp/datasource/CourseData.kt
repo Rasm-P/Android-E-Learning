@@ -201,42 +201,46 @@ object CourseData {
                 ),
                 QuizQuestion(
                     "Integrating Compose",
-                    "Jetpack Compose can be integrated into exsisting Android applications ith XML layouts.",
+                    "Jetpack Compose can be integrated into existing Android applications ith XML layouts.",
                     "Which of the following are common strategies for integrating " +
                             "Jetpack Compose with an existing Android app?",
                     listOf(
-                        "Integrate Compose in new screens",
+                        "Build a new app",
                         "Migrate in bulk with an automated tool",
-                        "Use Compose as a replacement for the View system for part of an existing screen",
-                        "Migrate whole fragments or screens to Compose one at a time"
+                        "Use Compose as a replacement for the View system for whole or part of the existing screens",
+                        "Migrate whole project to another language"
                     )
                 ),
                 QuizQuestion(
-                    "Lorem ipsum",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-                            "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    "Lorem ipsum dolor sit amet?",
+                    "Android Emulator",
+                    "Android projects written in compose can be run using a virtual android emulator device.",
+                    "What is the purpose of using a virtual device, or emulator, in Android Studio?",
                     listOf(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                        "To show a variety of error messages to users",
+                        "To experiment with app code safely",
+                        "To see what your app looks like in a web browser",
+                        "To test your app on a device without having that physical device"
                     )
                 )
             ),
             QuizResults(
                 "Quiz Answers",
-                listOf(1, 3, 4, 1, 2),
+                listOf(1, 2, 3, 3, 4),
                 listOf(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    "Modifier parameters tell a UI element how to lay out, display, or behave within its parent " +
+                            "layout. Modifiers are regular Kotlin objects.",
+                    "The current canary build of Android Studio lets you preview composable functions within the IDE, " +
+                            "instead of downloading the app to an Android device or emulator.",
+                    "Scaffold allows you to implement a UI with the basic Material Design layout structure. Scaffold " +
+                            "provides slots for the most common top-level Material components",
+                    "You can migrate screens and use Compose as a replacement for the View system for part of an existing " +
+                            "screen or migrate whole fragments or screens to Compose one at a time.",
+                    "The Android Emulator simulates Android devices on your computer so that you can test your " +
+                            "application on a variety of devices and Android API levels without a physical device."
                 )
             ),
             CourseSummary(
-                "Lorem ipsum",
+                "Jetpack Compose",
                 listOf(
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                             "tempor incididunt ut labore et dolore magna aliqua.",
