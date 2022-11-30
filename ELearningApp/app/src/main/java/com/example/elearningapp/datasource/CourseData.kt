@@ -122,7 +122,7 @@ object CourseData {
     )
 
     val allCourseContent: List<CourseContent> = listOf(
-        // This course is made using content and text from Android Developers: https://developer.android.com/jetpack/compose/tutorial
+        // This course is made using content and text from Android Developers: https://developer.android.com/jetpack/compose/tutorial and https://developer.android.com/courses/quizzes/compose/android-11-week-11-2
         CourseContent(
             "Android Jetpack Compose",
             ArticleContent(
@@ -165,51 +165,50 @@ object CourseData {
             ),
             listOf(
                 QuizQuestion(
-                    "Jetpack Compose Quiz",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-                            "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    "Lorem ipsum dolor sit amet?",
+                    "Layout in Compose",
+                    "Jetpack Compose provides a modern and declarative way to " +
+                            "implement layout elements for modern Android development.",
+                    "___ tell a UI element how to lay out, display, or behave within its parent layout.",
                     listOf(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                        "Modifier parameters",
+                        "Composers",
+                        "Kotlin functions",
+                        "CSS"
                     )
                 ),
                 QuizQuestion(
-                    "Lorem ipsum",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-                            "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    "Lorem ipsum dolor sit amet?",
+                    "Compose Previews",
+                    "Jetpack Compose provides an easy way to render and present " +
+                            "compose layout elements that you are currently working on.",
+                    "True or false? To preview composable functions, a developer " +
+                            "must deploy the app to an Android device or emulator.",
                     listOf(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                        "True",
+                        "False",
                     )
                 ),
                 QuizQuestion(
-                    "Lorem ipsum",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-                            "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    "Lorem ipsum dolor sit amet?",
+                    "Compose Layout Structure",
+                    "Jetpack Compose allows you to structure your android project " +
+                            "using composable functions.",
+                    "___ layout allows you to implement a UI with the basic Material Design layout structure.",
                     listOf(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                        "TopAppBar",
+                        "ConstraintLayout",
+                        "Scaffold",
+                        "Column"
                     )
                 ),
                 QuizQuestion(
-                    "Lorem ipsum",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-                            "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    "Lorem ipsum dolor sit amet?",
+                    "Integrating Compose",
+                    "Jetpack Compose can be integrated into exsisting Android applications ith XML layouts.",
+                    "Which of the following are common strategies for integrating " +
+                            "Jetpack Compose with an existing Android app?",
                     listOf(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                        "Integrate Compose in new screens",
+                        "Migrate in bulk with an automated tool",
+                        "Use Compose as a replacement for the View system for part of an existing screen",
+                        "Migrate whole fragments or screens to Compose one at a time"
                     )
                 ),
                 QuizQuestion(
@@ -226,7 +225,7 @@ object CourseData {
                 )
             ),
             QuizResults(
-                "Lorem ipsum",
+                "Quiz Answers",
                 listOf(1, 3, 4, 1, 2),
                 listOf(
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
