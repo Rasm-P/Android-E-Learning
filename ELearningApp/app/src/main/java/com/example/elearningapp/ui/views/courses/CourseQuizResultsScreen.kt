@@ -1,7 +1,9 @@
 package com.example.elearningapp.ui.views.courses
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -68,10 +70,10 @@ fun CourseQuizResultsScreen(
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Medium
                         )
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
 
                         //Quiz answer column
-                        Column(modifier = Modifier.fillMaxWidth(), Arrangement.spacedBy(40.dp)) {
+                        Column(modifier = Modifier.fillMaxWidth().verticalScroll(ScrollState(0)), Arrangement.spacedBy(12.dp)) {
                             for (index in quizResultContent.quizAnswers.indices) {
 
                                 //Is answer correct boolean value
@@ -96,7 +98,7 @@ fun CourseQuizResultsScreen(
                                     }
                                     Text(
                                         text = quizResultContent.quizAnswers[index],
-                                        fontSize = 16.sp,
+                                        fontSize = 14.sp,
                                         fontWeight = FontWeight.Light,
                                         modifier = Modifier
                                             .padding(start = 12.dp)

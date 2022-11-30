@@ -83,36 +83,39 @@ fun CourseQuizTestScreen(
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Medium
                     )
+                    Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = quizTestQuestions[currentQuestionIndex].titleText,
-                        fontSize = 14.sp,
+                        text = quizTestQuestions[currentQuestionIndex].question,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Light
                     )
                     Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        text = quizTestQuestions[currentQuestionIndex].question,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Medium
-                    )
                     //Quiz questions
-                    for ((index, option) in quizTestQuestions[currentQuestionIndex].options.withIndex()) {
-                        val answer = questionAnswers.toMutableList()
-                        Row(modifier = Modifier
-                            .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            RadioButton(
-                                selected = (answer[currentQuestionIndex] == index+1),
-                                onClick = {answer[currentQuestionIndex] = index+1
-                                    questionAnswers = answer},
-                                colors = RadioButtonDefaults.colors(MaterialTheme.colors.primary, Color.Gray)
-                            )
-                            Text(
-                                text = option,
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Light,
-                                modifier = Modifier.padding(start = 12.dp)
-                            )
+                    Column(modifier = Modifier.fillMaxWidth(), Arrangement.spacedBy(6.dp)) {
+                        for ((index, option) in quizTestQuestions[currentQuestionIndex].options.withIndex()) {
+                            val answer = questionAnswers.toMutableList()
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                RadioButton(
+                                    selected = (answer[currentQuestionIndex] == index + 1),
+                                    onClick = {
+                                        answer[currentQuestionIndex] = index + 1
+                                        questionAnswers = answer
+                                    },
+                                    colors = RadioButtonDefaults.colors(
+                                        MaterialTheme.colors.primary,
+                                        Color.Gray
+                                    )
+                                )
+                                Text(
+                                    text = option,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Light
+                                )
+                            }
                         }
                     }
                 }

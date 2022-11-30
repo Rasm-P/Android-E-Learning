@@ -14,8 +14,8 @@ object CourseData {
             30,
             5,
             "Jetpack Compose is a modern toolkit designed to simplify UI development. " +
-                    "It combines a reactive programming model with the conciseness and ease of " +
-                    "use of the Kotlin programming language.",
+                    "It combines a reactive programming model with the ease of use and conciseness " +
+                    "of the Kotlin programming language.",
             "Programming"
         ),
         CourseInformation(
@@ -166,9 +166,7 @@ object CourseData {
             listOf(
                 QuizQuestion(
                     "Layout in Compose",
-                    "Jetpack Compose provides a modern and declarative way to " +
-                            "implement layout elements for modern Android development.",
-                    "___ tell a UI element how to lay out, display, or behave within its parent layout.",
+                    "Which of the following tell a UI element how to lay out, display, or behave within its parent layout?",
                     listOf(
                         "Modifier parameters",
                         "Composers",
@@ -178,8 +176,6 @@ object CourseData {
                 ),
                 QuizQuestion(
                     "Compose Previews",
-                    "Jetpack Compose provides an easy way to render and present " +
-                            "compose layout elements that you are currently working on.",
                     "True or false? To preview composable functions, a developer " +
                             "must deploy the app to an Android device or emulator.",
                     listOf(
@@ -188,10 +184,8 @@ object CourseData {
                     )
                 ),
                 QuizQuestion(
-                    "Compose Layout Structure",
-                    "Jetpack Compose allows you to structure your android project " +
-                            "using composable functions.",
-                    "___ layout allows you to implement a UI with the basic Material Design layout structure.",
+                    "Compose Structure",
+                    "Which of the following layouts allows you to implement a UI with the basic Material Design layout structure?",
                     listOf(
                         "TopAppBar",
                         "ConstraintLayout",
@@ -201,19 +195,17 @@ object CourseData {
                 ),
                 QuizQuestion(
                     "Integrating Compose",
-                    "Jetpack Compose can be integrated into existing Android applications ith XML layouts.",
                     "Which of the following are common strategies for integrating " +
                             "Jetpack Compose with an existing Android app?",
                     listOf(
+                        "Migrate in bulk with automated tool",
                         "Build a new app",
-                        "Migrate in bulk with an automated tool",
-                        "Use Compose as a replacement for the View system for whole or part of the existing screens",
+                        "Use Compose as replacement for whole or part of the existing screens",
                         "Migrate whole project to another language"
                     )
                 ),
                 QuizQuestion(
                     "Android Emulator",
-                    "Android projects written in compose can be run using a virtual android emulator device.",
                     "What is the purpose of using a virtual device, or emulator, in Android Studio?",
                     listOf(
                         "To show a variety of error messages to users",
@@ -227,16 +219,11 @@ object CourseData {
                 "Quiz Answers",
                 listOf(1, 2, 3, 3, 4),
                 listOf(
-                    "Modifier parameters tell a UI element how to lay out, display, or behave within its parent " +
-                            "layout. Modifiers are regular Kotlin objects.",
-                    "The current canary build of Android Studio lets you preview composable functions within the IDE, " +
-                            "instead of downloading the app to an Android device or emulator.",
-                    "Scaffold allows you to implement a UI with the basic Material Design layout structure. Scaffold " +
-                            "provides slots for the most common top-level Material components",
-                    "You can migrate screens and use Compose as a replacement for the View system for part of an existing " +
-                            "screen or migrate whole fragments or screens to Compose one at a time.",
-                    "The Android Emulator simulates Android devices on your computer so that you can test your " +
-                            "application on a variety of devices and Android API levels without a physical device."
+                    "Modifier parameters tell a UI element how to lay out, display, or behave within its parent layout.",
+                    "Previews lets you preview composable functions within the IDE, without downloading the app to a device or emulator.",
+                    "Scaffold allows you to implement a UI with the basic Material Design layout structure.",
+                    "You can migrate screens and use Compose as a replacement part of an existing screen or migrate whole fragments to Compose one at a time.",
+                    "The Android Emulator simulates Android devices on your computer so that you can test your application without a physical device."
                 )
             ),
             CourseSummary(
@@ -312,8 +299,7 @@ private fun dummyCourse(title: String): CourseContent {
             QuizQuestion(
                 "Lorem ipsum",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-                        "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "Lorem ipsum dolor sit amet?",
+                        "eiusmod tempor incididunt ut labore et dolore magna aliqua?",
                 listOf(
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -324,8 +310,7 @@ private fun dummyCourse(title: String): CourseContent {
             QuizQuestion(
                 "Lorem ipsum",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-                        "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "Lorem ipsum dolor sit amet?",
+                        "eiusmod tempor incididunt ut labore et dolore magna aliqua?",
                 listOf(
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -336,8 +321,7 @@ private fun dummyCourse(title: String): CourseContent {
             QuizQuestion(
                 "Lorem ipsum",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-                        "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "Lorem ipsum dolor sit amet?",
+                        "eiusmod tempor incididunt ut labore et dolore magna aliqua?",
                 listOf(
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -348,8 +332,7 @@ private fun dummyCourse(title: String): CourseContent {
             QuizQuestion(
                 "Lorem ipsum",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-                        "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "Lorem ipsum dolor sit amet?",
+                        "eiusmod tempor incididunt ut labore et dolore magna aliqua?",
                 listOf(
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -360,8 +343,7 @@ private fun dummyCourse(title: String): CourseContent {
             QuizQuestion(
                 "Lorem ipsum",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-                        "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "Lorem ipsum dolor sit amet?",
+                        "eiusmod tempor incididunt ut labore et dolore magna aliqua?",
                 listOf(
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
