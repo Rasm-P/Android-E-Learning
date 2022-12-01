@@ -122,7 +122,12 @@ object CourseData {
     )
 
     val allCourseContent: List<CourseContent> = listOf(
-        // This course is made using content and text from Android Developers: https://developer.android.com/jetpack/compose/tutorial and https://developer.android.com/courses/quizzes/compose/android-11-week-11-2
+        // This course is made using content and text from the following sources:
+        // Android Developers, text: https://developer.android.com/jetpack/compose/tutorial
+        // Android Developers, text: https://developer.android.com/courses/quizzes/compose/android-11-week-11-2
+        // Android Developers, youtube: https://www.youtube.com/watch?v=U5BwfqBpiWU&ab_channel=AndroidDevelopers and https://i.ytimg.com/vi/U5BwfqBpiWU/maxresdefault.jpg
+        // Quiz.com, text: https://quizizz.com/admin/quiz/6334064cd8d210001d083fc5/jetpack-compose
+        // Golem.de, article image: https://www.golem.de/2107/158523-285566-285565_rc.jpg
         CourseContent(
             "Android Jetpack Compose",
             ArticleContent(
@@ -135,7 +140,7 @@ object CourseData {
                         "You won't be editing any XML layouts or using the Layout Editor. Instead, you will " +
                         "call composable functions to define what elements you want, and the Compose compiler " +
                         "will do the rest.",
-                "https://miro.medium.com/max/927/1*GQWup8VDdr1FRg72kSfzWw.png",
+                "https://www.golem.de/2107/158523-285566-285565_rc.jpg",
                 "Composable functions",
                 "Jetpack Compose is built around composable functions. These functions let you " +
                         "define your app's UI programmatically by describing how it should look and " +
