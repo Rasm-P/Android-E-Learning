@@ -120,7 +120,7 @@ fun CourseSummaryScreen(
             Icon(
                 imageVector = Icons.Filled.School,
                 contentDescription = stringResource(R.string.success_icon),
-                tint = MaterialTheme.colors.primary.copy(alpha = 0.3f),
+                tint = MaterialTheme.colors.primary.copy(alpha = 0.2f),
                 modifier = Modifier.align(alignment = Alignment.Center).size(size = 180.dp)
             )
         }

@@ -136,7 +136,6 @@ fun AppNavHost(
                 deleteUser = {userViewModel.deleteUserData()
                     loginViewModel.deleteUser { navController.navigate(navController.graph.startDestinationId) }
                 },
-                updateState = userViewModel.updateState.value,
                 resetActionState = {userViewModel.resetUserActionState()
                     loginViewModel.resetLoginActionState()},
                 loginState = loginViewModel.loginState.value,

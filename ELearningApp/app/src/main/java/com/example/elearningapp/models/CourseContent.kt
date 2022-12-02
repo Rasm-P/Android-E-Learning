@@ -26,7 +26,6 @@ data class VideoArticleContent(
 
 data class QuizQuestion(
     val title: String,
-    val titleText: String,
     val question: String,
     val options: List<String>
 )
