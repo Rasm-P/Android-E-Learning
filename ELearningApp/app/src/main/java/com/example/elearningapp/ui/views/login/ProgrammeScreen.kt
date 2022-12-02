@@ -37,7 +37,6 @@ fun ProgrammeScreen(
     navigateOverview: () -> Unit,
     fetchProgrammes: () -> Unit,
     programmeState: ActionState<List<Programme>>,
-    setFirstTimeUser: () -> Unit,
     addUserData: (String,Programme) -> Unit,
     userState: ActionState<User>,
     resetActionState: () -> Unit
@@ -66,7 +65,7 @@ fun ProgrammeScreen(
         )
         Box(modifier = Modifier
             .weight(3f)) {
-            ProgrammeCard(fetchProgrammes, programmeState, setFirstTimeUser, addUserData, addUserDataFailed)
+            ProgrammeCard(fetchProgrammes, programmeState, addUserData, addUserDataFailed)
         }
     }
     //When clause for user ActionState
@@ -90,7 +89,6 @@ fun ProgrammeScreen(
 fun ProgrammeCard(
     fetchProgrammes: () -> Unit,
     programmeState: ActionState<List<Programme>>,
-    setFirstTimeUser: () -> Unit,
     addUserData: (String, Programme) -> Unit,
     addUserDataFailed: Boolean
 ) {
@@ -200,7 +198,6 @@ fun ProgrammeCard(
                         .height(40.dp),
                         enabled = selectedProgramme.name != "" && studentName != "",
                         onClick = {
-                            setFirstTimeUser.invoke()
                             addUserData(studentName, selectedProgramme)
                         }) {
                         Text(text = stringResource(R.string.finish_button))
@@ -238,6 +235,6 @@ fun ProgrammeItem(programme: Programme, selectedProgramme: Programme, onSelect: 
 @Composable
 fun ProgrammeScreenPreview() {
     ELearningAppTheme {
-        ProgrammeScreen({},{},ActionState.Success(programmes),{},{ _, _->},ActionState.Initial,{})
+        ProgrammeScreen({},{},ActionState.Success(programmes),{ _, _->},ActionState.Initial,{})
     }
 }

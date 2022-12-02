@@ -34,8 +34,7 @@ fun RegisterScreen(
     navigateProgramme: () -> Unit,
     loginState: ActionState<String>,
     resetActionState: () -> Unit,
-    onRegister: (String, String) -> Unit,
-    setFirstTimeUser: () -> Unit
+    onRegister: (String, String) -> Unit
 ) {
     //Image painter
     val image: Painter = painterResource(id = R.drawable.e_learning)
@@ -56,7 +55,7 @@ fun RegisterScreen(
         //Content box for card
         Box(modifier = Modifier
             .weight(2f)) {
-            RegisterCard(navigateLogin, registerFailed, {registerFailed = true}, onRegister, setFirstTimeUser)
+            RegisterCard(navigateLogin, registerFailed, {registerFailed = true}, onRegister)
         }
     }
     //When clause for login state
@@ -82,8 +81,7 @@ fun RegisterCard(
     navigateLogin: () -> Unit,
     registerFailed: Boolean,
     setRegisterFailed: () -> Unit,
-    onRegister: (String, String) -> Unit,
-    setFirstTimeUser: () -> Unit
+    onRegister: (String, String) -> Unit
 ) {
     //MutableState for user interaction
     var email by remember { mutableStateOf("") }
@@ -190,7 +188,6 @@ fun RegisterCard(
                     .height(40.dp),
                     onClick = {
                         if (password == repeatPassword) {
-                            setFirstTimeUser.invoke()
                             onRegister(email, password)
                         } else {
                             setRegisterFailed.invoke()
@@ -230,6 +227,6 @@ fun RegisterCard(
 @Composable
 fun RegisterScreenPreview() {
     ELearningAppTheme {
-        RegisterScreen({},{},ActionState.Initial,{},{ _, _ ->},{})
+        RegisterScreen({},{},ActionState.Initial,{},{ _, _ ->})
     }
 }

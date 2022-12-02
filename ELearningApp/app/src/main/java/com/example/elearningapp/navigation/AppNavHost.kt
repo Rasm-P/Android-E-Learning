@@ -68,20 +68,21 @@ fun AppNavHost(
             composable(route = LoginDestination.Register.route) {
                 RegisterScreen(
                     navigateLogin = {navController.navigateSingleTopTo(LoginDestination.Login.route)},
-                    navigateProgramme = {navController.navigate(LoginDestination.Programme.route) {popUpTo(0); launchSingleTop = true} },
+                    navigateProgramme = {isFirstTimeUser = true
+                        navController.navigate(LoginDestination.Programme.route) {popUpTo(0); launchSingleTop = true} },
                     loginState = loginViewModel.loginState.value,
                     resetActionState = {loginViewModel.resetLoginActionState()},
-                    onRegister = {email, password -> loginViewModel.register(email, password)},
-                    setFirstTimeUser = {isFirstTimeUser = true}
+                    onRegister = {email, password -> loginViewModel.register(email, password)}
                 )
             }
 
             //Programme screen
             composable(route = LoginDestination.Programme.route) {
-                ProgrammeScreen(navigateOverview = {navController.navigate(navController.graph.startDestinationId)},
+                ProgrammeScreen(navigateOverview = {
+                    isFirstTimeUser = false
+                    navController.navigate(navController.graph.startDestinationId)},
                     fetchProgrammes = {programmeViewModel.fetchProgrammes()},
                     programmeState = programmeViewModel.programmeState.value,
-                    setFirstTimeUser = {isFirstTimeUser = false},
                     addUserData = {studentName, programme -> userViewModel.addUser(User(studentName, programme, ArrayList()))},
                     userState = userViewModel.userState.value,
                     resetActionState = {userViewModel.resetUserActionState()}
