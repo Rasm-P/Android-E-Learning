@@ -78,10 +78,11 @@ fun AppNavHost(
 
             //Programme screen
             composable(route = LoginDestination.Programme.route) {
-                ProgrammeScreen(navigateOverview = {navController.navigate(navController.graph.startDestinationId)},
+                ProgrammeScreen(navigateOverview = {
+                    isFirstTimeUser = false
+                    navController.navigate(navController.graph.startDestinationId)},
                     fetchProgrammes = {programmeViewModel.fetchProgrammes()},
                     programmeState = programmeViewModel.programmeState.value,
-                    setFirstTimeUser = {isFirstTimeUser = false},
                     addUserData = {studentName, programme -> userViewModel.addUser(User(studentName, programme, ArrayList()))},
                     userState = userViewModel.userState.value,
                     resetActionState = {userViewModel.resetUserActionState()}

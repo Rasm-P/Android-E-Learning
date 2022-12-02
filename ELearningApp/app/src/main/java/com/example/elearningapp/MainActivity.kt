@@ -77,7 +77,7 @@ fun ELearningApp(loginViewModel: LoginViewModel, userViewModel: UserViewModel, p
                     TopBar(
                         route = currentRoute,
                         onBackPressed = {navController.popBackStack()},
-                        onLogoutPressed = { navController.navigate(navController.graph.startDestinationId); loginViewModel.logout(); },
+                        onLogoutPressed = { navController.navigate(navController.graph.startDestinationId); userViewModel.resetUserActionState(); loginViewModel.logout(); },
                         onAccountPressed = {navController.navigateSingleTopTo(MenuNavDestination.Account.route)},
                         onCourseDetailsPressed = {navController.navigateSingleTopTo(CourseDestination.CourseDetails.route)})
                          },
