@@ -7,11 +7,13 @@ Contributors:
 
 About the project
 ==================
-E-Learning app is an Android Native app that allows students to attend a variety of different course activities on the go. The course activities themselves consist of articles, video articles, and quizzes that the user can attend. Users can sign up to different study programmes with predetermined topics which makes it easy to find relevant courses to attend. Whilst taking a course, users can write notes that they can later view, update or delete. The overall goal of the app is to more closely connect students with learning facilities wherever they are, and whenever they have some time to spare.
+E-Learning app is an native Android app that allows students to attend a variety of different course activities on the go. The course activities themselves consist of articles, video articles, and quizzes that can be completed in steps. Users can sign up to different study programmes with predetermined topics which makes it easy to find relevant courses to attend. Whilst taking a course, users can write notes that they can later view, update or delete. The overall goal of the app is to more closely connect students with learning facilities wherever they are, and whenever they have some time to spare.
+
+If installed, the application should be run in the device light mode theme. As Firebase can act somewhat slow on emulators, it is advised that the app apk file be run on a real device running Android 8 to 13 (API 26 - 33).
 
 Overall requirements
 ==================
-The overall project requirements is that the app is to be developed as a native Android app using Kotlin and that the application should demonstrate a working knowledge of modern Android development. This includes for example, the use of modern Android architecture, UI (User Interface) design, navigation, animations, local persistence, network communication and the use of tests. A further requirement is that the app UI and the overall quality of the app meets current industry standards.
+The overall project requirements are that the app is to be developed as a native Android app using Kotlin and that the application should demonstrate a working knowledge of modern Android development. This includes for example, the use of modern Android architecture, UI (User Interface) design, navigation, animations, local persistence, and network communication. A further requirement is that the app UI and the overall quality of the app meets current industry standards.
 
 Architecture and technologies
 ==================
