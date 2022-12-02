@@ -68,11 +68,11 @@ fun AppNavHost(
             composable(route = LoginDestination.Register.route) {
                 RegisterScreen(
                     navigateLogin = {navController.navigateSingleTopTo(LoginDestination.Login.route)},
-                    navigateProgramme = {navController.navigate(LoginDestination.Programme.route) {popUpTo(0); launchSingleTop = true} },
+                    navigateProgramme = {isFirstTimeUser = true
+                        navController.navigate(LoginDestination.Programme.route) {popUpTo(0); launchSingleTop = true} },
                     loginState = loginViewModel.loginState.value,
                     resetActionState = {loginViewModel.resetLoginActionState()},
-                    onRegister = {email, password -> loginViewModel.register(email, password)},
-                    setFirstTimeUser = {isFirstTimeUser = true}
+                    onRegister = {email, password -> loginViewModel.register(email, password)}
                 )
             }
 
